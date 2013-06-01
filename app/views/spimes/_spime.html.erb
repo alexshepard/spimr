@@ -1,0 +1,12 @@
+<div class="spime">
+  <h3>
+  <%= spime.name %>
+  <%= link_to('show', spime) %>
+  <%= link_to('edit', edit_spime_path(spime)) %>
+  <%= link_to('destroy', spime, {
+          :confirm => "Are you sure?",
+          :method => :delete
+        }) %>
+
+  </h3>
+</div>
