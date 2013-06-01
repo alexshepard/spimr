@@ -1,5 +1,7 @@
 Spimr::Application.routes.draw do
   
+  root :to => "spimes#index"
+  
   resources :spimes
   
   # The priority is based upon order of creation:
