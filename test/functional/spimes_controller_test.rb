@@ -29,9 +29,17 @@ class SpimesControllerTest < ActionController::TestCase
       post :create, :spime => @update
     end
     
-    assert_redirected_to spime_path(assigns(:spime))
-  end
+    assert_redirected_to spime_path(assigns(:spime))    
+  end    
+  
+  test "should save spime" do
+    assert @spime.valid?, "#{@spime} shouldn't be invalid"
+    did_save = @spime.save
+    assert_equal did_save, true
 
+    assert_not_nil @spime[:uuid]
+  end
+  
   test "should show spime" do
     get :show, :id => @spime
     assert_response :success

@@ -11,5 +11,13 @@ class Spime < ActiveRecord::Base
     :with     => %r{\.(gif|jpg|png)$}i,
     :message => 'must be a URL for GIF, JPG, or PNG image.'
   }
+  
+  before_save :generate_uuid
+  
+  private
+
+  def generate_uuid
+    self.uuid = SecureRandom.uuid
+  end
 
 end

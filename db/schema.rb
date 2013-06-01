@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130601011629) do
+ActiveRecord::Schema.define(:version => 20130601200952) do
 
   create_table "spimes", :force => true do |t|
     t.string   "name",              :null => false
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20130601011629) do
     t.datetime "date_manufactured", :null => false
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.string   "uuid"
   end
 
 end
