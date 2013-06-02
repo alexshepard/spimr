@@ -3,7 +3,7 @@ class SpimesController < ApplicationController
   respond_to :html
   
   def checkin
-    @spime = Spime.find_by_uuid(params[:uuid])
+    @spime = Spime.uuidpg(params[:uuid]).first
     
     if @spime
       @sighting = @spime.sightings.new

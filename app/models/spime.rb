@@ -15,6 +15,7 @@ class Spime < ActiveRecord::Base
   }
   
   scope :uuid, lambda {|uuid| where(:uuid => uuid) } 
+  scope :uuidpg, lambda {|uuid| where("uuid = ?", uuid)}
   
   before_save :generate_uuid
   
