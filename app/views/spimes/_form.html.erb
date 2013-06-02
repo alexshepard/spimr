@@ -1,4 +1,14 @@
 <%= semantic_form_for [@spime] do |form| %>
-  <%= form.inputs %>
+  <%= form.inputs do %>
+    <%= form.input :name %>
+    <%= form.input :description %>
+    <%= form.input :image %>
+    <%= form.input :public %>
+    <%= form.input :materials %>
+    <%= form.input :date_manufactured %>
+
+
+  <% end %>
+
   <%= form.buttons %>
 <% end %>
