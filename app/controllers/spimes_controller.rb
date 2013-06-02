@@ -2,6 +2,22 @@ class SpimesController < ApplicationController
   
   respond_to :html
   
+  def checkin
+    @spime = Spime.find_by_uuid(params[:uuid])
+    
+    if @spime
+      @sighting = @spime.sightings.new
+      respond_with [@spime, @sighting] do |format|
+        format.html {
+          render 'checkin'
+        }
+      end
+    else
+      redirect_to(spimes_path(), :alert => "Invalid checkin attempt.")
+    end
+      
+  end
+    
   def index
     @spimes = Spime.all
     

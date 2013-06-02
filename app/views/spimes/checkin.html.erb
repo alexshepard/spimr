@@ -1,0 +1,22 @@
+<header>
+  <p>Spime sighting!</p>
+</header>
+
+<%= render @spime %>
+
+<%= render 'spime_details' %>
+
+<%= semantic_form_for [@spime, @sighting] do |form| %>
+
+  <%= form.inputs do %>
+    <%= form.input :finder_person_name, :label => "Your Name" %>
+    <%= form.input :location_name %>
+    <%= form.input :longitude %>
+    <%= form.input :latitude %>
+
+
+  <% end %>
+
+  <%= form.buttons %>
+<% end %>
+

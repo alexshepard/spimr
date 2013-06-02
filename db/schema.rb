@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130601200952) do
+ActiveRecord::Schema.define(:version => 20130602022028) do
+
+  create_table "sightings", :force => true do |t|
+    t.integer  "spime_id"
+    t.string   "location_name"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "finder_person_name"
+    t.datetime "date"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
 
   create_table "spimes", :force => true do |t|
     t.string   "name",              :null => false

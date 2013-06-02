@@ -2,7 +2,12 @@ Spimr::Application.routes.draw do
   
   root :to => "spimes#index"
   
-  resources :spimes
+  resources :spimes do
+    resources :sightings
+    collection do
+      get '/:action/:uuid'
+    end
+  end
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

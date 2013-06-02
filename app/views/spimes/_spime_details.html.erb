@@ -1,7 +1,13 @@
 <div class="spime-details">
-  <p><%= @spime.description %></p>
-  <p><%= @spime.image %></p>
-  <p><%= @spime.public %></p>
-  <p><%= @spime.materials %></p>
-  <p><%= @spime.date_manufactured %></p>
+  <p>Details: <%= @spime.description %></p>
+  <p>Image: <%= @spime.image %></p>
+  <p>Privacy:
+  <% if @spime.public %>
+    Public
+  <% else %>
+    Private
+  <% end %>
+  <p>Materials: <%= @spime.materials %></p>
+  <p>Manufacturing Date: <%= @spime.date_manufactured %></p>
+  
 </div>

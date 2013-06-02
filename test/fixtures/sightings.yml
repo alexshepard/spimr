@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  spime_id: 1
+  location_name: MyString
+  latitude: 1.5
+  longitude: 1.5
+  finder_person_name: MyString
+  date: 2013-06-01 19:20:28
+
+two:
+  spime_id: 1
+  location_name: MyString
+  latitude: 1.5
+  longitude: 1.5
+  finder_person_name: MyString
+  date: 2013-06-01 19:20:28

@@ -1,0 +1,26 @@
+<div class="sighting <%= cycle('odd', 'even') %>">
+  <div class="sighting-location-name">
+    Location: <%= sighting.location_name %>
+  </div>
+  <div class="sighting-finder-name">
+    Finder: <%= sighting.finder_person_name %>
+  </div>
+  <% if sighting.latitude and sighting.longitude %>
+  <div class="sighting-lat-long">
+    Latitude: <%= sighting.latitude %>, Longitude: <%= sighting.longitude %>
+  </div>
+  <% end %>
+  <div class="sighting-date">
+    Sighting Date: <%= sighting.date %>
+  </div>
+
+
+  
+  <%= link_to('edit', edit_spime_sighting_path(sighting.spime, sighting)) %>
+  <%= link_to('destroy', spime_sighting_path(sighting.spime, sighting), {
+          :confirm => "Are you sure you want to delete sighting for #{sighting.spime.name} at '#{sighting.location_name}'?",
+          :method => :delete
+        }) %>
+
+</div>
+

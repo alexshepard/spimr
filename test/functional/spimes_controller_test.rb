@@ -62,5 +62,16 @@ class SpimesControllerTest < ActionController::TestCase
 
     assert_redirected_to spimes_path
   end
+  
+  test "should allow valid checkin" do
+    @spime.save
+    get :checkin, :uuid => @spime.uuid
+    assert_response :success
+  end
+  
+  test "should disallow invalid checkin" do
+    get :checkin, :uuid => "not-a-valid-uuid"
+    assert_redirected_to spimes_path
+  end
 
 end

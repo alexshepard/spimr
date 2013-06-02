@@ -1,0 +1,7 @@
+<header>
+  <p>Edit Sighting for <%= @sighting.spime.name %></p>
+</header>
+
+<%= render :partial => 'form' %>
+
+<%= link_to raw("&larr; Back to Spime"), spime_path(@sighting.spime) %>
