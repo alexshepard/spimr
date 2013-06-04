@@ -53,6 +53,16 @@ header p {
   padding-left: 16px;
 }
 
+.spime-qrcode {
+  color:black;
+  background-color:white;
+  text-align:center
+}
+.spime-qrcode p {
+  color:black;
+  font-weight: bold;
+}
+
 
 label {
   color: #ccc;

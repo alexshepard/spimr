@@ -1,4 +1,6 @@
 <div class="spime-qrcode">
-  QR Code for this Spime:
-  <%= image_tag url_for(:controller => 'spimes', :action => 'show_qrcode', :id => @spime.id, :format => 'png') %>  
+  <p>QR Code for this Spime:</p>
+  <p>
+    <%= image_tag url_for(:controller => 'spimes', :action => 'show_qrcode', :id => @spime.id, :format => 'svg') %>
+  </p>
 </div>
