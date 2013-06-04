@@ -13,6 +13,7 @@ upload photo(s)
   to S3, probably. creators can upload photos of spimes.
 creator authentication
   for private spimes, edit/delete permissions, etc
+  only owner should be able to see QR Code for spime, public or private
 styling
   current styling is too much based on demos & such
 iOS client app
