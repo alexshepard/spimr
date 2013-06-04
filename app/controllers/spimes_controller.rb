@@ -30,6 +30,17 @@ class SpimesController < ApplicationController
     respond_with @spime
   end
   
+  def show_qrcode
+    @spime = Spime.find(params[:id])
+    respond_to do |format|
+      format.html { redirect_to(spime_path(@spime)) }
+      format.svg { render :qrcode => url_for(:controller => 'spimes', :action => 'checkin', :uuid => @spime.uuid) }
+      format.png { render :qrcode => url_for(:controller => 'spimes', :action => 'checkin', :uuid => @spime.uuid) }
+      format.jpeg { render :qrcode => url_for(:controller => 'spimes', :action => 'checkin', :uuid => @spime.uuid) }
+
+    end
+  end
+  
   def new
     @spime = Spime.new
     
@@ -85,5 +96,5 @@ class SpimesController < ApplicationController
       }
     end
   end
-
+  
 end

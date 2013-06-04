@@ -3,6 +3,7 @@ Spimr::Application.routes.draw do
   root :to => "spimes#index"
     
   match "/spimes/checkin/:uuid" => "spimes#checkin"
+  match "/spimes/show_qrcode/:id" => "spimes#show_qrcode"
   
   resources :spimes do
     resources :sightings
