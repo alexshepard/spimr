@@ -5,8 +5,6 @@ Adding stupid things to the internet of things, one QR Code at a time.
 
 TODO
 =====
-qrcode generation
-  for printing by creator, to allow checkin to happen on qrcode scan
 checkin geolocation
   on checkin, ask for location of browser/device & use that for lat/long
 upload photo(s)
