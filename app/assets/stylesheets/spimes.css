@@ -75,3 +75,11 @@ label {
 p.addlink {
   text-align: right;
 }
+
+#alert {
+  color: red;
+}
+
+#notice {
+  color: white;
+}
