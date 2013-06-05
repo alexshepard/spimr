@@ -2,6 +2,8 @@
   <p>Spime sighting!</p>
 </header>
 
+<div id="spime_checkin_div"></div>
+
 <%= render @spime %>
 
 <%= render 'spime_details' %>
@@ -11,10 +13,8 @@
   <%= form.inputs do %>
     <%= form.input :finder_person_name, :label => "Your Name" %>
     <%= form.input :location_name %>
-    <%= form.input :longitude %>
-    <%= form.input :latitude %>
-
-
+    <%= form.input :longitude, :as => :hidden %>
+    <%= form.input :latitude, :as => :hidden %>
   <% end %>
 
   <%= form.buttons %>

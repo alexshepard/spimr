@@ -5,6 +5,10 @@ gem 'rails', '3.2.13'
 gem 'rqrcode-rails3'
 gem 'mini_magick'
 
+gem 'geokit'
+gem 'geokit-rails'
+gem 'jquery-ui-rails'
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 

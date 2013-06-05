@@ -44,12 +44,19 @@ GEM
       actionpack (>= 2.3.7)
       activesupport (>= 2.3.7)
       i18n (~> 0.4)
+    geokit (1.6.5)
+      multi_json
+    geokit-rails (1.1.4)
+      geokit (>= 1.5.0)
     hike (1.2.2)
     i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (3.0.0)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-ui-rails (4.0.3)
+      jquery-rails
+      railties (>= 3.1.0)
     json (1.8.0)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -116,7 +123,10 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
   formtastic (~> 1.2)
+  geokit
+  geokit-rails
   jquery-rails
+  jquery-ui-rails
   mini_magick
   pg
   rails (= 3.2.13)
