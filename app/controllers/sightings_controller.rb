@@ -55,6 +55,10 @@ class SightingsController < ApplicationController
     end
   end
 
+  def gmaps4rails_infowindow
+    "<p style=\"color:black\">#{finder_person_name} asdf found #{spime.name} here at #{self.location_name}</p>"
+  end
+
   private
   
   def spime

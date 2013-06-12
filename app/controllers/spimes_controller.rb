@@ -21,11 +21,26 @@ class SpimesController < ApplicationController
   def index
     @spimes = Spime.all
     
+    last_sightings = []
+    @spimes.each do |spime|
+      last_sightings << spime.sightings.first
+    end
+    @spimes_json = last_sightings.to_gmaps4rails
+    
     respond_with @spimes
   end
   
   def show
     @spime = Spime.find(params[:id])
+    #@sightings_json = @spime.sightings.all.to_gmaps4rails
+    
+    @sightings_json = @spime.sightings.all.to_gmaps4rails do |sighting, marker|
+      marker.infowindow render_to_string(:partial => "/sightings/infowindow", :locals => { :object => sighting })
+      marker.title  "i'm the title"
+      marker.sidebar "i'm the sidebar"
+      marker.json({ :id => @spime.id, :foo => "bar" })
+    end
+
     
     respond_with @spime
   end
