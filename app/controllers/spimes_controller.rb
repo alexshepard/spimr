@@ -25,7 +25,9 @@ class SpimesController < ApplicationController
     @spimes.each do |spime|
       last_sightings << spime.sightings.first
     end
-    @spimes_json = last_sightings.to_gmaps4rails
+    if last_sightings.count > 0
+      @spimes_json = last_sightings.to_gmaps4rails
+    end
     
     respond_with @spimes
   end
