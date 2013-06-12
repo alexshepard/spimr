@@ -6,8 +6,6 @@
   <%= link_to 'Create a New Spime', new_spime_path %>
 </p>
 
-<% if @spimes_json %>
 <%= gmaps4rails(@spimes_json) %>
-<% end %>
 
 <%= render @spimes %>
