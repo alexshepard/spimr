@@ -23,10 +23,15 @@ class SpimesController < ApplicationController
     
     last_sightings = []
     @spimes.each do |spime|
-      last_sightings << spime.sightings.first
+      last_sightings << spime.sightings.first if spime.sightings.first
     end
-    if last_sightings.count > 0
-      @spimes_json = last_sightings.to_gmaps4rails
+    
+    # TODO - infowindow was built to assume @spime (via #show)  but it shouldn't 
+    # need it so redo the views for infowindow when used in #index or #show 
+    @spimes_json = last_sightings.to_gmaps4rails do |sighting, marker|
+        marker.infowindow render_to_string(:partial => "/sightings/infowindow", :locals => { :object => sighting })
+        marker.title  "i'm the title"
+        marker.sidebar "i'm the sidebar"
     end
     
     respond_with @spimes
@@ -34,7 +39,6 @@ class SpimesController < ApplicationController
   
   def show
     @spime = Spime.find(params[:id])
-    #@sightings_json = @spime.sightings.all.to_gmaps4rails
     
     @sightings_json = @spime.sightings.all.to_gmaps4rails do |sighting, marker|
       marker.infowindow render_to_string(:partial => "/sightings/infowindow", :locals => { :object => sighting })
