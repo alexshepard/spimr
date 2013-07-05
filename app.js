@@ -10,6 +10,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
+require('express-namespace');
+
 var app = express();
 
 // all environments
