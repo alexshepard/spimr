@@ -1,0 +1,13 @@
+form(action=urlFor(), method='post')
+  label
+    | Name
+    input(type='text', 'name')
+  label
+    | Description
+    input(type='text', 'description')
+  label
+    | Private
+    select(name="privacy")
+      option(value="private") Private
+      option(value="public") Public
+  input(type="submit", name="Submit")

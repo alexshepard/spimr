@@ -16,7 +16,10 @@
     "coffee-script": "~1.6.3",
     "connect-flash": "~0.1.1",
     "node-uuid": "~1.4.0",
-    "express-namespace": "~0.1.1"
+    "express-namespace": "~0.1.1",
+    "connect-redis": "~1.4.5",
+    "redis": "~0.8.4",
+    "hiredis": "~0.1.15"
   },
   "devDependencies": {
     "mocha": "~1.12.0",
