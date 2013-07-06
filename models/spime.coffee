@@ -22,7 +22,7 @@ class Spime
   
   save: (callback) ->
     @generateUUID()
-    redis.hset Spime.key(), @id, JSON.stringify(@), (err, code) =>
+    redis.hset Spime.key(), @uuid, JSON.stringify(@), (err, code) =>
       callback null, @
 
 
