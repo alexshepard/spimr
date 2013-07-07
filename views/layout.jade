@@ -8,4 +8,12 @@ html
     link(rel='stylesheet', href='/stylesheets/bootstrap-responsive.css')
 
   body
+
+    - if(info && info != "")
+      p.flash.info
+       = info
+    - if(error && error != "")
+      p.flash.error
+       = error
+    
     block content
