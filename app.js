@@ -26,11 +26,12 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(app.router);
+app.use(express.cookieParser());
 app.use(express.session({
-  secret: sessionSecret,
+  secret: "asdlkfjsdlkjoiwdfjoiewjfewsd",
   store: new RedisStore
 }));
+app.use(app.router);
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -45,6 +46,7 @@ require('./apps/helpers')(app);
 // Routes
 app.get('/', routes.index);
 require('./apps/admin/routes.coffee')(app);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
