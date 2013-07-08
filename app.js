@@ -10,6 +10,7 @@ var express = require('express')
   , flash = require('connect-flash')
   , http = require('http')
   , RedisStore = require('connect-redis')(express)
+  , mongoose = require('mongoose')
   , path = require('path');
 
 require('express-namespace');
@@ -31,9 +32,10 @@ app.use(express.session({
   secret: "asdlkfjsdlkjoiwdfjoiewjfewsd",
   store: new RedisStore
 }));
-app.use(app.router);
 app.use(flash());
+app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('storage-uri', process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/spimr')
 
 // development only
 if ('development' == app.get('env')) {
@@ -46,7 +48,16 @@ require('./apps/helpers')(app);
 // Routes
 app.get('/', routes.index);
 require('./apps/admin/routes.coffee')(app);
+require('./apps/authentication/routes.coffee')(app);
 
+var err;
+mongoose.connect(app.get('storage-uri'), { db: {save: true }}, (err), function() {
+  if (err) {
+    console.log("Mongoose - connection error: " + err);
+    return;
+  }
+  console.log("Mongoose - connection OK");
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

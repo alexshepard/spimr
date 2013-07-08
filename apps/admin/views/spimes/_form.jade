@@ -1,10 +1,13 @@
+
+h1= 'Create a new Spime'
+
 form(action=urlFor(), method='post')
   label
     | Name
-    input(type='text', 'name')
+    input(type='text', name='name')
   label
     | Description
-    input(type='text', 'description')
+    input(type='text', name='description')
   label
     | Private
     select(name="privacy")
