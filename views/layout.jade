@@ -31,20 +31,28 @@ html
           .nav-collapse.collapse
             ul.nav
               li
-                a(href='/about')
-                  |About
+                a(href='/about') About
+              li
+                a(href='/contact') Contact
+            
+            if (locals.user)
+              form(action='/sessions', method='delete', name="logout")
+                input(type='hidden', name='_method', value='delete')
+                button.btn(type='submit') Logout
+            else
+              form(action='/sessions', method='post', name="login")
+                input.span2(type='text', name='email', placeholder='Email')
+                input.span2(type='password', name='password', placeholder='Password')
+                button.btn(type='submit') Sign in         
   
     .container
+      p.flash.info(id="info-flash")
       - if(info && info != "")
-        p.flash.info
          = info
+      p.flash.error(id="error-flash")
       - if(error && error != "")
-        p.flash.error
          = error
-         
-      if locals.user
-        p= locals.user.email
-      
+               
       block content
     
     script(src='/javascripts/jquery.js')    
@@ -59,3 +67,5 @@ html
     script(src='/javascripts/bootstrap-button.js')
     script(src='/javascripts/bootstrap-collapse.js')
     script(src='/javascripts/bootstrap-typeahead.js')
+
+

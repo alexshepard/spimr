@@ -1,6 +1,7 @@
 User = require '../../models/user'
 mongoose = require 'mongoose'
 
+
 routes = (app) ->
 
   app.get '/login', (req, res) ->
@@ -20,11 +21,19 @@ routes = (app) ->
         res.redirect('/admin/spimes')
         return
       req.flash 'error', 'Incorrect credentials'
-      res.redirect('/login')
+      res.redirect('/')
+    req.flash 'error', 'Incorrect credentials'
+    res.redirect('/')
   
   app.del '/sessions',  (req, res) ->
-    req.sessions.regenerate (err) ->
-      req.flash 'info', 'You have been logged out.'
-      res.redirect '/login'
+    req.session.regenerate (err) ->
+      res.redirect '/'
 
+  app.get '/sessions', (req, res) ->
+    if req.body._method == 'delete'
+      req.sessions.regenerate (err) ->
+        res.redirect('/')
+        return
+    req.flash 'error', 'Unsupported method'
+    res.redirect('/')
 module.exports = routes
