@@ -36,7 +36,7 @@ html
                 a(href='/contact') Contact
             
             if (locals.user)
-              form(action='/sessions', method='delete', name="logout")
+              form(action='/sessions', method='post', name="logout")
                 input(type='hidden', name='_method', value='delete')
                 button.btn(type='submit') Logout
             else
@@ -46,12 +46,13 @@ html
                 button.btn(type='submit') Sign in         
   
     .container
-      p.flash.info(id="info-flash")
-      - if(info && info != "")
-         = info
-      p.flash.error(id="error-flash")
-      - if(error && error != "")
-         = error
+          
+      p.flash.info
+        - if(info && info != "")
+           = info
+      p.flash.error
+        - if(error && error != "")
+           = error
                
       block content
     

@@ -25,6 +25,8 @@ routes = (app) ->
               title: res.name
               stylesheet: "admin"
               spime: spime
+              info: req.flash 'info'
+              error: req.flash 'error'
             return
           res.send(404)
       
@@ -34,7 +36,10 @@ routes = (app) ->
           res.render "#{__dirname}/views/spimes/mine",
             title: "My Spimes"
             stylesheet: "admin"
-            spimes: spimes      
+            spimes: spimes
+            info: req.flash 'info'
+            error: req.flash 'error'
+
       
       app.post '/', (req, res) ->
         Spime = mongoose.model('Spime')
@@ -54,6 +59,9 @@ routes = (app) ->
               title: res.name
               stylesheet: "admin"
               spime: spime
+              info: req.flash 'info'
+              error: req.flash 'error'
+
             return
           res.send(404)
       

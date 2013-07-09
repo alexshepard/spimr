@@ -18,22 +18,16 @@ routes = (app) ->
         req.session.user = User
         req.session.user_id = user.id
         # TODO: handle remember me
+        req.flash 'info', 'Welcome to Spimr, ' + req.body.email
         res.redirect('/admin/spimes')
         return
       req.flash 'error', 'Incorrect credentials'
       res.redirect('/')
-    req.flash 'error', 'Incorrect credentials'
-    res.redirect('/')
   
   app.del '/sessions',  (req, res) ->
     req.session.regenerate (err) ->
+      req.flash 'info', 'You have been logged out'
       res.redirect '/'
 
-  app.get '/sessions', (req, res) ->
-    if req.body._method == 'delete'
-      req.sessions.regenerate (err) ->
-        res.redirect('/')
-        return
-    req.flash 'error', 'Unsupported method'
-    res.redirect('/')
+    
 module.exports = routes

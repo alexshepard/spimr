@@ -26,6 +26,6 @@ routes = (app) ->
           return
         req.session.user_id = user.id
         req.flash 'info', 'Account created.'
-        res.redirect '/admin/spimes'
+        res.redirect '/'
 
 module.exports = routes
