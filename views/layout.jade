@@ -41,7 +41,10 @@ html
       - if(error && error != "")
         p.flash.error
          = error
-    
+         
+      if locals.user
+        p= locals.user.email
+      
       block content
     
     script(src='/javascripts/jquery.js')    

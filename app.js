@@ -14,6 +14,7 @@ var express = require('express')
   , path = require('path');
 
 require('express-namespace');
+User = require('./models/user.coffee');
 
 var app = express();
 
@@ -23,6 +24,10 @@ var sessionSecret = "asdlkfjsdlkjoiwdfjoiewjfewsd";
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
+app.set('storage-uri', process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/spimr')
+
+
+
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -33,9 +38,17 @@ app.use(express.session({
   secret: "asdlkfjsdlkjoiwdfjoiewjfewsd",
   store: new RedisStore
 }));
+
+app.use(function(req, res, next){
+  User = mongoose.model('User')
+  User.findOne({ _id: req.session.user_id }, function(err, user) {
+    res.locals.user = user
+  });
+  next();
+});
+
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-app.set('storage-uri', process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/spimr')
 
 // development only
 if ('development' == app.get('env')) {
