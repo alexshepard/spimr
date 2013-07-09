@@ -25,6 +25,7 @@ routes = (app) ->
           res.redirect('/account/new')
           return
         req.session.user_id = user.id
+        req.flash 'info', 'Account created.'
         res.redirect '/admin/spimes'
 
 module.exports = routes
