@@ -18,7 +18,10 @@ routes = (app) ->
       user = new User(attributes)
       user.save (err, saved) ->
         if err?
-          req.flash 'error', 'Account creation failed :' + err.message
+          if err.code == 11000
+            req.flash 'error', 'Email address already exists.'
+          else
+            req.flash 'error', 'Account creation failed :' + err.message
           res.redirect('/account/new')
           return
         req.session.user_id = user.id
