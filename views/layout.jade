@@ -5,15 +5,55 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.css')
-    link(rel='stylesheet', href='/stylesheets/bootstrap-responsive.css')
-
-  body
-
-    - if(info && info != "")
-      p.flash.info
-       = info
-    - if(error && error != "")
-      p.flash.error
-       = error
     
-    block content
+    |<style type="text/css">
+    |body {
+    |    padding-top: 60px;
+    |    padding-bottom: 40px;
+    |  }
+    |</style>
+
+    link(rel='stylesheet', href='/stylesheets/bootstrap-responsive.css')
+    
+    link(rel='apple-touch-icon-precomposed', size='144x144', href='/ico/apple-touch-icon-144-precomposed.png')
+    link(rel='apple-touch-icon-precomposed', size='114x114', href='/ico/apple-touch-icon-114-precomposed.png')
+    link(rel='apple-touch-icon-precomposed', size='72x72', href='/ico/apple-touch-icon-72-precomposed.png')
+    link(rel='apple-touch-icon-precomposed', href='/ico/apple-touch-icon-57-precomposed.png')
+    link(rel='shortcut icon', href='/ico/favicon.png')
+    
+  body
+  
+    .navbar.navbar-inverse.navbar-fixed-top
+      .navbar-inner
+        .container
+          a.brand(href='http://www.spimr.com/')
+            |Spimr
+          .nav-collapse.collapse
+            ul.nav
+              li
+                a(href='/about')
+                  |About
+  
+    .container
+      - if(info && info != "")
+        p.flash.info
+         = info
+      - if(error && error != "")
+        p.flash.error
+         = error
+    
+      block content
+      
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/bootstrap-transition.js"></script>
+    <script src="assets/js/bootstrap-alert.js"></script>
+    <script src="assets/js/bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-dropdown.js"></script>
+    <script src="assets/js/bootstrap-scrollspy.js"></script>
+    <script src="assets/js/bootstrap-tab.js"></script>
+    <script src="assets/js/bootstrap-tooltip.js"></script>
+    <script src="assets/js/bootstrap-popover.js"></script>
+    <script src="assets/js/bootstrap-button.js"></script>
+    <script src="assets/js/bootstrap-collapse.js"></script>
+    <script src="assets/js/bootstrap-carousel.js"></script>
+    <script src="assets/js/bootstrap-typeahead.js"></script>
