@@ -1,3 +1,5 @@
+User = require '../../models/user'
+mongoose = require 'mongoose'
 
 routes = (app) ->
 
@@ -9,14 +11,15 @@ routes = (app) ->
       error: req.flash 'error'
     
   app.post '/sessions', (req, res) ->
-    # TODO - handle real authentication
-    if ('wrangler' is req.body.user) and ('54321abcde' is req.body.password)
-      req.session.currentUser = req.body.user
-      req.flash 'info', "You are logged in as #{req.session.currentUser}."
-      res.redirect '/login'
-      return
-    req.flash 'error', 'Those credentials were incorrect. Try again.'
-    res.redirect '/login'
+    User = mongoose.model('User')
+    User.findOne email: req.body.email, (err, user) ->
+      if user and user.authenticate(req.body.password)
+        req.session.user_id = user.id
+        # TODO: handle remember me
+        res.redirect('/admin/spimes')
+        return
+      req.flash 'error', 'Incorrect credentials'
+      res.redirect('/login')
   
   app.del '/sessions',  (req, res) ->
     req.sessions.regenerate (err) ->

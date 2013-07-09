@@ -28,11 +28,11 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
+app.use(flash());
 app.use(express.session({
   secret: "asdlkfjsdlkjoiwdfjoiewjfewsd",
   store: new RedisStore
 }));
-app.use(flash());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('storage-uri', process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/spimr')
@@ -49,6 +49,8 @@ require('./apps/helpers')(app);
 app.get('/', routes.index);
 require('./apps/admin/routes.coffee')(app);
 require('./apps/authentication/routes.coffee')(app);
+require('./apps/account/routes.coffee')(app);
+
 
 var err;
 mongoose.connect(app.get('storage-uri'), { db: {save: true }}, (err), function() {

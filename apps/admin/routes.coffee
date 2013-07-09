@@ -6,38 +6,63 @@ routes = (app) ->
   
   app.namespace '/admin', ->
     
+    app.namespace '/account', ->
+      
+      app.get '/', (req, res) ->
+        Resource = mongoose.model('User')
+        Resource.findById req.session.user_id
+    
+    
+    
     app.namespace '/spimes', ->
     
       app.get '/:id', (req, res) ->
-        Resource = mongoose.model('Spime')
-        Resource.findById req.params.id, (err, resource) ->
+        Spime = mongoose.model('Spime')
+        Spime.findById req.params.id, (err, spime) ->
           res.send(500, { error: err}) if err?
-          if resource?
+          if spime?
             res.render "#{__dirname}/views/spimes/one",
               title: res.name
               stylesheet: "admin"
-              spime: resource
+              spime: spime
             return
           res.send(404)
       
       app.get '/', (req, res) ->
-        Resource = mongoose.model('Spime')
-        
-        Resource.find {}, (err, collection) ->
+        Spime = mongoose.model('Spime')
+        Spime.find {}, (err, spimes) ->
           res.render "#{__dirname}/views/spimes/mine",
             title: "My Spimes"
             stylesheet: "admin"
-            spimes: collection
-      
+            spimes: spimes      
       
       app.post '/', (req, res) ->
-        Resource = mongoose.model('Spime')
+        Spime = mongoose.model('Spime')
         attributes = req.body
-        r = new Resource(attributes)
-        r.save (err, resource) ->
+        spime = new Spime(attributes)
+        spime.save (err, saved) ->
           res.send(500, {error: err}) if err?
           res.redirect '/admin/spimes'
       
+      app.put '/:id', (req, res) ->
+        Spime = mongoose.model('Spime')
+        attributes = req.body
+        Spime.findByIdAndUpdate req.params.id, {$set: attributes }, (err, spime) ->
+          res.send(500,  { erro: err}) if err?
+          if spime?
+            res.render "#{__dirname}/views/spimes/one",
+              title: res.name
+              stylesheet: "admin"
+              spime: spime
+            return
+          res.send(404)
       
+      app.delete '/:id', (req, res) ->
+        Spime = mongoose.model('Spime')
+        Spime.findByIdAndRemove req.params.id, (err, spime) ->
+          res.send(500, { error: err }) if err?
+          if spime?
+            res.redirect '/admin/spimes'
+          res.send(404)
       
 module.exports = routes
