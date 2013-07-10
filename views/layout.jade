@@ -21,6 +21,11 @@ html
     link(rel='apple-touch-icon-precomposed', href='/ico/apple-touch-icon-57-precomposed.png')
     link(rel='shortcut icon', href='/ico/favicon.png')
     
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+    script(src='/javascripts/jquery.qrcode.js')
+    script(src='/javascripts/qrcode.js')
+
+    
   body
   
     .navbar.navbar-inverse.navbar-fixed-top
@@ -50,7 +55,7 @@ html
                 input.span2(type='password', name='password', placeholder='Password') 
                 button.btn(type='submit', name='submitButton', value='signin') Sign in
                 button.btn(type='submit', name='submitButton', value='register') Register 
-                
+      
     .container
           
       p.flash.info
@@ -59,10 +64,9 @@ html
       p.flash.error
         - if(error && error != "")
            = error
-               
+    
       block content
     
-    script(src='/javascripts/jquery.js')    
     script(src='/javascripts/bootstrap-transition.js')
     script(src='/javascripts/bootstrap-alert.js')
     script(src='/javascripts/bootstrap-modal.js')
