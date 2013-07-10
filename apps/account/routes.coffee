@@ -4,13 +4,6 @@ mongoose = require 'mongoose'
 routes = (app) ->
 
   app.namespace '/account', ->
-
-    app.get '/new', (req, res) ->
-      res.render "#{__dirname}/views/account/new",
-        title: 'New Account'
-        stylesheet: 'account'
-        info: req.flash 'info'
-        error: req.flash 'error'
     
     app.post '/', (req, res) ->
       User = mongoose.model('User')

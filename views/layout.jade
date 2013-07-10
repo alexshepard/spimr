@@ -48,8 +48,9 @@ html
               form.navbar-form.pull-right(action='/sessions', method='post', name="login")
                 input.span2(type='text', name='email', placeholder='Email') 
                 input.span2(type='password', name='password', placeholder='Password') 
-                button.btn(type='submit') Sign in         
-  
+                button.btn(type='submit', name='submitButton', value='signin') Sign in
+                button.btn(type='submit', name='submitButton', value='register') Register 
+                
     .container
           
       p.flash.info

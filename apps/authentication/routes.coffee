@@ -12,17 +12,34 @@ routes = (app) ->
       error: req.flash 'error'
     
   app.post '/sessions', (req, res) ->
-    User = mongoose.model('User')
-    User.findOne email: req.body.email, (err, user) ->
-      if user and user.authenticate(req.body.password)
-        req.session.user = User
+    if req.body.submitButton == 'signin'
+      User = mongoose.model('User')
+      User.findOne email: req.body.email, (err, user) ->
+        if user and user.authenticate(req.body.password)
+          req.session.user = User
+          req.session.user_id = user.id
+          # TODO: handle remember me
+          req.flash 'info', 'Welcome to Spimr, ' + req.body.email
+          res.redirect('/admin/spimes')
+          return
+        req.flash 'error', 'Incorrect credentials'
+        res.redirect('/')
+    else
+      User = mongoose.model('User')
+      attributes = req.body
+      user = new User(attributes)
+      user.save (err, saved) ->
+        if err?
+          if err.code == 11000
+            req.flash 'error', 'Email address already exists.'
+          else
+            req.flash 'error', 'Account creation failed :' + err.message
+          res.redirect('/')
+          return
         req.session.user_id = user.id
-        # TODO: handle remember me
-        req.flash 'info', 'Welcome to Spimr, ' + req.body.email
-        res.redirect('/admin/spimes')
-        return
-      req.flash 'error', 'Incorrect credentials'
-      res.redirect('/')
+        req.flash 'info', 'Account created.'
+        res.redirect '/'
+
   
   app.del '/sessions',  (req, res) ->
     req.session.regenerate (err) ->
