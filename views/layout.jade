@@ -26,6 +26,11 @@ html
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
         .container
+          button.btn.btn-navbar(type='button', data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+            
           a.brand(href='http://www.spimr.com/')
             |Spimr
           .nav-collapse.collapse
@@ -41,8 +46,8 @@ html
                 button.btn(type='submit') Logout
             else
               form.navbar-form.pull-right(action='/sessions', method='post', name="login")
-                input.span2(type='text', name='email', placeholder='Email')
-                input.span2(type='password', name='password', placeholder='Password')
+                input.span2(type='text', name='email', placeholder='Email') 
+                input.span2(type='password', name='password', placeholder='Password') 
                 button.btn(type='submit') Sign in         
   
     .container

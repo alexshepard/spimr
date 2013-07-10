@@ -14,3 +14,7 @@ p.flash.error {
 p.flash.info {
   color: green;
 }
+
+.navbar-form .span2 {
+  margin-right: 4px;
+}
