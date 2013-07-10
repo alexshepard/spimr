@@ -1,0 +1,14 @@
+    
+canvas(id='qrcode-canvas', width=300, height=300)
+
+|<script>
+| $(document).ready(function() {
+|   $("#qrcode-canvas").qrcode({ 
+|      width: 300, 
+|      height: 300,
+|      color: '#000',
+|      text: 'http://www.spimr.com/checkin/#{uuid}'
+|   });
+| });
+|</script>
+

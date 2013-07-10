@@ -72,6 +72,7 @@ require('./apps/base/routes.coffee')(app);
 require('./apps/admin/routes.coffee')(app);
 require('./apps/authentication/routes.coffee')(app);
 require('./apps/account/routes.coffee')(app);
+require('./apps/qrcode/routes.coffee')(app);
 
 var err;
 mongoose.connect(app.get('storage-uri'), { db: {save: true }}, (err), function() {
