@@ -1,16 +1,16 @@
 
-h1= 'Create a new Spime'
-
 form(action=urlFor(), method='post')
   label
     | Name
-    input(type='text', name='name')
+    input(type='text', name='name', value = spime.name)
   label
     | Description
-    input(type='text', name='description')
+    input(type='text', name='description', value = spime.description)
   label
-    | Private
+    | Privacy
     select(name="privacy")
-      option(value="private") Private
-      option(value="public") Public
+      privacies = [ 'private', 'public']
+      for privacy in privacies
+        option(selected=spime.privacy == privacy) #{privacy}
+
   input(type="submit", name="Submit")

@@ -16,12 +16,29 @@ routes = (app) ->
     
     
       app.get '/new', (req, res) ->
+        Spime = mongoose.model('Spime')
+        spime = new Spime()
         res.render "#{__dirname}/views/spimes/new",
           title: res.name
           stylesheet: "admin"
+          spime: spime
           info: req.flash 'info'
           error: req.flash 'error'
-    
+      
+      app.get '/edit/:id', (req, res) ->
+        Spime = mongoose.model('Spime')
+        Spime.findById req.params.id, (err, spime) ->
+          res.send(500, { error: err}) if err?
+          if spime?
+            res.render "#{__dirname}/views/spimes/edit",
+              title: res.name
+              stylesheet: "admin"
+              spime: spime
+              info: req.flash 'info'
+              error: req.flash 'error'
+            return
+          res.send(404)
+
       app.get '/:id', (req, res) ->
         Spime = mongoose.model('Spime')
         Spime.findById req.params.id, (err, spime) ->

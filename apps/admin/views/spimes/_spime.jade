@@ -6,7 +6,7 @@ h3= "Privacy: " + spime.privacy
 
 form(action='/admin/spimes/#{spime.id}', method='post', name="logout")
   input(type='hidden', name='_method', value='delete')
-  input(type='hidden', name='_id', value='#{spime._id}')
   button.btn(type='submit') Delete
 
+a.btn(href='/admin/spimes/edit/#{spime.id}') Edit
 
