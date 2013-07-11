@@ -1,5 +1,7 @@
 
-form(action=urlFor(), method='post')
+form(action=urlFor(spime), method='post')
+  if(spime.name)
+    input(type='hidden', name='_method', value='put')
   label
     | Name
     input(type='text', name='name', value = spime.name)
