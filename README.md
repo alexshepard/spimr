@@ -7,6 +7,8 @@ STORIES
 =====
 
 - [x] n-n-n-n-node
-- [ ] sign-in
-- [ ] spime CRUD
+- [x] sign-in
+- [x] spime CRUD
 - [ ] spime checkin
+- [ ] spime ownership
+- [ ] google maps integration
