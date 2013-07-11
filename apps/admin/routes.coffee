@@ -75,8 +75,6 @@ routes = (app) ->
         Spime = mongoose.model('Spime')
         Spime.findByIdAndRemove req.params.id, (err, spime) ->
           res.send(500, { error: err }) if err?
-          if spime?
-            res.redirect '/admin/spimes'
-          res.send(404)
+          res.redirect '/admin/spimes'
       
 module.exports = routes

@@ -4,4 +4,9 @@ h3= "Name: " + spime.name
 h3= "Description: " + spime.description
 h3= "Privacy: " + spime.privacy
 
+form(action='/admin/spimes/#{spime.id}', method='post', name="logout")
+  input(type='hidden', name='_method', value='delete')
+  input(type='hidden', name='_id', value='#{spime._id}')
+  button.btn(type='submit') Delete
+
 
