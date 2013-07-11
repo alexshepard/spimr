@@ -42,8 +42,10 @@ html
             ul.nav
               li
                 a(href='/about') About
-              li
-                a(href='/contact') Contact
+              if locals.user
+                li
+                  a(href='/spimes/new')
+                    |New Spime
             
             if (locals.user)
               form.navbar-form.pull-right(action='/sessions', method='post', name="logout")

@@ -10,11 +10,17 @@ routes = (app) ->
       
       app.get '/', (req, res) ->
         Resource = mongoose.model('User')
-        Resource.findById req.session.user_id
-    
-    
+        Resource.findById req.session.user_id    
     
     app.namespace '/spimes', ->
+    
+    
+      app.get '/new', (req, res) ->
+        res.render "#{__dirname}/views/spimes/new",
+          title: res.name
+          stylesheet: "admin"
+          info: req.flash 'info'
+          error: req.flash 'error'
     
       app.get '/:id', (req, res) ->
         Spime = mongoose.model('Spime')
