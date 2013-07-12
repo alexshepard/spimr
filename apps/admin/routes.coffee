@@ -1,10 +1,20 @@
 Spime = require '../../models/spime'
+User = require '../../models/user'
 
 mongoose = require 'mongoose'
 
 routes = (app) ->
   
   app.namespace '/admin', ->
+    
+    # Authentication check
+    app.all '/*', (req, res, next) ->
+      # TODO: could probably do a better job here
+      if not (req.session.User)
+        req.flash 'error', 'Please login.'
+        res.redirect '/'
+        return
+      next()
     
     app.namespace '/account', ->
       
@@ -13,7 +23,6 @@ routes = (app) ->
         Resource.findById req.session.user_id    
     
     app.namespace '/spimes', ->
-    
     
       app.get '/new', (req, res) ->
         Spime = mongoose.model('Spime')
