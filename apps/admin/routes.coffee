@@ -70,6 +70,7 @@ routes = (app) ->
         spime = new Spime(attributes)
         spime.save (err, saved) ->
           res.send(500, {error: err}) if err?
+          req.flash 'info', 'Spime created,'
           res.redirect '/admin/spimes'
       
       app.put '/:id', (req, res) ->
@@ -78,6 +79,7 @@ routes = (app) ->
         Spime.findByIdAndUpdate req.params.id, {$set: attributes }, (err, spime) ->
           res.send(500,  { erro: err}) if err?
           if spime?
+            req.flash 'info', 'Spime edited,'
             res.render "#{__dirname}/views/spimes/one",
               title: res.name
               stylesheet: "admin"
@@ -92,6 +94,7 @@ routes = (app) ->
         Spime = mongoose.model('Spime')
         Spime.findByIdAndRemove req.params.id, (err, spime) ->
           res.send(500, { error: err }) if err?
+          req.flash 'info', 'Spime deleted,'
           res.redirect '/admin/spimes'
       
 module.exports = routes
