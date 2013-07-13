@@ -20,7 +20,8 @@
     "connect-redis": "~1.4.5",
     "redis": "~0.8.4",
     "hiredis": "~0.1.15",
-    "mongoose": "~3.6.14"
+    "mongoose": "~3.6.14",
+    "markdown-js": "0.0.3"
   },
   "devDependencies": {
     "mocha": "~1.12.0",
