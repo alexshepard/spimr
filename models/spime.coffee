@@ -9,4 +9,11 @@ Spime = new mongoose.Schema(
   privacy: { type: String }
 )
 
+Spime.pre 'save', (next) ->
+  if this.uuid and this.uuid.length
+    next()
+  else
+    this.uuid = uuid.v4()
+    next()
+
 mongoose.model "Spime", Spime
