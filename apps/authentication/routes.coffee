@@ -16,7 +16,6 @@ routes = (app) ->
       User = mongoose.model('User')
       User.findOne email: req.body.email, (err, user) ->
         if user and user.authenticate(req.body.password)
-          req.session.user = User
           req.session.user_id = user.id
           # TODO: handle remember me
           req.flash 'info', 'Welcome to Spimr, ' + req.body.email
