@@ -6,6 +6,9 @@ h4 Description: #{spime.description}
 h4 Privacy: #{spime.privacy}
 h4 Checkin Url: http://localhost:3000/checkin/#{spime.uuid}
 
+a(href="/qrcode/#{spime.id}")
+  | QR Code for this spime
+
 form(action='/admin/spimes/#{spime.id}', method='post', name="logout")
   input(type='hidden', name='_method', value='delete')
   button.btn(type='submit') Delete
