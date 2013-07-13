@@ -12,6 +12,8 @@ STORIES
 - [x] flash notices for spime CRUD
 - [-] fence /admin namespace to logged in users only
 - [x] spime checkin
-- [ ] get checkin lat/long via client JS
+- [x] get checkin lat/long via client JS
 - [ ] spime ownership
 - [ ] google maps integration
+- [ ] design or re-use CC-licensed favicon
+- [ ] add credits info to git and website
