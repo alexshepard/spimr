@@ -49,10 +49,8 @@ app.use(express.session({
 }));
 
 app.use(function(req, res, next){
-  User = mongoose.model('User')
-  User.findOne({ _id: req.session.user_id }, function(err, user) {
-    res.locals.user = user
-  });
+  res.locals.user_id = req.session.user_id
+  res.locals.path = req.path;
   next();
 });
 
