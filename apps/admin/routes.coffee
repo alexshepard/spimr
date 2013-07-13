@@ -64,7 +64,7 @@ routes = (app) ->
       
       app.get '/', (req, res) ->
         Spime = mongoose.model('Spime')
-        Spime.find().populate('owner').exec (err, spimes) ->
+        Spime.find({ owner: req.session.user_id}).populate('owner').exec (err, spimes) ->
           res.render "#{__dirname}/views/spimes/mine",
             title: "My Spimes"
             stylesheet: "admin"
