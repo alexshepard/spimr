@@ -21,8 +21,17 @@ SpimeSighting = new mongoose.Schema(
   checkin_person: { type: String }
   latitude: { type: Number }
   longitude: { type: Number }
-  spime: { type: Number, ref: 'Spime' }
+  timestamp: { type: Date }
+  spime: { type: mongoose.Schema.ObjectId, ref: 'Spime' }
 )
+
+SpimeSighting.pre 'save', (next) ->
+  if this.timestamp
+    next()
+  else
+    this.timestamp = new Date()
+    next()
+
 
 mongoose.model "Spime", Spime
 mongoose.model "SpimeSighting", SpimeSighting
