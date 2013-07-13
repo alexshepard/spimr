@@ -16,4 +16,14 @@ Spime.pre 'save', (next) ->
     this.uuid = uuid.v4()
     next()
 
+SpimeSighting = new mongoose.Schema(
+  location_name: { type: String }
+  checkin_person: { type: String }
+  latitude: { type: Number }
+  longitude: { type: Number }
+  spime: { type: Number, ref: 'Spime' }
+)
+
 mongoose.model "Spime", Spime
+mongoose.model "SpimeSighting", SpimeSighting
+
