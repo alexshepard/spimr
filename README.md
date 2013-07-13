@@ -11,6 +11,7 @@ STORIES
 - [x] spime CRUD
 - [x] flash notices for spime CRUD
 - [-] fence /admin namespace to logged in users only
-- [ ] spime checkin
+- [x] spime checkin
+- [ ] get checkin lat/long via client JS
 - [ ] spime ownership
 - [ ] google maps integration
