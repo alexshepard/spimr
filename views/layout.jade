@@ -24,10 +24,8 @@ html
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
     script(src='/javascripts/jquery.qrcode.js')
     script(src='/javascripts/qrcode.js')
-
-    
-  body
   
+  body
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
         .container
@@ -35,19 +33,38 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-            
+          
           a.brand(href='/')
             |Spimr
+
           .nav-collapse.collapse
             ul.nav
-              li
-                a(href='/about') About
-              if locals.user
+              if locals.path == '/about'
+                li.active
+                  a(href='/about') About
+              else
                 li
-                  a(href='/admin/spimes/new')
-                    |New Spime
+                  a(href='/about') About
+              
+              if locals.user_id
+                if locals.path == '/admin/spimes/new'
+                  li.active
+                    a(href='/admin/spimes/new')
+                      |New Spime
+                else
+                  li
+                    a(href='/admin/spimes/new')
+                      |New Spime
+                if locals.path == '/admin/spimes'
+                  li.active
+                    a(href='/admin/spimes')
+                      |My Spimes
+                else
+                  li
+                    a(href='/admin/spimes')
+                      |My Spimes
             
-            if (locals.user)
+            if (locals.user_id)
               form.navbar-form.pull-right(action='/sessions', method='post', name="logout")
                 input(type='hidden', name='_method', value='delete')
                 button.btn(type='submit') Logout
