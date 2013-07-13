@@ -13,7 +13,7 @@ STORIES
 - [-] fence /admin namespace to logged in users only
 - [x] spime checkin
 - [x] get checkin lat/long via client JS
-- [ ] spime ownership
-- [ ] google maps integration
+- [x] spime ownership
+- [ ] visualize sightings with google maps integration
 - [ ] design or re-use CC-licensed favicon
 - [ ] add credits info to git and website
