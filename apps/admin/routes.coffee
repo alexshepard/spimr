@@ -64,7 +64,7 @@ routes = (app) ->
       
       app.get '/', (req, res) ->
         Spime = mongoose.model('Spime')
-        Spime.find {}, (err, spimes) ->
+        Spime.find().populate('owner').exec (err, spimes) ->
           res.render "#{__dirname}/views/spimes/mine",
             title: "My Spimes"
             stylesheet: "admin"
@@ -74,19 +74,25 @@ routes = (app) ->
 
       
       app.post '/', (req, res) ->
-        Spime = mongoose.model('Spime')
-        attributes = req.body
-        spime = new Spime(attributes)
-        spime.save (err, saved) ->
-          res.send(500, {error: err}) if err?
-          req.flash 'info', 'Spime created,'
-          res.redirect '/admin/spimes'
+        User = mongoose.model('User')
+        User.findById req.session.user_id, (err, user) ->
+          res.send(500, { error: err }) if err?
+          if user?
+            Spime = mongoose.model('Spime')
+            attributes = req.body
+            spime = new Spime(attributes)
+            spime.owner = user._id
+            spime.save (err, saved) ->
+              res.send(500, {error: err}) if err?
+              req.flash 'info', 'Spime created,'
+              res.redirect '/admin/spimes'
+              return
       
       app.put '/:id', (req, res) ->
         Spime = mongoose.model('Spime')
         attributes = req.body
         Spime.findByIdAndUpdate req.params.id, {$set: attributes }, (err, spime) ->
-          res.send(500,  { erro: err}) if err?
+          res.send(500,  { error: err}) if err?
           if spime?
             req.flash 'info', 'Spime edited,'
             res.render "#{__dirname}/views/spimes/one",

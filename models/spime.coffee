@@ -7,6 +7,7 @@ Spime = new mongoose.Schema(
   description: { type: String }
   uuid: { type: String }
   privacy: { type: String }
+  owner: { type: mongoose.Schema.ObjectId, ref: 'User' }
 )
 
 Spime.pre 'save', (next) ->
