@@ -10,7 +10,7 @@ routes = (app) ->
     # Authentication check
     app.all '/*', (req, res, next) ->
       # TODO: could probably do a better job here
-      if not (req.session.User)
+      if not (req.session.user_id)
         req.flash 'error', 'Please login.'
         res.redirect '/'
         return
