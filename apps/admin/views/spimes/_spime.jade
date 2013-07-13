@@ -1,12 +1,12 @@
 
-h1= spime.name + " Details"
-h3= "Name: " + spime.name
-h3= "Description: " + spime.description
-h3= "Privacy: " + spime.privacy
+h2 #{spime.name} Details
+h4 Name: #{spime.name}
+h4 Description: #{spime.description}
+h4 Privacy: #{spime.privacy}
+h4 Checkin Url: http://localhost:3000/checkin/#{spime.uuid}
 
 form(action='/admin/spimes/#{spime.id}', method='post', name="logout")
   input(type='hidden', name='_method', value='delete')
   button.btn(type='submit') Delete
-
 a.btn(href='/admin/spimes/edit/#{spime.id}') Edit
 
