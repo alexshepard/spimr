@@ -90,26 +90,36 @@ routes = (app) ->
       
       app.put '/:id', (req, res) ->
         Spime = mongoose.model('Spime')
-        attributes = req.body
-        Spime.findByIdAndUpdate req.params.id, {$set: attributes }, (err, spime) ->
+        Spime.findById req.params.id, (err, spime) ->
           res.send(500,  { error: err}) if err?
           if spime?
-            req.flash 'info', 'Spime edited,'
-            res.render "#{__dirname}/views/spimes/one",
-              title: res.name
-              stylesheet: "admin"
-              spime: spime
-              info: req.flash 'info'
-              error: req.flash 'error'
-
-            return
-          res.send(404)
+            if req.session.user_id is not spime.owner
+              req.flash 'error', 'Permission denied.'
+              res.redirect '/'
+              return
+              
+            attributes = req.body
+            Spime.findByIdAndUpdate(req.params.id, { $set: attributes }).populate('owner').exec (updateErr, updatedSpime) ->
+              res.send(500, { error: updateErr}) if updateErr?
+              if updatedSpime?
+                req.flash 'info', 'Spime edited.'
+                res.render "#{__dirname}/views/spimes/one",
+                  title: res.name
+                  stylesheet: "admin"
+                  spime: updatedSpime
+                  info: req.flash 'info'
+                  error: req.flash 'error'
+                return
+              else
+                res.send(404)
+          else
+            res.send(404)
       
       app.delete '/:id', (req, res) ->
         Spime = mongoose.model('Spime')
         Spime.findByIdAndRemove req.params.id, (err, spime) ->
           res.send(500, { error: err }) if err?
-          req.flash 'info', 'Spime deleted,'
+          req.flash 'info', 'Spime deleted.'
           res.redirect '/admin/spimes'
       
 module.exports = routes
