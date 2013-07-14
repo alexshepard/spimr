@@ -39,6 +39,11 @@ routes = (app) ->
         Spime.findById req.params.id, (err, spime) ->
           res.send(500, { error: err}) if err?
           if spime?
+            if req.session.user_id != String(spime.owner)
+              req.flash 'error', 'Permission denied.'
+              res.redirect '/'
+              return
+
             res.render "#{__dirname}/views/spimes/edit",
               title: res.name
               stylesheet: "admin"
@@ -93,7 +98,7 @@ routes = (app) ->
         Spime.findById req.params.id, (err, spime) ->
           res.send(500,  { error: err}) if err?
           if spime?
-            if req.session.user_id is not spime.owner
+            if req.session.user_id != String(spime.owner)
               req.flash 'error', 'Permission denied.'
               res.redirect '/'
               return
