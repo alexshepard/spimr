@@ -10,6 +10,11 @@ routes = (app) ->
       Spime.findById req.params.id, (err, spime) ->
         res.send(500, { error: err}) if err?
         if spime?
+          if req.session.user_id != String(spime.owner)
+            req.flash 'error', 'Permission denied.'
+            res.redirect '/'
+            return
+
           # construct checkin url
           port = req.app.settings.port;
           port_section = ''
