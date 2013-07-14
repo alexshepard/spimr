@@ -68,6 +68,15 @@ html
               form.navbar-form.pull-right(action='/sessions', method='post', name="logout")
                 input(type='hidden', name='_method', value='delete')
                 button.btn(type='submit') Logout
+              ul.nav.pull-right
+                if locals.path == '/admin/account'
+                  li.active
+                    a(href='/admin/account')
+                      =locals.user_email
+                else
+                  li
+                    a(href='/admin/account')
+                      =locals.user_email
             else
               form.navbar-form.pull-right(action='/sessions', method='post', name="login")
                 input.span2(type='text', name='email', placeholder='Email') 
