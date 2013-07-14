@@ -17,15 +17,16 @@ ITERATION STORIES
 - [x] restrict spime CRUD to owners
 - [x] restrict qrcode viewing to owners
 - [x] restrict 'my spimes' to just mine
-- [ ] public spimes on main page
+- [x] public spimes on main page
 - [ ] visualize sightings with google maps integration
 - [ ] add credits info to git and website
 - [ ] testes
-
+- [ ] account details, including account delete
 
 BACKLOG
 =====
 
+- [ ] use Shaping Things to flesh out the Spime schema, including creation date, materials, etc
 - [ ] would be cool if public spimes were wiki-like. anyone could update, but there would be an edit log
 - [ ] spimes could have group ownership, group editorship
 - [ ] design or re-use CC-licensed favicon
