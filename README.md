@@ -14,7 +14,9 @@ STORIES
 - [x] spime checkin
 - [x] get checkin lat/long via client JS
 - [x] spime ownership
-- [ ] restrict spime CRUD and qrcode generation to owners, including my spimes
+- [x] restrict spime CRUD to owners
+- [x] restrict qrcode viewing to owners
+- [x] restrict 'my spimes' to just mine
 - [ ] public spimes on main page
 - [ ] visualize sightings with google maps integration
 - [ ] design or re-use CC-licensed favicon
