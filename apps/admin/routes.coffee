@@ -122,9 +122,16 @@ routes = (app) ->
       
       app.delete '/:id', (req, res) ->
         Spime = mongoose.model('Spime')
-        Spime.findByIdAndRemove req.params.id, (err, spime) ->
-          res.send(500, { error: err }) if err?
-          req.flash 'info', 'Spime deleted.'
-          res.redirect '/admin/spimes'
+        Spime.findById req.params.id, (err, spime) ->
+          res.send(500,  { error: err}) if err?
+          if spime?
+            if req.session.user_id != String(spime.owner)
+              req.flash 'error', 'Permission denied.'
+              res.redirect '/'
+              return
+            spime.remove (err, spime) ->
+              res.send(500, { error: err }) if err?
+              req.flash 'info', 'Spime deleted.'
+              res.redirect '/admin/spimes'
       
 module.exports = routes
