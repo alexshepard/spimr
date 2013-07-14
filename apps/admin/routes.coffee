@@ -29,6 +29,7 @@ routes = (app) ->
               user: user
               info: req.flash 'info'
               error: req.flash 'error'
+            return
           res.send(404)
     
     app.namespace '/spimes', ->
