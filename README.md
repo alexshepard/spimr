@@ -31,3 +31,4 @@ BACKLOG
 - [ ] spimes could have group ownership, group editorship
 - [ ] design or re-use CC-licensed favicon
 - [ ] switch to tdd
+- [ ] custom 400 and 500 pages
