@@ -21,7 +21,7 @@ ITERATION STORIES
 - [ ] visualize sightings with google maps integration
 - [ ] add credits info to git and website
 - [ ] testes
-- [ ] account details, including account delete
+- [-] account details, including account delete
 
 BACKLOG
 =====
