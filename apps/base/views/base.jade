@@ -3,4 +3,15 @@ extends ../../../views/layout
 block content
   h1= title
   p Welcome to #{title}
+  
+  h3 Public Spimes
+  each spime in spimes
+    hr
+    h4 #{spime.name} Details
+    p Name: #{spime.name}
+    p Owner: #{spime.owner.email}
+    p Description: #{spime.description}
+    p Privacy: #{spime.privacy}
+  
+  hr
   p A google maps view showing all public spimes will go here.
