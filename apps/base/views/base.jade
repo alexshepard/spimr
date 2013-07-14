@@ -4,14 +4,33 @@ block content
   h1= title
   p Welcome to #{title}
   
-  h3 Public Spimes
-  each spime in spimes
-    hr
-    h4 #{spime.name} Details
-    p Name: #{spime.name}
-    p Owner: #{spime.owner.email}
-    p Description: #{spime.description}
-    p Privacy: #{spime.privacy}
+  div.tabbable
+    ul.nav.nav-tabs
+      li.active
+        a(href='#tab1', data-toggle='tab')
+          |Lists of Spimes
+      li
+        a(href='#tab2', data-toggle='tab')
+          |Maps of Spimes
+    div.tab-content
+      div.tab-pane.active(id='tab1')
+        h3 Public Spimes
+
+        table.table
+          tr
+            th Name
+            th Owner
+            th Description
+            th Privacy
+          each spime in spimes
+            tr
+              td
+                a(href='/spimes/#{spime.id}') #{spime.name}
+              td #{spime.description}
+              td #{spime.owner.email}
+              td #{spime.privacy}              
+      div.tab-pane(id='tab2')
+        p A google maps view showing all public spimes will go here.
+    
   
   hr
-  p A google maps view showing all public spimes will go here.
