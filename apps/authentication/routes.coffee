@@ -37,6 +37,7 @@ routes = (app) ->
           res.redirect('/')
           return
         req.session.user_id = user.id
+        req.session.user_email = user.email
         req.flash 'info', 'Account created.'
         res.redirect '/'
 
