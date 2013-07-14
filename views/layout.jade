@@ -77,12 +77,12 @@ html
       
     .container
           
-      p.flash.info
-        - if(info && info != "")
-           = info
-      p.flash.error
-        - if(error && error != "")
-           = error
+      - if(info && info != "")
+        p.flash.info.alert.alert-success
+          = info
+      - if(error && error != "")
+        p.flash.error.alert.alert-error
+          = error
     
       block content
     
