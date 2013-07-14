@@ -17,6 +17,7 @@ routes = (app) ->
       User.findOne email: req.body.email, (err, user) ->
         if user and user.authenticate(req.body.password)
           req.session.user_id = user.id
+          req.session.user_email = user.email
           # TODO: handle remember me
           req.flash 'info', 'Welcome to Spimr, ' + req.body.email
           res.redirect('/admin/spimes')
