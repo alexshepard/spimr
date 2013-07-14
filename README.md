@@ -19,3 +19,4 @@ STORIES
 - [ ] visualize sightings with google maps integration
 - [ ] design or re-use CC-licensed favicon
 - [ ] add credits info to git and website
+- [ ] would be cool if public spimes were wiki-like. anyone could update, but there would be an edit log
