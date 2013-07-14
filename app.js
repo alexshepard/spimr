@@ -63,6 +63,16 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+// mongoose
+var err;
+mongoose.connect(app.get('storage-uri'), { db: {save: true }}, (err), function() {
+  if (err) {
+    console.log("Mongoose - connection error: " + err);
+    return;
+  }
+  console.log("Mongoose - connection OK");
+});
+
 // Global helpers
 require('./apps/helpers')(app);
 
@@ -73,15 +83,6 @@ require('./apps/admin/routes.coffee')(app);           // account and spime admin
 require('./apps/authentication/routes.coffee')(app);  // session stuff, signin, signout
 require('./apps/qrcode/routes.coffee')(app);          // qrcode viewing
 require('./apps/checkin/routes.coffee')(app);         // spime sighting handler
-
-var err;
-mongoose.connect(app.get('storage-uri'), { db: {save: true }}, (err), function() {
-  if (err) {
-    console.log("Mongoose - connection error: " + err);
-    return;
-  }
-  console.log("Mongoose - connection OK");
-});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
