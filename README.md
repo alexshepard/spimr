@@ -3,7 +3,7 @@ spimr
 
 Adding stupid things to the internet of things, one QR Code at a time.
 
-STORIES
+ITERATION STORIES
 =====
 
 - [x] n-n-n-n-node
@@ -19,6 +19,14 @@ STORIES
 - [x] restrict 'my spimes' to just mine
 - [ ] public spimes on main page
 - [ ] visualize sightings with google maps integration
-- [ ] design or re-use CC-licensed favicon
 - [ ] add credits info to git and website
+- [ ] testes
+
+
+BACKLOG
+=====
+
 - [ ] would be cool if public spimes were wiki-like. anyone could update, but there would be an edit log
+- [ ] spimes could have group ownership, group editorship
+- [ ] design or re-use CC-licensed favicon
+- [ ] switch to tdd
