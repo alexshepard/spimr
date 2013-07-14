@@ -63,19 +63,10 @@ routes = (app) ->
             return
           res.send(404)
 
+      # public spime get is handled in the /spimes/ route
       app.get '/:id', (req, res) ->
-        Spime = mongoose.model('Spime')
-        Spime.findById req.params.id, (err, spime) ->
-          res.send(500, { error: err}) if err?
-          if spime?
-            res.render "#{__dirname}/views/spimes/one",
-              title: res.name
-              stylesheet: "admin"
-              spime: spime
-              info: req.flash 'info'
-              error: req.flash 'error'
-            return
-          res.send(404)
+        res.redirect "/spimes/#{req.params.id}"
+        return
       
       app.get '/', (req, res) ->
         Spime = mongoose.model('Spime')
@@ -118,12 +109,7 @@ routes = (app) ->
               res.send(500, { error: updateErr}) if updateErr?
               if updatedSpime?
                 req.flash 'info', 'Spime edited.'
-                res.render "#{__dirname}/views/spimes/one",
-                  title: res.name
-                  stylesheet: "admin"
-                  spime: updatedSpime
-                  info: req.flash 'info'
-                  error: req.flash 'error'
+                res.redirect "/spimes/#{req.params.id}"
                 return
               else
                 res.send(404)

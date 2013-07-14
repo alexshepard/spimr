@@ -67,11 +67,12 @@ if ('development' == app.get('env')) {
 require('./apps/helpers')(app);
 
 // Routes
-require('./apps/base/routes.coffee')(app);
-require('./apps/admin/routes.coffee')(app);
-require('./apps/authentication/routes.coffee')(app);
-require('./apps/qrcode/routes.coffee')(app);
-require('./apps/checkin/routes.coffee')(app);
+require('./apps/base/routes.coffee')(app);            // home page, about page, credits, etc
+require('./apps/spimes/routes.coffee')(app);          // public spime viewing
+require('./apps/admin/routes.coffee')(app);           // account and spime admin pages
+require('./apps/authentication/routes.coffee')(app);  // session stuff, signin, signout
+require('./apps/qrcode/routes.coffee')(app);          // qrcode viewing
+require('./apps/checkin/routes.coffee')(app);         // spime sighting handler
 
 var err;
 mongoose.connect(app.get('storage-uri'), { db: {save: true }}, (err), function() {
