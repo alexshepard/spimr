@@ -24,6 +24,7 @@ ITERATION STORIES
 - [-] account details, including account delete and other people's accounts
 - [ ] account and spime deletion should require confirmation
 - [ ] spime names should be non-null and not just whitespace
+- [ ] migrate this list to real work tracker (pivotal tracker is free for solo use)
 
 BACKLOG
 =====
