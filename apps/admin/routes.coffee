@@ -90,7 +90,7 @@ routes = (app) ->
             spime.owner = user._id
             spime.save (err, saved) ->
               res.send(500, {error: err}) if err?
-              req.flash 'info', 'Spime created,'
+              req.flash 'info', 'Spime created.'
               res.redirect '/admin/spimes'
               return
       
