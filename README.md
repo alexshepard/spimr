@@ -23,6 +23,7 @@ ITERATION STORIES
 - [ ] testes
 - [-] account details, including account delete and other people's accounts
 - [ ] account and spime deletion should require confirmation
+- [ ] spime names should be non-null and not just whitespace
 
 BACKLOG
 =====
