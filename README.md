@@ -21,7 +21,7 @@ ITERATION STORIES
 - [ ] visualize sightings with google maps integration
 - [ ] add credits info to git and website
 - [ ] testes
-- [-] account details, including account delete
+- [-] account details, including account delete and other people's accounts
 
 BACKLOG
 =====
@@ -32,3 +32,5 @@ BACKLOG
 - [ ] design or re-use CC-licensed favicon
 - [ ] switch to tdd
 - [ ] custom 400 and 500 pages
+- [ ] owner photos of spimes, save on s3
+- [ ] use gravatar icons
