@@ -22,6 +22,7 @@ ITERATION STORIES
 - [ ] add credits info to git and website
 - [ ] testes
 - [-] account details, including account delete and other people's accounts
+- [ ] account and spime deletion should require confirmation
 
 BACKLOG
 =====
