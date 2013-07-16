@@ -1,18 +1,29 @@
 
-form(action=urlFor(spime), method='post')
+
+
+form.form-horizontal(action=urlFor(spime), method='post')
   if(spime.name)
     input(type='hidden', name='_method', value='put')
-  label
-    | Name
-    input(type='text', name='name', value = spime.name)
-  label
-    | Description
-    input(type='text', name='description', value = spime.description)
-  label
-    | Privacy
-    select(name="privacy")
-      privacies = [ 'private', 'public']
-      for privacy in privacies
-        option(selected=spime.privacy == privacy) #{privacy}
 
-  input(type="submit", name="Submit")
+  div.control-group
+    label.control-label(for='inputName') Name
+    div.controls
+      input(type='text', id='inputName', name='name', value=spime.name)
+
+  div.control-group
+    label.control-label(for='inputDescription') Description
+    div.controls
+      textarea(id='inputDescription', name='description', value=spime.description)
+
+  div.control-group
+    label.control-label(for='inputPrivacy') Privacy
+    div.controls
+      select(name='privacy')
+        privacies = [ 'private', 'public' ]
+        for privacy in privacies
+          option(selected=spime.privacy == privacy) #{privacy}
+  
+  div.control-group
+    div.controls
+      button.btn(type='submit')
+        | Create Spime
