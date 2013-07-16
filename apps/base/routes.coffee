@@ -10,7 +10,7 @@ routes = (app) ->
       res.send(500, { error: err}) if err?
       if spimes?
         res.render "#{__dirname}/views/base",
-          title: 'Spimr'
+          title: 'Public Spimes'
           stylesheet: "spimr"
           spimes: spimes
           info: req.flash 'info'
