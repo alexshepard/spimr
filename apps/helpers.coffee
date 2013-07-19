@@ -7,9 +7,9 @@ helpers = (app) ->
     urlFor: (obj) ->
       # all objects will have some privacy setting or another
       if obj.privacy
-        "/admin/spimes/#{obj.id}"
+        "/spimes/#{obj.id}"
       else
-        "/admin/spimes"
+        "/spimes"
     checkinUrlForUuid: (req, uuid) ->
       # construct checkin url
       port = app.settings.port;
@@ -17,6 +17,13 @@ helpers = (app) ->
       if ('development' == app.get('env') and (port != 80 and port != 443))
         port_section = ":#{port}"        
       return "#{req.protocol}://#{req.host}#{port_section}/checkin/#{uuid}"
+    
+    requiresLogin: (req, res) ->
+      # TODO: could probably do a better job here
+      if not (req.session.user_id)
+        req.flash 'error', 'Please login.'
+        res.redirect '/'
+        return
 
 
 module.exports = helpers

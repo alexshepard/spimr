@@ -20,7 +20,7 @@ routes = (app) ->
           req.session.user_email = user.email
           # TODO: handle remember me
           req.flash 'info', 'Welcome to Spimr, ' + req.body.email
-          res.redirect('/admin/spimes')
+          res.redirect('/')
           return
         req.flash 'error', 'Incorrect credentials'
         res.redirect('/')

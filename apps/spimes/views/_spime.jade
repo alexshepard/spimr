@@ -45,8 +45,8 @@ table.table.table-bordered
       td
       td
         p
-          a.btn(align=left, href='/admin/spimes/edit/#{spime.id}') Edit
+          a.btn(align=left, href='/spimes/edit/#{spime.id}') Edit
         p
-          form(action='/admin/spimes/#{spime.id}', method='post', name="logout")
+          form(action='/spimes/#{spime.id}', method='post', name="logout")
             input(type='hidden', name='_method', value='delete')
             button.btn(type='submit') Delete

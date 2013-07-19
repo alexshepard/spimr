@@ -78,8 +78,8 @@ require('./apps/helpers')(app);
 
 // Routes
 require('./apps/base/routes.coffee')(app);            // home page, about page, credits, etc
-require('./apps/spimes/routes.coffee')(app);          // public spime viewing
-require('./apps/admin/routes.coffee')(app);           // account and spime admin pages
+require('./apps/spimes/routes.coffee')(app);          // spimes
+require('./apps/account/routes.coffee')(app);         // account details
 require('./apps/authentication/routes.coffee')(app);  // session stuff, signin, signout
 require('./apps/checkin/routes.coffee')(app);         // spime sighting handler
 

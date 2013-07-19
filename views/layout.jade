@@ -46,22 +46,31 @@ html
                 li
                   a(href='/about') About
               
+              if locals.path == '/spimes'
+                li.active
+                  a(href='/spimes')
+                    |Public Spimes
+              else
+                li
+                  a(href='/spimes')
+                    |Public Spimes
+
               if locals.user_id
-                if locals.path == '/admin/spimes/new'
+                if locals.path == '/spimes/new'
                   li.active
-                    a(href='/admin/spimes/new')
+                    a(href='/spimes/new')
                       |New Spime
                 else
                   li
-                    a(href='/admin/spimes/new')
+                    a(href='/spimes/new')
                       |New Spime
-                if locals.path == '/admin/spimes'
+                if locals.path == '/spimes/mine'
                   li.active
-                    a(href='/admin/spimes')
+                    a(href='/spimes/mine')
                       |My Spimes
                 else
                   li
-                    a(href='/admin/spimes')
+                    a(href='/spimes/mine')
                       |My Spimes
             
             if (locals.user_id)
@@ -69,13 +78,13 @@ html
                 input(type='hidden', name='_method', value='delete')
                 button.btn(type='submit') Logout
               ul.nav.pull-right
-                if locals.path == '/admin/account'
+                if locals.path == '/account/me'
                   li.active
-                    a(href='/admin/account')
+                    a(href='/account/me')
                       =locals.user_email
                 else
                   li
-                    a(href='/admin/account')
+                    a(href='/account/me')
                       =locals.user_email
             else
               form.navbar-form.pull-right(action='/sessions', method='post', name="login")
