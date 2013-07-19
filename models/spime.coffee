@@ -3,13 +3,17 @@ uuid = require('node-uuid')
 mongoose = require 'mongoose'
 
 Spime = new mongoose.Schema(
-  name: { type: String, trim: true }
+  name: { type: String, trim: true, validate: [(val) ->
+      return true if val and val.length
+      return false
+    , 'Invalid Name']
+  }
   description: { type: String }
-  uuid: { type: String }
+  uuid: { type: String, index: { unique: true} }
   privacy: { type: String }
   owner: { type: mongoose.Schema.ObjectId, ref: 'User' }
 )
-
+  
 Spime.pre 'save', (next) ->
   if this.uuid and this.uuid.length
     next()
