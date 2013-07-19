@@ -6,6 +6,7 @@ crypto = require 'crypto'
 User = new mongoose.Schema(
   email: { type: String, index: { unique: true}, validate: (val) -> 
     return true if val and val.length
+    return false
   }
   hashed_password: { type: String }
   salt: { type: String }
