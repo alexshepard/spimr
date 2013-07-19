@@ -97,10 +97,10 @@ html
           
       - if(info && info != "")
         p.flash.info.alert.alert-success
-          = info
+          !{info}
       - if(error && error != "")
         p.flash.error.alert.alert-error
-          = error
+          !{error}
     
       block content
     
