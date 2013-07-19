@@ -1,0 +1,52 @@
+
+table.table.table-bordered
+  tr
+    td
+      Strong
+        |Name
+    td
+      =spime.name
+  tr
+    td
+      Strong
+        |Description
+    td
+      =spime.description
+  tr
+    td
+      strong
+        |Owner
+    td
+      =spime.owner.email
+  tr
+    td
+      strong
+        |Privacy
+    td
+      =spime.privacy
+  
+  
+  if locals.user_id == spime.owner._id
+    tr
+      td
+        strong
+          |Checkin URL
+      td
+        =spime.checkin_url
+  
+    tr
+      td
+        strong
+          |QR Code
+      td
+        include _qrcode
+        
+    tr
+      td
+      td
+        p
+          a.btn(align=left, href='/admin/spimes/edit/#{spime.id}') Edit
+        p
+          form(action='/admin/spimes/#{spime.id}', method='post', name="logout")
+            input(type='hidden', name='_method', value='delete')
+            button.btn(type='submit') Delete

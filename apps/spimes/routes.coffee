@@ -11,10 +11,10 @@ routes = (app) ->
     app.get '/:id', (req, res) ->
       Spime = mongoose.model('Spime')
       Spime.findOne({ _id: req.params.id }).populate('owner').exec (err, spime) ->
-      #Spime.find({ id: req.params.id }).populate('owner').exec (err, spime) ->
         res.send(500, { error: err }) if err?
         if spime?
           if spime.privacy == 'public' || spime.owner.id == req.session.user_id
+            spime.checkin_url = app.locals.checkinUrlForUuid(req, spime.uuid)
             res.render "#{__dirname}/views/spime",
               title: res.name
               stylesheet: "spime"

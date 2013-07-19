@@ -2,19 +2,6 @@ extends ../../../views/layout
 
 block content
 
-  h2 #{spime.name} Details
-  h4 Name: #{spime.name}
-  h4 Description: #{spime.description}
-  h4 Owner: #{spime.owner.email}
-  h4 Privacy: #{spime.privacy}
 
-  if locals.user_id == spime.owner._id
-    h4 Checkin Url: http://localhost:3000/checkin/#{spime.uuid}
 
-    a(href="/qrcode/#{spime.id}")
-      | QR Code for this spime
-
-    form(action='/admin/spimes/#{spime.id}', method='post', name="logout")
-      input(type='hidden', name='_method', value='delete')
-      button.btn(type='submit') Delete
-    a.btn(href='/admin/spimes/edit/#{spime.id}') Edit
+  include _spime
