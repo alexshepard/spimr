@@ -1,0 +1,22 @@
+extends ../../../views/layout
+
+block content
+  
+  h3 New Password
+  
+  form.form-horizontal(action='/account/password', method='post')
+    input(type='hidden', name='_method', value='PUT')
+    input(type='hidden', name='_token', value=user.reset_password_token)
+    input(type='hidden', name='_email', value=user.email)
+    div.control-group
+      label.control-label(for='password') Password
+      div.controls
+        input(type='password', id='password', name='password')
+    div.control-group
+      label.control-label(for='confirm') Confirm Password
+      div.controls
+        input(type='password', id='confirm', name='confirm')
+    div.control-group
+      div.controls
+        button.btn(type='submit')
+          | Save
