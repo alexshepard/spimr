@@ -8,6 +8,8 @@ User = new mongoose.Schema(
     return true if val and val.length
     return false
   }
+  reset_password_token: { type: String, default: '' }
+  reset_password_timestamp: { type: Date, default: null }
   hashed_password: { type: String }
   salt: { type: String }
 )
