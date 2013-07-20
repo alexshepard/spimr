@@ -18,6 +18,13 @@ helpers = (app) ->
         port_section = ":#{port}"        
       return "#{req.protocol}://#{req.host}#{port_section}/checkin/#{uuid}"
     
+    baseUrl: (req) ->
+      port = app.settings.port;
+      port_section = ''
+      if ('development' == app.get('env') and (port != 80 and port != 443))
+        port_section = ":#{port}"        
+      return "#{req.protocol}://#{req.host}#{port_section}"
+    
     requiresLogin: (req, res) ->
       # TODO: could probably do a better job here
       if not (req.session.user_id)
