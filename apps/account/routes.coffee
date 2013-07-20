@@ -20,5 +20,13 @@ routes = (app) ->
               error: req.flash 'error'
             return
           res.send(404)
+      app.get '/forgot', (req, res) ->
+        res.render "#{__dirname}/views/forgot",
+          title: res.name
+          stylesheet: "forgot"
+          info: req.flash 'info'
+          error: req.flash 'error'
+        return
+
  
 module.exports = routes

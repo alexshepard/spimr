@@ -1,0 +1,15 @@
+extends ../../../views/layout
+
+block content
+  
+  h3 Reset Password
+  
+  form.form-horizontal(action='/account/resetPassword', method='post')
+    div.control-group
+      label.control-label(for='email') Email Address
+      div.controls
+        input(type='text', id='email', name='email')
+    div.control-group
+      div.controls
+        button.btn(type='submit')
+          | Reset Password
