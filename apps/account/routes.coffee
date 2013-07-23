@@ -49,13 +49,11 @@ routes = (app) ->
                 reset_password_token: buf.toString 'hex'
                 reset_password_timestamp: new Date
               }
-              user.update { $set: attributes }, (err, update) ->
+              User.findOneAndUpdate { email: req.body.email }, { $set: attributes }, (err, update) ->
                 res.send(500, { error: err}) if err?
                 if update?
                   # construct and send email
-                  # TODO: on heroku, this is showing up as:
-                  # http://www.spimr.com/account/reset/valid@email.address/undefined
-                  resetUrl = app.locals.baseUrl(req) + '/account/reset/' + req.body.email + '/' + user.reset_password_token
+                  resetUrl = app.locals.baseUrl(req) + '/account/reset/' + req.body.email + '/' + update.reset_password_token
                   bodyText = 'Someone has requested to your password on spimr.com. If this was you, please click this link: ' + resetUrl + "\n\n If it wasn\'t you, please ignore this email."
                   email = {
                       From: "spimr@spimr.com"
