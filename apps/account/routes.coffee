@@ -56,7 +56,7 @@ routes = (app) ->
                   resetUrl = app.locals.baseUrl(req) + '/account/reset/' + req.body.email + '/' + update.reset_password_token
                   bodyText = 'Someone has requested to your password on spimr.com. If this was you, please click this link: ' + resetUrl + "\n\n If it wasn\'t you, please ignore this email."
                   email = {
-                      From: "spimr@spimr.com"
+                      From: "Spimr Support <spimr@spimr.com>"
                       To: req.body.email
                       Subject: "Reset Password"
                       TextBody: bodyText
