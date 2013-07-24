@@ -22,7 +22,8 @@
     "hiredis": "~0.1.15",
     "mongoose": "~3.6.14",
     "markdown-js": "0.0.3",
-    "postmark": "~0.1.8"
+    "postmark": "~0.1.8",
+    "nodetime": "~0.8.13"
   },
   "devDependencies": {
     "mocha": "~1.12.0",

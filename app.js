@@ -3,6 +3,13 @@
  * Module dependencies.
  */
 
+if(process.env.NODETIME_ACCOUNT_KEY) {
+  require('nodetime').profile({
+    accountKey: process.env.NODETIME_ACCOUNT_KEY,
+    appName: 'Spimr'
+  });
+}
+
 require('coffee-script')
 
 var express = require('express')
