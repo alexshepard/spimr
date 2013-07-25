@@ -6,23 +6,39 @@ postmark = require('postmark')(process.env.POSTMARK_API_KEY)
 routes = (app) ->
         
     app.namespace '/account', ->
-            
-      app.get '/me', (req, res) ->
-        app.locals.requiresLogin(req, res)
+    
+      app.get '/:email', (req, res) ->
         User = mongoose.model('User')
-        User.findById req.session.user_id, (err, user) ->
-          res.send(500, { error: err }) if err?
-          if user?
-            res.render "#{__dirname}/views/account",
-              title: res.name
-              stylesheet: "account"
-              user: user
-              info: req.flash 'info'
-              error: req.flash 'error'
-            return
-          res.send(404)
-          return
-          
+        if req.params.email == 'me'
+          app.locals.requiresLogin(req, res)
+          User.findById req.session.user_id, (err, user) ->
+            res.send(500, { error: err }) if err?
+            if user?
+              res.render "#{__dirname}/views/account",
+                title: res.name
+                stylesheet: "account"
+                user: user
+                info: req.flash 'info'
+                error: req.flash 'error'
+              return
+            else
+              res.send(404)
+              return
+        else
+          User.findOne { email: req.params.email }, (err, user) ->
+            res.send(500, { error: err }) if err?
+            if user?
+              res.render "#{__dirname}/views/account",
+                title: res.name
+                stylesheet: "account"
+                user: user
+                info: req.flash 'info'
+                error: req.flash 'error'
+              return
+            else
+              res.send(404)
+              return
+                
       app.get '/forgot', (req, res) ->
         res.render "#{__dirname}/views/forgot",
           title: res.name
