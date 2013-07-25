@@ -3,13 +3,6 @@
  * Module dependencies.
  */
 
-if (process.env.NODEFLY_APPLICATION_KEY) {
-  require('nodefly').profile(
-    process.env.NODEFLY_APPLICATION_KEY,
-    [process.env.APPLICATION_NAME,'Heroku']
-  );
-}
-
 if(process.env.NODETIME_ACCOUNT_KEY) {
   require('nodetime').profile({
     accountKey: process.env.NODETIME_ACCOUNT_KEY,
