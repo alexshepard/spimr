@@ -10,6 +10,11 @@ if(process.env.NODETIME_ACCOUNT_KEY) {
   });
 }
 
+if (process.env.NODEFLY_APPLICATION_KEY) {
+    process.env.NODEFLY_APPLICATION_KEY,
+    [process.env.APPLICATION_NAME,'Heroku']
+}
+
 require('coffee-script')
 
 var express = require('express')
