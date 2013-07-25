@@ -59,6 +59,7 @@ app.use(function(req, res, next){
   res.locals.user_id = req.session.user_id
   res.locals.user_email = req.session.user_email
   res.locals.path = req.path;
+  res.locals.google_analytics_account = process.env.GOOGLE_ANALYTICS_ACCOUNT;
   next();
 });
 
