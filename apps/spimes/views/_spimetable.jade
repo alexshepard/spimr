@@ -11,12 +11,16 @@ div.tabbable
 
       table.table.table-striped
         tr
+          th Thumbnail
           th Name
           th Description
           th Owner
           th Privacy
         each spime in spimes
           tr
+            td
+              if spime.thumbUrl
+                img(src='#{spime.thumbUrl}')
             td
               a(href='/spimes/#{spime.id}') #{spime.name}
             td #{spime.description}

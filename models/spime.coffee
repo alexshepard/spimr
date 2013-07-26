@@ -12,6 +12,7 @@ Spime = new mongoose.Schema(
   uuid: { type: String, index: { unique: true} }
   privacy: { type: String }
   owner: { type: mongoose.Schema.ObjectId, ref: 'User' }
+  photo: { type: mongoose.Schema.ObjectId, ref: 'MediaItem', default: null }
 )
   
 Spime.pre 'save', (next) ->

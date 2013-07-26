@@ -25,6 +25,33 @@ table.table.table-bordered
     td
       =spime.privacy
   
+    tr
+      td
+        strong
+          |Media
+      td
+        if spime.photo
+          img(src=spimeImageUrl)
+        else if locals.user_id == spime.owner._id
+  
+          form.form-horizontal(action='/spimes/image', method='post', enctype='multipart/form-data')
+            input(type='hidden', name='_spime', value='#{spime.id}')
+
+            div.control-group
+              label.control-label(for='imageTitle') Image Title
+              div.controls
+                input(type='text', id='imageTitle', name='imageTitle')
+          
+            div.control-group
+              label.control-label(for='image') Image
+              div.controls
+                input(type='file', id='image', name='image')
+
+            div.control-group
+              div.controls
+                button.btn(type='submit')
+                  | Upload
+
   
   if locals.user_id == spime.owner._id
     tr
@@ -40,6 +67,7 @@ table.table.table-bordered
           |QR Code
       td
         include _qrcode
+    
         
     tr
       td
