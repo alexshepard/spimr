@@ -43,8 +43,8 @@ routes = (app) ->
         res.send(500, { error: err }) if err?
         if spime?
           if spime.photo? and spime.photo.cloudinary_public_id?
-            spime.thumbUrl = cloudinary.url(spime.photo.cloudinary_public_id + '.' + spime.photo.cloudinary_format,
-              { width: 45, height: 45, crop: "fill", radius: 10 })
+            spime.photoUrl = cloudinary.url(spime.photo.cloudinary_public_id + '.' + spime.photo.cloudinary_format,
+              { width: 400, height: 400, crop: "fill", radius: 10 })
           if spime.privacy == 'public' || spime.owner.id == req.session.user_id
             spime.checkin_url = app.locals.checkinUrlForUuid(req, spime.uuid)
             res.render "#{__dirname}/views/spime",
