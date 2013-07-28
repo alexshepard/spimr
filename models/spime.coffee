@@ -1,5 +1,6 @@
 
 uuid = require('node-uuid')
+
 mongoose = require 'mongoose'
 
 Spime = new mongoose.Schema(
@@ -52,14 +53,10 @@ Spime = new mongoose.Schema(
     default: ""
   
   # how does it fit in? how does it say it fits in?
-  regulations:
+  regulations_and_standards:
     type: String
     default: ""
     
-  standards:
-    type: String
-    default: ""
-  
   # what does it cost to make it work? energy, resources, etc?
   running_cost:
     type: String
@@ -130,24 +127,19 @@ Spime = new mongoose.Schema(
     type: String
     default: ""
   
-  # how many were sold?
-  sales_volume:
+  # what does it feel like?  
+  haptics:
     type: String
     default: ""
-
+  
   # what does it look like?
   photo:
     type: mongoose.Schema.ObjectId
     ref: 'MediaItem'
     default: null
 
-  # what does it feel like?  
-  haptics:
-    type: String
-    default: ""
-  
 )
-  
+
 Spime.pre 'save', (next) ->
   if this.uuid and this.uuid.length
     next()
