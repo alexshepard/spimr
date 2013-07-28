@@ -124,13 +124,17 @@ routes = (app) ->
         (res.send(500, { error: err }); return;) if err?
         (res.send(404, { error: 'No Such User' }); return;) if !user?
         Spime = mongoose.model('Spime')
-        Spime.findById req.body._spime, (err, spime) ->
+        Spime.findOne({ _id: req.body._spime }).populate('photo').exec (err, spime) ->
           (res.send(500, { error: err }); return;) if err?
           (res.send(404, { error: 'No Such Spime' }); return;) if !spime?
           if spime.owner is not user._id
             req.flash 'error', 'Permission denied.'
             res.redirect '/spimes/mine'
             return
+          if spime.photo?
+            cloudinary.api.delete_resources(spime.photo.cloudinary_public_id, (result) ->
+              console.log result
+            )
           stream = cloudinary.uploader.upload_stream((result) ->
             (res.send(404, { error: 'No Upload Possible' }); return;) if !result?
             if result?
@@ -179,6 +183,37 @@ routes = (app) ->
         else
           res.send(404)
   
+    app.delete '/image/:id', (req, res) ->
+      app.locals.requiresLogin(req, res)
+      MediaItem = mongoose.model('MediaItem')
+      MediaItem.findOne({ _id: req.params.id }).populate('uploader').exec (err, image) ->
+        (res.send(500, { error: err }); return;) if err?
+        if image?
+          if req.session.user_id != String(image.uploader._id)
+            req.flash 'error', 'Permission denied.'
+            res.redirect '/'
+            return
+          # delete all references to this photo among spimes
+          Spime = mongoose.model('Spime')
+          Spime.find ({ photo: image._id }), (err, spimes) ->
+            (res.send(500, { error: err }); return;) if err?
+            if spimes?
+              for spime in spimes
+                spime.photo = null
+                spime.save (err, saved) ->
+                  (res.send(500, { error: err}); return;) if err?
+
+          cloudinary.api.delete_resources(image.cloudinary_public_id, (result) ->
+            console.log result
+          )
+          req.flash 'info', 'Photo deleted.'
+          res.redirect '/spimes/mine'
+          return
+          
+
+
+                  
+      
     app.delete '/:id', (req, res) ->
       app.locals.requiresLogin(req, res)
       Spime = mongoose.model('Spime')

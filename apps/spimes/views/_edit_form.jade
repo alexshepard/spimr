@@ -10,11 +10,19 @@ div.row
         td
           if spime.photo
             h4 Replace Photo
+          else
+            h4 Upload Photo
           p
           form.form-horizontal(action='/spimes/image', method='post', enctype='multipart/form-data')
             input(type='hidden', name='_spime', value=spime._id)
             input(type='file', name='photo')
-            button.btn(type='submit') Upload
+            button.btn.pull-right(type='submit') Upload
+          if spime.photo
+            hr
+            p          
+            form(action='/spimes/image/#{spime.photo._id}', method='post', name="logout")
+              input(type='hidden', name='_method', value='delete')
+              button.btn.pull-right(type='submit') Delete Photo
 
 
   form.form-horizontal(action='/spimes/#{spime._id}', method='post')
