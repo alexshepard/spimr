@@ -110,10 +110,12 @@ routes = (app) ->
           spime.save (err, saved) ->
             if err?
               req.flash 'error', 'Error creating spime: ' + err.errors.name.type
+              res.redirect "/spimes/mine"
+              return
             else
               req.flash 'info', 'Spime created.'
-            res.redirect '/spimes/mine'
-            return
+              res.redirect "/spimes/edit/#{saved._id}"
+              return
   
     app.post '/image', (req, res) ->
       app.locals.requiresLogin(req, res)
