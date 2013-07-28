@@ -1,17 +1,20 @@
 div.row
   
   div.span4
-    p
-      if spime.photo
-        img(src="#{spime.photo.largeUrl}")
-    
-    p
-      |Replace Photo
-    p
-    form.form-horizontal(action='/spimes/image', method='post', enctype='multipart/form-data')
-      input(type='hidden', name='_spime', value=spime._id)
-      input(type='file', name='photo')
-      button.btn(type='submit') Upload
+    table.table
+      tr
+        td
+          if spime.photo
+            img(src="#{spime.photo.largeUrl}")
+      tr
+        td
+          if spime.photo
+            h4 Replace Photo
+          p
+          form.form-horizontal(action='/spimes/image', method='post', enctype='multipart/form-data')
+            input(type='hidden', name='_spime', value=spime._id)
+            input(type='file', name='photo')
+            button.btn(type='submit') Upload
 
 
   form.form-horizontal(action='/spimes/#{spime._id}', method='post')
@@ -195,4 +198,4 @@ div.row
       div.control-group
         div.controls
           button.btn(type='submit')
-            |Save Text
+            |Save
