@@ -44,7 +44,6 @@ MediaItem = new mongoose.Schema(
 )
 
 MediaItem.pre 'save', (next) ->
-  console.log "in mediaitem.pre save"
   # rebuild all thumbnail urls
   this.thumbUrl = cloudinary.url(this.cloudinary_public_id + '.' + this.cloudinary_format,
     {

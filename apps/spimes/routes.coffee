@@ -81,10 +81,10 @@ routes = (app) ->
     app.get '/edit/:id', (req, res) ->
       app.locals.requiresLogin(req, res)
       Spime = mongoose.model('Spime')
-      Spime.findById req.params.id, (err, spime) ->
+      Spime.findOne({ _id: req.params.id }).populate('owner').populate('photo').exec (err, spime) ->
         res.send(500, { error: err}) if err?
         if spime?
-          if req.session.user_id != String(spime.owner)
+          if String(req.session.user_id) != String(spime.owner._id)
             req.flash 'error', 'Permission denied.'
             res.redirect '/'
             return
@@ -134,7 +134,6 @@ routes = (app) ->
           stream = cloudinary.uploader.upload_stream((result) ->
             (res.send(404, { error: 'No Upload Possible' }); return;) if !result?
             if result?
-              console.log result
               MediaItem = mongoose.model('MediaItem')
               photo = new MediaItem
               photo.cloudinary_public_id = result.public_id
@@ -152,7 +151,7 @@ routes = (app) ->
           ,
             { width: 1000, height: 1000, crop: "limit" }
           )
-          fs.createReadStream(req.files.image.path,
+          fs.createReadStream(req.files.photo.path,
             encoding: "binary"
           ).on("data", stream.write).on "end", stream.end
 

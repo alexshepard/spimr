@@ -1,10 +1,21 @@
-p Date: #{spime.manufacturing_date}
-
-form.form-horizontal(action='/spimes/#{spime._id}', method='post')
-
-  input(type='hidden', name='_method', value='PUT')
+div.row
   
-  div.row
+  div.span4
+    p
+      if spime.photo
+        img(src="#{spime.photo.largeUrl}")
+    
+    p
+      |Replace Photo
+    p
+    form.form-horizontal(action='/spimes/image', method='post', enctype='multipart/form-data')
+      input(type='hidden', name='_spime', value=spime._id)
+      input(type='file', name='photo')
+      button.btn(type='submit') Upload
+
+
+  form.form-horizontal(action='/spimes/#{spime._id}', method='post')
+    input(type='hidden', name='_method', value='PUT')
     
     div.span4
 
@@ -32,15 +43,15 @@ form.form-horizontal(action='/spimes/#{spime._id}', method='post')
             privacies = [ 'private', 'public' ]
             for privacy in privacies
               option(selected=spime.privacy == privacy) #{privacy}
-    
+  
       div.control-group
         label.control-label(for='manufacturing_date') Manufacturing Date
         div.controls
           input.tooltips(type='date', 
             id='manufacturing_date', 
             name='manufacturing_date', 
-            title="When was it made?"
-            value="#{locals.moment.utc(spime.manufacturing_date).format('YYYY-MM-DD')}")
+            title="When was it made?",
+            value="#{{locals.moment.utc(spime.manufacturing_date).format('YYYY-MM-DD')}")
 
       div.control-group
         label.control-label(for='functional_principles') Functional Principles
@@ -108,18 +119,7 @@ form.form-horizontal(action='/spimes/#{spime._id}', method='post')
 
 
     div.span4
-    
-      div.control-group
-        label.control-label(for='photo') Photo
-        div.controls
-          if spime.photo
-            img(src='#{spime.photoUrl}')
-          input.tooltips(type='file', 
-            id='photo', 
-            name='photo', 
-            title="What does it look like?",
-            accept="image/*")
-    
+      
       div.control-group
         label.control-label(for='uses_and_limitations') Uses and Limitations
         div.controls
@@ -151,7 +151,7 @@ form.form-horizontal(action='/spimes/#{spime._id}', method='post')
             name='construction_method', 
             title="How was it made?",
             placeholder="How was it made?") #{spime.construction_method}
-          
+        
       div.control-group
         label.control-label(for='packaging') Packaging
         div.controls
@@ -159,7 +159,7 @@ form.form-horizontal(action='/spimes/#{spime._id}', method='post')
             name='packaging', 
             title="How was it packaged?",
             placeholder="How was it packaged?") #{spime.packaging}
-          
+        
       div.control-group
         label.control-label(for='storage') Storage
         div.controls
@@ -167,7 +167,7 @@ form.form-horizontal(action='/spimes/#{spime._id}', method='post')
             name='storage', 
             title="Where is it stored?",
             placeholder="Where is it stored?") #{spime.storage}
-          
+        
       div.control-group
         label.control-label(for='distribution') Distribution
         div.controls
@@ -175,7 +175,7 @@ form.form-horizontal(action='/spimes/#{spime._id}', method='post')
             name='distribution', 
             title="How was it distributed?",
             placeholder="How was it distributed?") #{spime.distribution}
-      
+    
       div.control-group
         label.control-label(for='price') Price
         div.controls
@@ -183,7 +183,7 @@ form.form-horizontal(action='/spimes/#{spime._id}', method='post')
             name='price', 
             title="What did it cost?",
             placeholder="What did it cost?") #{spime.price}
-            
+          
       div.control-group
         label.control-label(for='haptics') Haptics
         div.controls
@@ -192,6 +192,7 @@ form.form-horizontal(action='/spimes/#{spime._id}', method='post')
             title="What does it feel like?",
             placeholder="What does it feel like?") #{spime.haptics}
 
-  div.control-group
-    div.controls
-      button.btn(type='submit') Save
+      div.control-group
+        div.controls
+          button.btn(type='submit')
+            |Save Text

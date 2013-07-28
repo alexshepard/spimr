@@ -1,80 +1,205 @@
 
-table.table.table-bordered
-  tr
-    td
-      Strong
-        |Name
-    td
-      =spime.name
-  tr
-    td
-      Strong
-        |Description
-    td
-      =spime.description
-  tr
-    td
-      strong
-        |Owner
-    td
-      a(href='/account/#{spime.owner.email}') #{spime.owner.email}
-  tr
-    td
-      strong
-        |Privacy
-    td
-      =spime.privacy
-  
-    tr
-      td
-        strong
-          |Media
-      td
-        if spime.photo
-          img(src=spime.compUrl)
-        else if locals.user_id == spime.owner._id
-  
-          form.form-horizontal(action='/spimes/image', method='post', enctype='multipart/form-data')
-            input(type='hidden', name='_spime', value='#{spime.id}')
+div.row
 
-            div.control-group
-              label.control-label(for='imageTitle') Image Title
-              div.controls
-                input(type='text', id='imageTitle', name='imageTitle')
-          
-            div.control-group
-              label.control-label(for='image') Image
-              div.controls
-                input(type='file', id='image', name='image')
-
-            div.control-group
-              div.controls
-                button.btn(type='submit')
-                  | Upload
-
-  
-  if locals.user_id == spime.owner._id
-    tr
-      td
-        strong
-          |Checkin URL
-      td
-        =spime.checkin_url
-  
-    tr
-      td
-        strong
-          |QR Code
-      td
-        include _qrcode
+  div.span4
+    if spime.photo
+      img(src="#{spime.photo.largeUrl}")
+    else
+      |Default Photo Here
     
-        
-    tr
-      td
-      td
-        p
-          a.btn(align=left, href='/spimes/edit/#{spime.id}') Edit
-        p
-          form(action='/spimes/#{spime.id}', method='post', name="logout")
-            input(type='hidden', name='_method', value='delete')
-            button.btn(type='submit') Delete
+
+    br
+    br
+    
+    if locals.user_id == spime.owner._id
+
+      p
+        a.btn(align=left, href='/spimes/edit/#{spime.id}')
+          | Edit Spime
+
+      p
+        form(action='/spimes/#{spime.id}', method='post', name="logout")
+          input(type='hidden', name='_method', value='delete')
+          button.btn(type='submit') Delete Spime
+    
+    
+  div.span4
+  
+    table.table
+      tr
+        td
+          Strong
+            |Name
+        td
+          =spime.name
+          
+      tr
+        td
+          Strong
+            |Description
+        td
+          =spime.description
+          
+      tr
+        td
+          strong
+            |Owner
+        td
+          a(href='/account/#{spime.owner.email}') #{spime.owner.email}
+          
+      tr
+        td
+          strong
+            |Privacy
+        td
+          =spime.privacy
+          
+      tr
+        td
+          strong
+            |Manufacturing Date
+        td
+          if spime.manufacturing_date
+            = moment(spime.manufacturing_date).format('YYYY-MM-DD')
+          
+      tr
+        td
+          strong
+            |Functional Principles
+        td
+          = spime.functional_principles
+          
+      tr
+        td
+          strong
+            |Regulations & Standards
+        td
+          = spime.regulations_and_standards
+          
+      tr
+        td
+          strong
+            |Running Cost
+        td
+          = spime.running_cost
+          
+      tr
+        td
+          strong
+            |Safety
+        td
+          = spime.safety
+          
+      tr
+        td
+          strong
+            |Capacity
+        td
+          = spime.capacity
+          
+      tr
+        td
+          strong
+            |Hygiene
+        td
+          = spime.hygiene
+  
+  div.span4
+    
+    table.table
+      
+      tr
+        td
+          strong
+            |Service
+        td
+          = spime.service
+          
+      tr
+        td
+          strong
+            |Decay and Recycling
+        td
+          = spime.decay_and_recycling
+
+      tr
+        td
+          Strong
+            |Uses and Limitations
+        td
+          =spime.uses_and_limitations
+          
+      tr
+        td
+          Strong
+            |Patents and Rights
+        td
+          =spime.patents_rights
+          
+      tr
+        td
+          strong
+            |Materials
+        td
+          =spime.materials
+          
+      tr
+        td
+          strong
+            |Construction Method
+        td
+          =spime.construction_method
+          
+      tr
+        td
+          strong
+            |Packaging
+        td
+          =spime.packaging
+          
+      tr
+        td
+          strong
+            |Storage
+        td
+          =spime.storage
+          
+      tr
+        td
+          strong
+            |Distribution
+        td
+          =spime.distribution
+          
+      tr
+        td
+          strong
+            |Price
+        td
+          =spime.price
+          
+      tr
+        td
+          strong
+            |Haptics
+        td
+          =spime.haptics
+          
+
+if locals.user_id == spime.owner._id
+  hr
+  div.row
+    div.span2
+    div.span8
+      table.table
+        tr
+          td
+            |Checkin URL
+          td
+            =spime.checkin_url
+        tr
+          td
+            |Checkin QRCode
+          td
+            include _qrcode
+    div.span2
