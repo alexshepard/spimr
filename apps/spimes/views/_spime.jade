@@ -31,7 +31,7 @@ table.table.table-bordered
           |Media
       td
         if spime.photo
-          img(src=spime.photoUrl)
+          img(src=spime.compUrl)
         else if locals.user_id == spime.owner._id
   
           form.form-horizontal(action='/spimes/image', method='post', enctype='multipart/form-data')

@@ -1,0 +1,197 @@
+p Date: #{spime.manufacturing_date}
+
+form.form-horizontal(action='/spimes/#{spime._id}', method='post')
+
+  input(type='hidden', name='_method', value='PUT')
+  
+  div.row
+    
+    div.span4
+
+      div.control-group
+        label.control-label(for='name') Name
+        div.controls
+          input.tooltips(type='text', 
+            id='name', name='name', 
+            title="What's it called?", 
+            placeholder="What's it called?", 
+            value=spime.name)
+
+      div.control-group
+        label.control-label(for='description') Description
+        div.controls
+          textarea.tooltips(rows=3, id='description', 
+            name='description', 
+            title="What's its story?",
+            placeholder="What's its story?") #{spime.description}
+
+      div.control-group
+        label.control-label(for='privacy') Privacy
+        div.controls
+          select.tooltips(id='privacy', name='privacy', title='Who can see it?')
+            privacies = [ 'private', 'public' ]
+            for privacy in privacies
+              option(selected=spime.privacy == privacy) #{privacy}
+    
+      div.control-group
+        label.control-label(for='manufacturing_date') Manufacturing Date
+        div.controls
+          input.tooltips(type='date', 
+            id='manufacturing_date', 
+            name='manufacturing_date', 
+            title="When was it made?"
+            value="#{locals.moment.utc(spime.manufacturing_date).format('YYYY-MM-DD')}")
+
+      div.control-group
+        label.control-label(for='functional_principles') Functional Principles
+        div.controls
+          textarea.tooltips(rows=3, id='functional_principles', 
+            name='functional_principles', 
+            title="How does it perform in real life?", 
+            placeholder="How does it perform in real life?") #{spime.functional_principles}
+
+      div.control-group
+        label.control-label(for='regulations_and_standards') Regulations & Standards
+        div.controls
+          textarea.tooltips(rows=3, id='regulations_and_standards', 
+            name='regulations_and_standards', 
+            title="How does it fit in?", 
+            placeholder="How does it fit in?") #{spime.regulations_and_standards}
+
+      div.control-group
+        label.control-label(for='running_cost') Running Cost
+        div.controls
+          textarea.tooltips(rows=3, id='running_cost', 
+            name='running_cost', 
+            title="What does it cost to make it work? How much energy and resources?",
+            placeholder="What does it cost to make it work? How much energy and resources?") #{spime.running_cost}
+
+      div.control-group
+        label.control-label(for='safety') Safety
+        div.controls
+          textarea.tooltips(rows=3, id='safety', 
+            name='safety', 
+            title="How safe is it? According to whom?",
+            placeholder="How safe is it? According to whom?") #{spime.safety}
+
+      div.control-group
+        label.control-label(for='capacity') Capacity
+        div.controls
+          textarea.tooltips(rows=3, id='capacity', 
+            name='capacity', 
+            title="How much can it do?",
+            placeholder="How much can it do?") #{spime.capacity}
+
+      div.control-group
+        label.control-label(for='hygiene') Hygiene
+        div.controls
+         textarea.tooltips(rows=3, id='hygiene', 
+          name='hygiene', 
+          title="What are the by-products and health side effects?",
+          placeholder="What are the by-products and health side effects?") #{spime.hygiene}
+
+      div.control-group
+        label.control-label(for='service') Service
+        div.controls
+          textarea.tooltips(rows=3, id='service', 
+            name='service', 
+            title="How to service and maintain it?",
+            placeholder="How to service and maintain it?") #{spime.service}
+
+      div.control-group
+        label.control-label(for='decay_and_recycling') Decay and Recycling
+        div.controls
+          textarea.tooltips(rows=3, id='decay_and_recycling', 
+            name='decay_and_recycling', 
+            title="How long will it last, how will it decay, and how to recycle it?",
+            placeholder="How long will it last, how will it decay, and how to recycle it?") #{spime.decay_and_recycling}
+
+
+    div.span4
+    
+      div.control-group
+        label.control-label(for='photo') Photo
+        div.controls
+          if spime.photo
+            img(src='#{spime.photoUrl}')
+          input.tooltips(type='file', 
+            id='photo', 
+            name='photo', 
+            title="What does it look like?",
+            accept="image/*")
+    
+      div.control-group
+        label.control-label(for='uses_and_limitations') Uses and Limitations
+        div.controls
+          textarea.tooltips(rows=3, id='uses_and_limitations', 
+            name='uses_and_limitations', 
+            title="How is it used, and what are its limitations?",
+            placeholder="How is it used, and what are its limitations?") #{spime.uses_and_limitations}
+
+      div.control-group
+        label.control-label(for='patents_rights') Patents and Rights
+        div.controls
+          textarea.tooltips(rows=3, id='patents_rights', 
+            name='patents_rights', 
+            title="How is it legally controlled or encumbered?"
+            placeholder="How is it legally controlled or encumbered?") #{spime.patents_rights}
+
+      div.control-group
+        label.control-label(for='materials') Materials
+        div.controls
+          textarea.tooltips(rows=3, id='materials', 
+            name='materials', 
+            title="What's it made of?",
+            placeholder="What's it made of?") #{spime.materials}
+
+      div.control-group
+        label.control-label(for='construction_method') Construction Method
+        div.controls
+          textarea.tooltips(rows=3, id='construction_method', 
+            name='construction_method', 
+            title="How was it made?",
+            placeholder="How was it made?") #{spime.construction_method}
+          
+      div.control-group
+        label.control-label(for='packaging') Packaging
+        div.controls
+          textarea.tooltips(rows=3, id='packaging', 
+            name='packaging', 
+            title="How was it packaged?",
+            placeholder="How was it packaged?") #{spime.packaging}
+          
+      div.control-group
+        label.control-label(for='storage') Storage
+        div.controls
+          textarea.tooltips(rows=3, id='storage', 
+            name='storage', 
+            title="Where is it stored?",
+            placeholder="Where is it stored?") #{spime.storage}
+          
+      div.control-group
+        label.control-label(for='distribution') Distribution
+        div.controls
+          textarea.tooltips(rows=3, id='distribution', 
+            name='distribution', 
+            title="How was it distributed?",
+            placeholder="How was it distributed?") #{spime.distribution}
+      
+      div.control-group
+        label.control-label(for='price') Price
+        div.controls
+          textarea.tooltips(rows=3, id='price', 
+            name='price', 
+            title="What did it cost?",
+            placeholder="What did it cost?") #{spime.price}
+            
+      div.control-group
+        label.control-label(for='haptics') Haptics
+        div.controls
+          textarea.tooltips(rows=3, id='haptics',
+            name='haptics', 
+            title="What does it feel like?",
+            placeholder="What does it feel like?") #{spime.haptics}
+
+  div.control-group
+    div.controls
+      button.btn(type='submit') Save

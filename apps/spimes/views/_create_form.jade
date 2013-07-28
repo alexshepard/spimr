@@ -1,19 +1,13 @@
-
-
-
-form.form-horizontal(action=urlFor(spime), method='post')
-  if(spime.name)
-    input(type='hidden', name='_method', value='put')
-
+form.form-horizontal(action='/spimes', method='post')
   div.control-group
     label.control-label(for='inputName') Name
     div.controls
-      input(type='text', id='inputName', name='name', value=spime.name)
+      input(type='text', id='inputName', name='name', placeholder="What's it called?")
 
   div.control-group
     label.control-label(for='inputDescription') Description
     div.controls
-      textarea(id='inputDescription', name='description', value=spime.description)
+      textarea(id='inputDescription', name='description', placeholder="What's its story?")
 
   div.control-group
     label.control-label(for='inputPrivacy') Privacy
@@ -25,5 +19,4 @@ form.form-horizontal(action=urlFor(spime), method='post')
   
   div.control-group
     div.controls
-      button.btn(type='submit')
-        | Save
+      button.btn(type='submit') Create
