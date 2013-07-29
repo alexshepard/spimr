@@ -1,6 +1,11 @@
 mongoose = require 'mongoose'
 cloudinary = require 'cloudinary'
 
+schemaOptions = {
+  toObject:
+    virtuals: true
+}
+
 MediaItem = new mongoose.Schema(
   name:
     type: String
@@ -29,48 +34,37 @@ MediaItem = new mongoose.Schema(
     validate: (val) -> 
       return true if val and val.length
       return false
-  
-  thumbUrl:
-    type: String
-    default: ""
     
-  compUrl:
-    type: String
-    default: ""
-  
-  largeUrl:
-    type: String
-    default: ""
-)
+, schemaOptions)
 
-MediaItem.pre 'save', (next) ->
-  # rebuild all thumbnail urls
-  this.thumbUrl = cloudinary.url(this.cloudinary_public_id + '.' + this.cloudinary_format,
-    {
-      width: 75
-      height: 75
-      crop: "fill"
-      radius: 10
-    }
-  )
-  
-  this.compUrl = cloudinary.url(this.cloudinary_public_id + '.' + this.cloudinary_format,
-    {
-      width: 150
-      height: 150
-      crop: "fill"
-      radius: 10
-    }
-  )
+MediaItem.virtual('thumbUrl').get ->
+  cloudinary.url(this.cloudinary_public_id + '.' + this.cloudinary_format,
+      {
+        width: 75
+        height: 75
+        crop: "fill"
+        radius: 10
+      }
+    )
 
-  this.largeUrl = cloudinary.url(this.cloudinary_public_id + '.' + this.cloudinary_format,
-    {
-      width: 400
-      height: 400
-      crop: "fill"
-      radius: 10
-    }
-  )
-  next()
+MediaItem.virtual('compUrl').get ->
+  cloudinary.url(this.cloudinary_public_id + '.' + this.cloudinary_format,
+      {
+        width: 150
+        height: 150
+        crop: "fill"
+        radius: 10
+      }
+    )
+
+MediaItem.virtual('largeUrl').get ->
+  cloudinary.url(this.cloudinary_public_id + '.' + this.cloudinary_format,
+      {
+        width: 400
+        height: 400
+        crop: "fill"
+        radius: 10
+      }
+    )
 
 mongoose.model "MediaItem", MediaItem
