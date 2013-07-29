@@ -21,7 +21,7 @@ routes = (app) ->
         
     app.post '/', (req, res) ->
       Spime = mongoose.model('Spime')
-      Spime.findOne ({ _id: req.body.spime }).populate('sightings').exec (err, spime) ->
+      Spime.find({ _id: req.body.spime }).populate('sightings').exec (err, spime) ->
         res.send(500, { error: err}) if err?
         if spime?
           SpimeSighting = mongoose.model('SpimeSighting')
