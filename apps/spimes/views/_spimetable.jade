@@ -33,35 +33,36 @@ div.tabbable
               |  #{spime.owner.email}
             td #{spime.privacy}              
 
+
+
 |<script>
 |var map;
 |function initialize() {
 |  var mapOptions = {
-|    zoom: 8,
-|    center: new google.maps.LatLng(-34.397, 150.644),
+|    zoom: 10,
 |    mapTypeId: google.maps.MapTypeId.ROADMAP
 |  };
 |  map = new google.maps.Map(document.getElementById('map-canvas'),
 |      mapOptions);
-|  var lat = -25.363;
-|  var lng = 131.044;
-|  var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
-|  var markerInfoTuples = [];
+|  var latlngbounds = new google.maps.LatLngBounds();
 for spime in spimes
-  |lat += .05;
-  |lng += .05;
-  |marker = new google.maps.Marker({
-  |  position: new google.maps.LatLng(lat, lng),
-  |  map: map,
-  |  title:"Hello World!",
-  |});
-  |infowindow = new google.maps.InfoWindow({
-  |  content: "#{spime.name}"
-  |});
-  |contentString = "<a href=/spimes/#{spime._id}>#{spime.name}</a>";
-  if spime.photo
-    |contentString += " <img src=#{spime.photo.compUrl}>";
-  |listenMarker(marker, contentString);
+  if spime.last_sighting && spime.last_sighting.latitude && spime.last_sighting.longitude
+    |lat = #{spime.last_sighting.latitude}
+    |lng = #{spime.last_sighting.longitude}
+    |latlngbounds.extend(new google.maps.LatLng(lat,lng));
+    |marker = new google.maps.Marker({
+    |  position: new google.maps.LatLng(lat, lng),
+    |  map: map,
+    |  title:"#{spime.name}",
+    |});
+    |contentString = "Spime: <a href=/spimes/#{spime._id}>#{spime.name}</a>";
+    if spime.photo
+      |contentString += "<br /><img src=#{spime.photo.compUrl}>";
+    |contentString+= "<br />Last Sighting: #{spime.last_sighting.location_name}";
+    |contentString+= "<br />Last Seen by: #{spime.last_sighting.checkin_person}";
+    |listenMarker(marker, contentString);
+|  map.setCenter(latlngbounds.getCenter());
+|  map.findBounds(latlngbounds);
 |}
 |function listenMarker(marker, contentString) {
 |  google.maps.event.addListener(marker, 'click', function() {

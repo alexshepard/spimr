@@ -185,13 +185,45 @@ div.row
             |Haptics
         td
           =spime.haptics
-          
 
+if spime.last_sighting
+  div.row
+    div.span2
+    div.span8      
+      h4 Sightings
+      table.table
+        tr
+          th
+            strong Location Name
+          th
+            strong Person
+          th
+            strong Latitude
+          th
+            strong Longitude
+          th
+            strong Map Link
+        for sighting in sightings
+          tr
+            td
+              =sighting.location_name
+            td
+              =sighting.checkin_person
+            td
+              =sighting.latitude
+            td
+              =sighting.longitude
+            td
+              if sighting.latitude && sighting.longitude
+                a(href="http://maps.google.com/maps?q=loc:#{spime.last_sighting.latitude},#{spime.last_sighting.longitude}") Google Maps Link
+
+    div.span2
+    
 if locals.user_id == spime.owner._id
-  hr
   div.row
     div.span2
     div.span8
+      h4 Private Data
       table.table
         tr
           td

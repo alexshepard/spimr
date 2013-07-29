@@ -13,7 +13,7 @@ routes = (app) ->
     app.get '/mine', (req, res) ->
       app.locals.requiresLogin(req, res)
       Spime = mongoose.model('Spime')
-      Spime.find({ owner: req.session.user_id}).populate('owner').populate('photo').populate('sightings').exec (err, spimes) ->
+      Spime.find({ owner: req.session.user_id}).populate('owner').populate('photo').populate('last_sighting').exec (err, spimes) ->
         if spimes?
           for spime in spimes
             if spime.photo? and spime.photo.cloudinary_public_id?
@@ -39,7 +39,8 @@ routes = (app) ->
 
     app.get '/:id', (req, res) ->
       Spime = mongoose.model('Spime')
-      Spime.findOne({ _id: req.params.id }).populate('owner').populate('photo').exec (err, spime) ->
+      SpimeSighting = mongoose.model('SpimeSighting')
+      Spime.findOne({ _id: req.params.id }).populate('owner').populate('photo').populate('last_sighting').exec (err, spime) ->
         res.send(500, { error: err }) if err?
         if spime?
           if spime.photo? and spime.photo.cloudinary_public_id?
@@ -47,22 +48,26 @@ routes = (app) ->
               { width: 400, height: 400, crop: "fill", radius: 10 })
           if spime.privacy == 'public' || spime.owner.id == req.session.user_id
             spime.checkin_url = app.locals.checkinUrlForUuid(req, spime.uuid)
-            res.render "#{__dirname}/views/spime",
-              title: res.name
-              stylesheet: "spime"
-              spime: spime
-              info: req.flash 'info'
-              error: req.flash 'error'
-            return
+            SpimeSighting.find({ spime: req.params.id }).exec (sightingsErr, sightings) ->
+              res.send(500, { error: sightingsErr }) if sightingsErr?
+              res.render "#{__dirname}/views/spime",
+                title: res.name
+                stylesheet: "spime"
+                spime: spime
+                sightings: sightings
+                info: req.flash 'info'
+                error: req.flash 'error'
+              return
           else
             req.flash 'error', 'Permission denied.'
             res.redirect '/'
             return
-        res.send(404)
+        else
+          res.send(404)
     
     app.get '/', (req, res) ->
       Spime = mongoose.model('Spime')
-      Spime.find({ privacy: 'public'}).populate('owner').populate('photo').exec (err, spimes) ->
+      Spime.find({ privacy: 'public'}).populate('owner').populate('photo').populate('last_sighting').exec (err, spimes) ->
         res.send(500, { error: err}) if err?
         if spimes?
           for spime in spimes
