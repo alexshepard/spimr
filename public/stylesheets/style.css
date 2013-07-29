@@ -27,4 +27,12 @@ p.flash.info {
   border-radius: 10%;
   -moz-border-radius: 10%;
   -webkit-border-radius: 10%;
-}  
+} 
+
+#map-canvas img {
+  max-width: none;
+}
+
+#map-canvas label { 
+  width: auto; display:inline; 
+} 
