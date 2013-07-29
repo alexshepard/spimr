@@ -2,6 +2,12 @@
 uuid = require('node-uuid')
 mongoose = require 'mongoose'  
 crypto = require 'crypto'
+gravatar = require 'gravatar'
+
+schemaOptions = {
+  toObject:
+    virtuals: true
+}
 
 User = new mongoose.Schema(
   email: { type: String, index: { unique: true}, validate: (val) -> 
@@ -12,7 +18,7 @@ User = new mongoose.Schema(
   reset_password_timestamp: { type: Date, default: null }
   hashed_password: { type: String }
   salt: { type: String }
-)
+, schemaOptions)
 
 User.virtual('id').get ->
   return this._id.toHexString();
@@ -24,6 +30,15 @@ User.virtual('password').set (password) ->
   this._password = password;
   this.salt = this.makeSalt()
   this.hashed_password = this.encryptPassword(password)
+
+User.virtual('largeIconUrl').get ->
+  gravatar.url(this.email, {s: '200', r: 'pg', d: '404'}, https=false);
+
+User.virtual('smallIconUrl').get ->
+  gravatar.url(this.email, {s: '50', r: 'pg', d: '404'}, https=false);
+
+User.virtual('tinyIconUrl').get ->
+  gravatar.url(this.email, {s: '30', r: 'pg', d: '404'}, https=false);
 
 User.method 'authenticate', (plainText) ->
   # TODO: should this be triple =? why?

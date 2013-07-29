@@ -22,3 +22,9 @@ p.flash.info {
 .navbar-form .btn {
   margin-right: 4px;
 }
+
+.avatar {
+  border-radius: 10%;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+}  

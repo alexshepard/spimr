@@ -24,7 +24,9 @@ div.tabbable
             td
               a(href='/spimes/#{spime.id}') #{spime.name}
             td #{spime.description}
-            td #{spime.owner.email}
+            td 
+              img.avatar(src="#{spime.owner.tinyIconUrl}") 
+              |  #{spime.owner.email}
             td #{spime.privacy}              
     div.tab-pane(id='tab2')
       p A google maps view showing all public spimes will go here.

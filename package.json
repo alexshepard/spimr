@@ -26,7 +26,8 @@
     "nodetime": "~0.8.13",
     "cloudinary": "~1.0.3",
     "moment": "~2.1.0",
-    "twitter": "~0.2.1"
+    "twitter": "~0.2.1",
+    "gravatar": "~1.0.6"
   },
   "devDependencies": {
     "mocha": "~1.12.0",
