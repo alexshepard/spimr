@@ -13,7 +13,7 @@ routes = (app) ->
     app.get '/mine', (req, res) ->
       app.locals.requiresLogin(req, res)
       Spime = mongoose.model('Spime')
-      Spime.find({ owner: req.session.user_id}).populate('owner').populate('photo').exec (err, spimes) ->
+      Spime.find({ owner: req.session.user_id}).populate('owner').populate('photo').populate('sightings').exec (err, spimes) ->
         if spimes?
           for spime in spimes
             if spime.photo? and spime.photo.cloudinary_public_id?
