@@ -28,8 +28,10 @@ routes = (app) ->
           attributes = req.body
           sighting = new SpimeSighting(attributes)
           sighting.spime = spime._id
-          spime.sightings.push sighting
-          
+          if spime.sightings
+            spime.sightings.push sighting
+          else
+            spime.sightings = [ sighting ]
           sighting.save (err, saved) ->
             res.send(500, {error: err}) if err?
             spime.save (spimeErr, spimeSaved) ->
