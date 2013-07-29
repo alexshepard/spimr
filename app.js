@@ -18,12 +18,20 @@ var express = require('express')
   , http = require('http')
   , RedisStore = require('connect-redis')(express)
   , mongoose = require('mongoose')
+  , twitter = require('twitter')
   , path = require('path');
 
 require('express-namespace');
 User = require('./models/user.coffee');
 
 var app = express();
+
+app.twit = new twitter({
+  consumer_key:         process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret:      process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key:     process.env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret:  process.env.TWITTER_ACCESS_TOKEN_SECRET
+});
 
 var sessionSecret = "asdlkfjsdlkjoiwdfjoiewjfewsd";
 var redis;

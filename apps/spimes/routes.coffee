@@ -113,6 +113,12 @@ routes = (app) ->
               res.redirect "/spimes/mine"
               return
             else
+              if spime.privacy == 'public'
+                twitString = "#{spime.name} was just created on Spimr: #{app.locals.baseUrl(req)}/spimes/#{spime._id}"
+                app.twit
+                  .updateStatus twitString, (data) ->
+                    console.log data
+
               req.flash 'info', 'Spime created.'
               res.redirect "/spimes/edit/#{saved._id}"
               return
