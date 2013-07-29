@@ -17,12 +17,12 @@ Spime = new mongoose.Schema(
     type: String
     index: { unique: true }
     
-  # where has it been?
-  sightings:
-    type: [mongoose.Schema.ObjectId]
+  # where was it last?
+  last_sighting:
+    type: mongoose.Schema.ObjectId
     ref: 'SpimeSighting'
-    default: []
-
+    default: null
+    
 
   # user editable properties
   # what's its name?
