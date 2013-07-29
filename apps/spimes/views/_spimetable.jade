@@ -2,13 +2,17 @@ div.tabbable
   ul.nav.nav-tabs
     li.active
       a(href='#tab1', data-toggle='tab')
-        |Lists of #{title}
+        |Maps of #{title}
     li
       a(href='#tab2', data-toggle='tab')
-        |Maps of #{title}
+        |Lists of #{title}
   div.tab-content
-    div.tab-pane.active(id='tab1')
 
+    div.tab-pane.active(id='tab1')
+      div(style="height: 500px; width: 800px;")
+        div(style="height: 100%; width: 100%;", id='map-canvas')
+
+    div.tab-pane(id='tab2')
       table.table.table-striped
         tr
           th Thumbnail
@@ -28,5 +32,56 @@ div.tabbable
               img.avatar(src="#{spime.owner.tinyIconUrl}") 
               |  #{spime.owner.email}
             td #{spime.privacy}              
-    div.tab-pane(id='tab2')
-      p A google maps view showing all public spimes will go here.
+
+|<script>
+|var map;
+|function initialize() {
+|  var mapOptions = {
+|    zoom: 8,
+|    center: new google.maps.LatLng(-34.397, 150.644),
+|    mapTypeId: google.maps.MapTypeId.ROADMAP
+|  };
+|  map = new google.maps.Map(document.getElementById('map-canvas'),
+|      mapOptions);
+|  var lat = -25.363;
+|  var lng = 131.044;
+|  var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+|  var markerInfoTuples = [];
+for spime in spimes
+  |lat += .05;
+  |lng += .05;
+  |marker = new google.maps.Marker({
+  |  position: new google.maps.LatLng(lat, lng),
+  |  map: map,
+  |  title:"Hello World!",
+  |});
+  |infowindow = new google.maps.InfoWindow({
+  |  content: "#{spime.name}"
+  |});
+  |contentString = "<a href=/spimes/#{spime._id}>#{spime.name}</a>";
+  if spime.photo
+    |contentString += " <img src=#{spime.photo.compUrl}>";
+  |listenMarker(marker, contentString);
+|}
+|function listenMarker(marker, contentString) {
+|  google.maps.event.addListener(marker, 'click', function() {
+|    new google.maps.InfoWindow({ content: contentString }).open(map, marker);
+|  });
+|}
+|function loadScript() {
+|  var script = document.createElement('script');
+|  script.type = 'text/javascript';
+|  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&' +
+|      'callback=initialize';
+|  document.body.appendChild(script);
+|}
+|window.onload = loadScript;
+|</script>
+
+|<script type='text/javascript'>
+|$(document).ready(function () {
+|  if ($(".tooltips").length) {
+|    $(".tooltips").tooltip();
+|  }
+|});
+|</script>
