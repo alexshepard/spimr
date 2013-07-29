@@ -27,18 +27,15 @@ routes = (app) ->
           SpimeSighting = mongoose.model('SpimeSighting')
           attributes = req.body
           sighting = new SpimeSighting(attributes)
-          sighting.spime = spime._id
-          if spime.sightings
-            spime.sightings.push sighting
-          else
-            spime.sightings = [ sighting ]
           sighting.save (err, saved) ->
             res.send(500, {error: err}) if err?
-            spime.save (spimeErr, spimeSaved) ->
-              res.send(500, {error: spimeErr}) if spimeErr?
+            Spime.update({ _id: req.body.spime } , {$set: { 'last_sighting' : sighting }}, (updateErr, updateSaved) ->
+              console.log updateSaved
+              res.send(500, {error: updateErr}) if updateErr?
               req.flash 'info', 'Sighting recorded, thank you!'
               res.redirect '/'
               return
+            )
 
       
 module.exports = routes
