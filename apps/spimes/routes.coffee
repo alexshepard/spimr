@@ -51,7 +51,7 @@ routes = (app) ->
             SpimeSighting.find({ spime: req.params.id }).exec (sightingsErr, sightings) ->
               res.send(500, { error: sightingsErr }) if sightingsErr?
               res.render "#{__dirname}/views/spime",
-                title: res.name
+                title: spime.name
                 stylesheet: "spime"
                 spime: spime
                 sightings: sightings
