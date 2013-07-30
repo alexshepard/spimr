@@ -5,7 +5,7 @@ routes = (app) ->
 
   app.get '/', (req, res) ->
     res.render "#{__dirname}/views/base",
-      title: 'Spimr'
+      title: 'Home'
       stylesheet: 'about'
       info: req.flash 'info'
       error: req.flash 'error'
