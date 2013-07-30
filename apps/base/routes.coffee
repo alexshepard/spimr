@@ -12,7 +12,7 @@ routes = (app) ->
 
   app.get '/about', (req, res) ->
     res.render "#{__dirname}/views/about",
-      title: 'About Spimr'
+      title: 'About'
       stylesheet: 'about'
       info: req.flash 'info'
       error: req.flash 'error'
