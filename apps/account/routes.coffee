@@ -15,9 +15,9 @@ routes = (app) ->
         error: req.flash 'error'
       return
     
-    app.get '/:email', (req, res) ->
+    app.get '/:nickname', (req, res) ->
       User = mongoose.model('User')
-      if req.params.email == 'me'
+      if req.params.nickname == 'me'
         app.locals.requiresLogin(req, res)
         User.findById req.session.user_id, (err, user) ->
           res.send(500, { error: err }) if err?
@@ -33,7 +33,7 @@ routes = (app) ->
             res.send(404)
             return
       else
-        User.findOne { email: req.params.email }, (err, user) ->
+        User.findOne { nickname: req.params.nickname }, (err, user) ->
           res.send(500, { error: err }) if err?
           if user?
             res.render "#{__dirname}/views/account",
