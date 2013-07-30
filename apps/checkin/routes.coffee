@@ -11,7 +11,7 @@ routes = (app) ->
           res.send(500, { error: err}) if err?
           if spime?
             res.render "#{__dirname}/views/sightings/new",
-              title: res.name
+              title: "Add Sighting"
               stylesheet: "sighting"
               spime: spime
               info: req.flash 'info'
