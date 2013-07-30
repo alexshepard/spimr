@@ -94,7 +94,7 @@ routes = (app) ->
             res.redirect '/'
             return
           res.render "#{__dirname}/views/edit",
-            title: res.name
+            title: "Edit #{spime.name}"
             stylesheet: "admin"
             spime: spime
             info: req.flash 'info'
