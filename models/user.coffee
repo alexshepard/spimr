@@ -18,6 +18,10 @@ User = new mongoose.Schema(
   reset_password_timestamp: { type: Date, default: null }
   hashed_password: { type: String }
   salt: { type: String }
+  nickname: { type: String, index: { unique: true }, default: "", validate: (val) ->
+    return true if val and val.length
+    return false
+  }
 , schemaOptions)
 
 User.virtual('id').get ->
