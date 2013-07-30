@@ -5,48 +5,48 @@ postmark = require('postmark')(process.env.POSTMARK_API_KEY)
 
 routes = (app) ->
         
-    app.namespace '/account', ->
+  app.namespace '/account', ->
+
+    app.get '/forgot', (req, res) ->
+      res.render "#{__dirname}/views/forgot",
+        title: "Forgot Password"
+        stylesheet: "forgot"
+        info: req.flash 'info'
+        error: req.flash 'error'
+      return
     
-      app.get '/:email', (req, res) ->
-        User = mongoose.model('User')
-        if req.params.email == 'me'
-          app.locals.requiresLogin(req, res)
-          User.findById req.session.user_id, (err, user) ->
-            res.send(500, { error: err }) if err?
-            if user?
-              res.render "#{__dirname}/views/account",
-                title: res.name
-                stylesheet: "account"
-                user: user
-                info: req.flash 'info'
-                error: req.flash 'error'
-              return
-            else
-              res.send(404)
-              return
-        else
-          User.findOne { email: req.params.email }, (err, user) ->
-            res.send(500, { error: err }) if err?
-            if user?
-              res.render "#{__dirname}/views/account",
-                title: res.name
-                stylesheet: "account"
-                user: user
-                info: req.flash 'info'
-                error: req.flash 'error'
-              return
-            else
-              res.send(404)
-              return
+    app.get '/:email', (req, res) ->
+      User = mongoose.model('User')
+      if req.params.email == 'me'
+        app.locals.requiresLogin(req, res)
+        User.findById req.session.user_id, (err, user) ->
+          res.send(500, { error: err }) if err?
+          if user?
+            res.render "#{__dirname}/views/account",
+              title: "About Me"
+              stylesheet: "account"
+              user: user
+              info: req.flash 'info'
+              error: req.flash 'error'
+            return
+          else
+            res.send(404)
+            return
+      else
+        User.findOne { email: req.params.email }, (err, user) ->
+          res.send(500, { error: err }) if err?
+          if user?
+            res.render "#{__dirname}/views/account",
+              title: "About #{user.nickname}"
+              stylesheet: "account"
+              user: user
+              info: req.flash 'info'
+              error: req.flash 'error'
+            return
+          else
+            res.send(404)
+            return
                 
-      app.get '/forgot', (req, res) ->
-        res.render "#{__dirname}/views/forgot",
-          title: res.name
-          stylesheet: "forgot"
-          info: req.flash 'info'
-          error: req.flash 'error'
-        return
-      
       app.post '/forgot', (req, res) ->
         User = mongoose.model('User')
         User.findOne { email: req.body.email }, (err, user) ->
@@ -159,7 +159,7 @@ routes = (app) ->
                 return
               else
                 res.render "#{__dirname}/views/reset",
-                  title: res.name
+                  title: "Reset Password"
                   stylesheet: "forgot"
                   user: user
                   info: req.flash 'info'
