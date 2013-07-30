@@ -31,7 +31,7 @@ routes = (app) ->
       Spime = mongoose.model('Spime')
       spime = new Spime()
       res.render "#{__dirname}/views/new",
-        title: res.name
+        title: "New Spime"
         stylesheet: "admin"
         spime: spime
         info: req.flash 'info'
