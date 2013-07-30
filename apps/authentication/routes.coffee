@@ -3,13 +3,6 @@ mongoose = require 'mongoose'
 
 
 routes = (app) ->
-
-  app.get '/login', (req, res) ->
-    res.render "#{__dirname}/views/login",
-      title: 'Login'
-      stylesheet: 'login'
-      info: req.flash 'info'
-      error: req.flash 'error'
     
   app.post '/sessions', (req, res) ->
     if req.body.submitButton == 'signin'
