@@ -30,7 +30,11 @@ div.tabbable
             td #{spime.description}
             td 
               img.avatar(src="#{spime.owner.tinyIconUrl}") 
-              a(href="/account/#{spime.owner.nickname}") #{spime.owner.nickname}
+              a(href="/account/#{spime.owner._id}") 
+                if spime.owner.nickname
+                  |#{spime.owner.nickname}
+                else
+                  |#{spime.owner.email}
             td #{spime.privacy}              
 
 
