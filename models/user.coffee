@@ -18,7 +18,7 @@ User = new mongoose.Schema(
   reset_password_timestamp: { type: Date, default: null }
   hashed_password: { type: String }
   salt: { type: String }
-  nickname: { type: String, index: { unique: true }, default: "", validate: (val) ->
+  nickname: { type: String, index: { unique: true, sparse: true }, default: "", validate: (val) ->
     return false if val == 'me'
     return true if val and val.length
     return false
