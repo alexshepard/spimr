@@ -38,13 +38,13 @@ User.virtual('password').set (password) ->
   this.hashed_password = this.encryptPassword(password)
 
 User.virtual('largeIconUrl').get ->
-  gravatar.url(this.email, {s: '200', r: 'pg', d: '404'}, https=false);
+  gravatar.url(this.email, {s: '200', r: 'pg'}, https=false);
 
 User.virtual('smallIconUrl').get ->
-  gravatar.url(this.email, {s: '50', r: 'pg', d: '404'}, https=false);
+  gravatar.url(this.email, {s: '50', r: 'pg'}, https=false);
 
 User.virtual('tinyIconUrl').get ->
-  gravatar.url(this.email, {s: '30', r: 'pg', d: '404'}, https=false);
+  gravatar.url(this.email, {s: '30', r: 'pg'}, https=false);
 
 User.method 'authenticate', (plainText) ->
   # TODO: should this be triple =? why?
