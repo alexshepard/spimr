@@ -58,28 +58,32 @@ routes = (app) ->
           res.redirect '/account/me'
           return
           
-
-    app.get '/:nickname', (req, res) ->
+    app.get '/me', (req, res) ->
       User = mongoose.model('User')
-      if req.params.nickname == 'me'
-        app.locals.requiresLogin(req, res)
-        User.findById req.session.user_id, (err, user) ->
-          res.send(500, { error: err }) if err?
-          if user?
-            res.render "#{__dirname}/views/account",
-              title: "About Me"
-              stylesheet: "account"
-              user: user
-              info: req.flash 'info'
-              error: req.flash 'error'
+      app.locals.requiresLogin(req, res)
+      User.findById req.session.user_id, (err, user) ->
+        res.send(500, { error: err }) if err?
+        if user?
+          res.render "#{__dirname}/views/account",
+            title: "About Me"
+            stylesheet: "account"
+            user: user
+            info: req.flash 'info'
+            error: req.flash 'error'
+          return
+        else
+          res.send(404)
+          return
+
+    app.get '/:id', (req, res) ->
+      User = mongoose.model('User')
+      User.findOne { _id: req.params.id }, (err, user) ->
+        res.send(500, { error: err }) if err?
+        if user?
+          if req.session && req.session.user_id && req.session.user_id == user._id
+            res.redirect '/account/me'
             return
           else
-            res.send(404)
-            return
-      else
-        User.findOne { nickname: req.params.nickname }, (err, user) ->
-          res.send(500, { error: err }) if err?
-          if user?
             res.render "#{__dirname}/views/account",
               title: "About #{user.nickname}"
               stylesheet: "account"
@@ -87,9 +91,9 @@ routes = (app) ->
               info: req.flash 'info'
               error: req.flash 'error'
             return
-          else
-            res.send(404)
-            return
+        else
+          res.send(404)
+          return
                 
       app.post '/forgot', (req, res) ->
         User = mongoose.model('User')
