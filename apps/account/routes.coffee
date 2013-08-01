@@ -57,6 +57,20 @@ routes = (app) ->
           req.flash 'info', 'User account updated.'
           res.redirect '/account/me'
           return
+    
+    app.delete '/me', (req, res) ->
+      app.locals.requiresLogin(req, res)
+      User = mongoose.model('User')
+      User.findById req.session.user_id, (err, user) ->
+        (res.send(500, { error: err }); return;) if err?
+        (res.send(404); return;) unless user?
+        user.remove (err, status) ->
+          (res.send(500, { error: err }); return;) if err?
+          req.session.regenerate (err) ->
+            (res.send(500, { error: err }); return;) if err?
+            req.flash 'info', 'Account deleted.'
+            res.redirect '/'
+          
           
     app.get '/me', (req, res) ->
       User = mongoose.model('User')

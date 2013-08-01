@@ -42,7 +42,7 @@ block content
         tr
           td(colspan=2)
             if user._id == locals.user_id
-              form(action='/account/#{user._id}', method='post', name="delete")
+              form(action='/account/me', method='post', name="delete")
                 input(type='hidden', name='_method', value='delete')
                 a.btn(href='/account/edit/#{user.email}') Edit Account 
                 &nbsp;

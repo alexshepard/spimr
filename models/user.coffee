@@ -4,6 +4,8 @@ mongoose = require 'mongoose'
 crypto = require 'crypto'
 gravatar = require 'gravatar'
 
+Spime = require './spime'
+
 schemaOptions = {
   toObject:
     virtuals: true
@@ -63,5 +65,19 @@ User.pre 'save', (next) ->
     next()
   else
     next(new Error('Invalid password'))
+
+User.pre 'remove', (next) ->
+  Spime = mongoose.model('Spime')
+  Spime.find({ owner: this._id}).populate('photo').exec (err, spimes) ->
+    if err?
+      next()
+    else
+      spimes.map (spime) ->
+        spime.remove (err, status) ->
+          if err?
+            console.log "unable to remove spime while deleting user: "
+            console.log err
+  next()
+
 
 mongoose.model "User", User
