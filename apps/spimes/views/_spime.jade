@@ -46,7 +46,11 @@ div.row
             |Owner
         td
           img.avatar(src="#{spime.owner.smallIconUrl}") 
-          a(href='/account/#{spime.owner.nickname}') #{spime.owner.nickname}
+          a(href="/account/#{spime.owner._id}") 
+            if spime.owner.nickname
+              |#{spime.owner.nickname}
+            else
+              |#{spime.owner.email}
           
       tr
         td
