@@ -15,6 +15,50 @@ routes = (app) ->
         error: req.flash 'error'
       return
     
+    app.get '/edit/:email', (req, res) ->
+      User = mongoose.model('User')
+      User.findOne ({ email: req.params.email }), (err, user) ->
+        (res.send(500, {error: err }); return) if err?
+        (res.send(404); return) if !user?
+        if String(user._id) != String(req.session.user_id)
+          req.flash 'error', 'Permission denied.'
+          res.redirect '/'
+          return
+        res.render "#{__dirname}/views/edit",
+          title: "Edit My Account"
+          stylesheet: "account"
+          user: user
+          info: req.flash 'info'
+          error: req.flash 'error'
+        return
+    
+    app.put '/edit', (req, res) ->
+      User = mongoose.model('User')
+      User.findOne ({ _id: req.body._user_id }), (err, user) ->
+        (res.send(500, {error: err }); return) if err?
+        (res.send(404); return) if !user?
+        if String(user._id) != String(req.session.user_id)
+          req.flash 'error', 'Permission denied.'
+          res.redirect '/'
+          return
+        attributes = req.body
+        delete attributes._user_id
+
+        user.update { $set: attributes }, (err, update) ->
+          if err?
+            if err.code? and err.code == 11001
+              req.flash 'error', 'Nickname already taken.'
+              res.redirect '/account/me'
+              return
+            else
+              res.send(500)
+              return
+          (res.send(404); return) if !user?
+          req.flash 'info', 'User account updated.'
+          res.redirect '/account/me'
+          return
+          
+
     app.get '/:nickname', (req, res) ->
       User = mongoose.model('User')
       if req.params.nickname == 'me'

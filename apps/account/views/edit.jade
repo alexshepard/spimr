@@ -1,0 +1,17 @@
+extends ../../../views/layout
+
+block content
+  
+  div.row
+    div.span8
+      form.form-horizontal(action='/account/edit', method='post')
+        input(type='hidden', name='_method', value='PUT')
+        input(type='hidden', name='_user_id', value=user._id)
+        div.control-group
+          label.control-label(for='nickname') Nickname
+          div.controls
+            input(type='text', id='nickname', name='nickname', value=user.nickname)
+            
+        div.control-group
+          div.controls
+            button.btn(type='submit') Save

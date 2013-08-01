@@ -1,8 +1,49 @@
 extends ../../../views/layout
 
 block content
-    
-  h2 Account Details
-  p <strong>Email:</strong> #{user.email}
-  img.avatar(src="#{user.largeIconUrl}")
   
+  div.row
+    div.span8
+      table.table
+        tr
+          th(colspan=2)
+            if user._id == locals.user_id
+              h4 My Details
+            else
+              h4 Account Details
+        tr
+          td
+            strong Nickname:
+          td
+            | #{user.nickname}
+        tr
+          td
+            strong Photo:
+            br
+            em (from <a href="http://www.gravatar.com/">Gravatar</a>)
+          td
+            img.avatar(src="#{user.largeIconUrl}")
+        if user._id == locals.user_id
+          tr
+            td
+              strong Email:
+            td
+              | #{user.email}
+          tr
+            td
+              strong Verified:
+            td
+              if user.is_verified
+                | Yep! Thank you!
+              else
+                | Nope. 
+                a(href="blah") Resend Verification Email?
+        
+        tr
+          td(colspan=2)
+            if user._id == locals.user_id
+              form(action='/account/#{user._id}', method='post', name="delete")
+                input(type='hidden', name='_method', value='delete')
+                a.btn(href='/account/edit/#{user.email}') Edit Account 
+                &nbsp;
+                button.btn.btn-danger(type='submit') Delete Account
