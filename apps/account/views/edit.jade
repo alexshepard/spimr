@@ -11,6 +11,18 @@ block content
           label.control-label(for='nickname') Nickname
           div.controls
             input(type='text', id='nickname', name='nickname', value=user.nickname)
+        div.control-group
+          label.control-label(for='new_password') New Password
+          div.controls
+            input(type='password', id='new_password', name='new_password')
+        div.control-group
+          label.control-label(for='confirm_new_password') Confirm New Password
+          div.controls
+            input(type='password', id='confirm_new_password', name='confirm_new_password')
+        div.control-group
+          label.control-label(for='old_password') Old Password
+          div.controls
+            input(type='password', id='old_password', name='old_password')
             
         div.control-group
           div.controls

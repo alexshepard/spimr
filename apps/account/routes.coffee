@@ -33,6 +33,10 @@ routes = (app) ->
         return
     
     app.put '/edit', (req, res) ->
+      if req.body.new_password? && req.body.new_password != req.body.confirm_new_password
+        req.flash 'error', "New passwords don't match."
+        res.redirect '/account/me'
+        return
       User = mongoose.model('User')
       User.findOne ({ _id: req.body._user_id }), (err, user) ->
         (res.send(500, {error: err }); return) if err?
@@ -41,19 +45,34 @@ routes = (app) ->
           req.flash 'error', 'Permission denied.'
           res.redirect '/'
           return
-        attributes = req.body
-        delete attributes._user_id
+        
+        if user.nickname != req.body.nickname
+          user.nickname = req.body.nickname
 
-        user.update { $set: attributes }, (err, update) ->
+        if req.body.new_password? && req.body.new_password.length
+          if user.authenticate(req.body.old_password)
+            user.set("password", req.body.new_password)
+            user.set("reset_password_token", null)
+            user.set("reset_password_timestamp", null)
+          else
+            req.flash 'error', 'Old Password Incorrect'
+            res.redirect '/account/me'
+            return
+        
+        user.save (err, saved) ->
+          console.log err
           if err?
             if err.code? and err.code == 11001
               req.flash 'error', 'Nickname already taken.'
               res.redirect '/account/me'
               return
             else
-              res.send(500)
+              (res.send(500, {error: err }); return) if err?
               return
-          (res.send(404); return) if !user?
+          if !saved?
+            req.flash 'error', 'Unable to update user account.'
+            res.redirect '/account/me'
+            return
           req.flash 'info', 'User account updated.'
           res.redirect '/account/me'
           return
