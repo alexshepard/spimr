@@ -35,9 +35,13 @@ User.virtual('password').get ->
   return this._password;
 
 User.virtual('password').set (password) ->
-  this._password = password;
-  this.salt = this.makeSalt()
-  this.hashed_password = this.encryptPassword(password)
+  # we can end up with a null password here if a user
+  # is saving their account without setting the password
+  # ie updating their nickname or whatever?
+  if (password)
+    this._password = password;
+    this.salt = this.makeSalt()
+    this.hashed_password = this.encryptPassword(password)
 
 User.virtual('largeIconUrl').get ->
   gravatar.url(this.email, {s: '200', r: 'pg'}, https=false);
@@ -60,8 +64,9 @@ User.method 'encryptPassword', (password) ->
   return crypto.createHmac('sha1', this.salt).update(password).digest('hex')
 
 User.pre 'save', (next) ->
-  # TODO: what is next() in this context?
-  if this.password and this.password.length
+  # if the user is setting a password, it must have a valid length
+  # if not setting a password, they must already have a hashed_password
+  if (this.password and this.password.length) or (this.hashed_password and this.hashed_password.length)
     next()
   else
     next(new Error('Invalid password'))
@@ -70,7 +75,7 @@ User.pre 'remove', (next) ->
   Spime = mongoose.model('Spime')
   Spime.find({ owner: this._id}).populate('photo').exec (err, spimes) ->
     if err?
-      next()
+      next(new Error('Error getting spimes'))
     else
       spimes.map (spime) ->
         spime.remove (err, status) ->
