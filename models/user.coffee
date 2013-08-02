@@ -80,6 +80,7 @@ User.pre 'remove', (next) ->
       spimes.map (spime) ->
         spime.remove (err, status) ->
           if err?
+            next(new Error('Error deleting spimes'))
             console.log "unable to remove spime while deleting user: "
             console.log err
   next()
