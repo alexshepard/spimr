@@ -158,7 +158,8 @@ routes = (app) ->
               photo.uploader = user._id                
               photo.save (err, saved) ->
                 (res.send(500, { error: err }); return;) if err?
-                spime.update { $set : { photo: photo._id } }, (err, update) ->
+                spime.set("photo" : photo._id)
+                spime.save (err, saved) ->
                   (res.send(500, { error: err }); return;) if err?
                   req.flash 'info', 'Photo saved.'
                   res.redirect '/spimes/' + spime._id
@@ -180,8 +181,10 @@ routes = (app) ->
           if req.session.user_id != String(spime.owner)
             req.flash 'error', 'Permission denied.'
             res.redirect '/'
-            return   
+            return
+          
           attributes = req.body
+          
           Spime.findByIdAndUpdate(req.params.id, { $set: attributes }).populate('owner').exec (updateErr, updatedSpime) ->
             res.send(500, { error: updateErr}) if updateErr?
             if updatedSpime?
