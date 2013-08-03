@@ -180,8 +180,7 @@ routes = (app) ->
           if req.session.user_id != String(spime.owner)
             req.flash 'error', 'Permission denied.'
             res.redirect '/'
-            return
-          
+            return   
           attributes = req.body
           Spime.findByIdAndUpdate(req.params.id, { $set: attributes }).populate('owner').exec (updateErr, updatedSpime) ->
             res.send(500, { error: updateErr}) if updateErr?
@@ -220,10 +219,6 @@ routes = (app) ->
           req.flash 'info', 'Photo deleted.'
           res.redirect '/spimes/mine'
           return
-          
-
-
-                  
       
     app.delete '/:id', (req, res) ->
       app.locals.requiresLogin(req, res)
