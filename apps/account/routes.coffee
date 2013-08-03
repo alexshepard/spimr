@@ -142,15 +142,13 @@ routes = (app) ->
               res.redirect '/'
               return
           crypto.randomBytes 24, (ex, buf) ->
-            attributes = {
-              reset_password_token: buf.toString 'hex'
-              reset_password_timestamp: new Date
-            }
-            User.findOneAndUpdate { email: req.body.email }, { $set: attributes }, (err, update) ->
+            user.set("reset_password_token", buf.toString 'hex')
+            user.set("reset_password_timestamp", new Date)
+            user.save (err, saved) ->            
               res.send(500, { error: err}) if err?
-              if update?
+              if saved?
                 # construct and send email
-                resetUrl = app.locals.baseUrl(req) + '/account/reset/' + req.body.email + '/' + update.reset_password_token
+                resetUrl = app.locals.baseUrl(req) + '/account/reset/' + req.body.email + '/' + buf.toString 'hex'
                 bodyText = 'Someone has requested to your password on spimr.com. If this was you, please click this link: ' + resetUrl + "\n\n If it wasn\'t you, please ignore this email."
                 email = {
                     From: "Spimr Support <spimr@spimr.com>"
@@ -184,13 +182,7 @@ routes = (app) ->
         req.flash 'error', 'Passwords don\'t match.'
         res.redirect '/account/reset/' + req.body._email + '/' + req.body._token
         return
-      User = mongoose.model('User')
-      attributes = {
-        password: req.body.password,
-        reset_password_token: null,
-        reset_password_timestamp: null 
-      }
-      
+      User = mongoose.model('User')      
       User.findOne { email: req.body._email }, (err, user) ->
         if err?
           req.flash 'error', 'Error : ' + err.message
@@ -201,25 +193,24 @@ routes = (app) ->
             req.flash 'error', 'Permission denied'
             res.redirect '/'
             return
-            
           if (new Date().getTime() - user.reset_password_timestamp.getTime()) > (60 * 60 * 2 * 1000)
             req.flash 'error', 'Password reset has expired.'
             res.redirect '/'
             return
-            
-          user.update { $set: attributes }, (err, update) ->
+
+          user.set(password, req.body.password);
+          user.set(reset_password_token: null);
+          user.set(reset_password_timestamp: null);
+          
+          user.save (err, save) ->
             if err?
               req.flash 'error', 'Error saving new password'
               res.redirect '/'
               return
-            if update?
+            if save?
               req.flash 'info', 'Password updated.'
               res.redirect '/'
               return      
-            req.flash 'error', 'Error updating'
-            res.redirect '/'
-            return
-            
         else
           req.flash 'error', 'Error: user not found'
           res.redirect '/'
