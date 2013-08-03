@@ -175,19 +175,18 @@ routes = (app) ->
     app.put '/:id', (req, res) ->
       app.locals.requiresLogin(req, res)
       Spime = mongoose.model('Spime')
-      Spime.findById req.params.id, (err, spime) ->
+      Spime.findOne({ _id: req.params.id }).populate('owner').exec (err, spime) ->
         res.send(500,  { error: err}) if err?
         if spime?
-          if req.session.user_id != String(spime.owner)
+          if String(req.session.user_id) != String(spime.owner._id)
             req.flash 'error', 'Permission denied.'
             res.redirect '/'
             return
-          
-          attributes = req.body
-          
-          Spime.findByIdAndUpdate(req.params.id, { $set: attributes }).populate('owner').exec (updateErr, updatedSpime) ->
-            res.send(500, { error: updateErr}) if updateErr?
-            if updatedSpime?
+          for attr,value of req.body
+            spime.set(attr, value)
+          spime.save (err, save) ->
+            res.send(500, { error: err}) if err?
+            if save?
               req.flash 'info', 'Spime edited.'
               res.redirect "/spimes/#{req.params.id}"
               return
