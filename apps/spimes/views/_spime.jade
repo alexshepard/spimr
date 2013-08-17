@@ -193,35 +193,48 @@ div.row
 if spime.last_sighting
   div.row
     div.span2
-    div.span8      
+    div.span8
       h4 Sightings
-      table.table
-        tr
-          th
-            strong Location Name
-          th
-            strong Person
-          th
-            strong Latitude
-          th
-            strong Longitude
-          th
-            strong Map Link
-        for sighting in sightings
-          tr
-            td
-              =sighting.location_name
-            td
-              =sighting.checkin_person
-            td
-              =sighting.latitude
-            td
-              =sighting.longitude
-            td
-              if sighting.latitude && sighting.longitude
-                a(href="http://maps.google.com/maps?q=loc:#{spime.last_sighting.latitude},#{spime.last_sighting.longitude}") Google Maps Link
+      div.tabbable
+        ul.nav.nav-tabs
+          li.active
+            a(href='#tab1', data-toggle='tab')
+              |Maps of #{title} Sightings
+          li
+            a(href='#tab2', data-toggle='tab')
+              |Lists of #{title} Sightings
 
-    div.span2
+        div.tab-content
+
+          div.tab-pane.active(id='tab1')
+            div(style="height: 500px; width: 800px;")
+              div(style="height: 100%; width: 100%;", id='map-canvas')
+
+          div.tab-pane(id='tab2')
+            table.table.table-striped
+              tr
+                th Where?
+                th Who?
+                th When?
+                th Latitude
+                th Longitude
+                th Map Link
+              each sighting in sightings
+                tr
+                  td
+                    =sighting.location_name
+                  td
+                    =sighting.checkin_person
+                  td
+                    =locals.moment(sighting.timestamp).calendar()
+                  td
+                    =sighting.latitude
+                  td
+                    =sighting.longitude
+                  td
+                    if sighting.latitude && sighting.longitude
+                      a(href="http://maps.google.com/maps?q=loc:#{spime.last_sighting.latitude},#{spime.last_sighting.longitude}") Google Maps Link
+      div.span2
     
 if locals.user_id == spime.owner._id
   div.row
@@ -240,3 +253,56 @@ if locals.user_id == spime.owner._id
           td
             include _qrcode
     div.span2
+
+|<script>
+|var map;
+|function initialize() {
+|  if (!document.getElementById('map-canvas')) { return; }
+|  var mapOptions = {
+|    zoom: 10,
+|    mapTypeId: google.maps.MapTypeId.ROADMAP
+|  };
+|  map = new google.maps.Map(document.getElementById('map-canvas'),
+|      mapOptions);
+|  var latlngbounds = new google.maps.LatLngBounds();
+for sighting in sightings
+  |lat = #{spime.last_sighting.latitude}
+  |lng = #{spime.last_sighting.longitude}
+  |latlngbounds.extend(new google.maps.LatLng(lat,lng));
+  |marker = new google.maps.Marker({
+  |  position: new google.maps.LatLng(lat, lng),
+  |  map: map,
+  |  title:"#{spime.name}",
+  |});
+  |contentString = "What? <a href=/spimes/#{spime._id}>#{spime.name}</a>";
+  if spime.photo
+    |contentString += "<br /><img src=#{spime.photo.compUrl}>";
+  |contentString+= "<br />Where? #{sighting.location_name}";
+  |contentString+= "<br />Who? #{sighting.checkin_person}";
+  |contentString+= "<br />When?: #{locals.moment(sighting.timestamp).calendar()}";
+  |listenMarker(marker, contentString);
+|  map.setCenter(latlngbounds.getCenter());
+|  map.findBounds(latlngbounds);
+|}
+|function listenMarker(marker, contentString) {
+|  google.maps.event.addListener(marker, 'click', function() {
+|    new google.maps.InfoWindow({ content: contentString }).open(map, marker);
+|  });
+|}
+|function loadScript() {
+|  var script = document.createElement('script');
+|  script.type = 'text/javascript';
+|  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&' +
+|      'callback=initialize';
+|  document.body.appendChild(script);
+|}
+|window.onload = loadScript;
+|</script>
+
+|<script type='text/javascript'>
+|$(document).ready(function () {
+|  if ($(".tooltips").length) {
+|    $(".tooltips").tooltip();
+|  }
+|});
+|</script>
