@@ -67,4 +67,10 @@ MediaItem.virtual('largeUrl').get ->
       }
     )
 
+MediaItem.pre 'remove', (next) ->
+  cloudinary.api.delete_resources(this.cloudinary_public_id, (result) ->
+  )
+  next()
+
+
 mongoose.model "MediaItem", MediaItem
