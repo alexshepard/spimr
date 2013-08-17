@@ -2,6 +2,8 @@
 uuid = require('node-uuid')
 
 mongoose = require 'mongoose'
+MediaItem = require './media.coffee'
+
 
 Spime = new mongoose.Schema(
 
@@ -148,6 +150,7 @@ Spime.pre 'save', (next) ->
     next()
 
 Spime.pre 'remove', (next) ->
+  # delete sightings
   SpimeSighting = mongoose.model('SpimeSighting')
   SpimeSighting.find({ spime: this._id}).exec (err, sightings) ->
     if err?
@@ -159,6 +162,18 @@ Spime.pre 'remove', (next) ->
             next(new Error('Error deleting sighting'))
             console.log "unable to remove sighting while deleting spime: "
             console.log err
+    
+  # delete media
+  MediaItem = mongoose.model('MediaItem')
+  MediaItem.findOne({ _id: this.photo }).exec (err, photo) ->
+    if err?
+      next(new Error('Error getting media'))
+    else
+      photo.remove (err, response) ->
+        if err?
+          next(new Error('Error deleting photo'))
+          console.log "unable to remove image while deleting spime: "
+          console.log err
   next()
 
 
