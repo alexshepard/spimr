@@ -147,6 +147,22 @@ Spime.pre 'save', (next) ->
     this.uuid = uuid.v4()
     next()
 
+Spime.pre 'remove', (next) ->
+  SpimeSighting = mongoose.model('SpimeSighting')
+  SpimeSighting.find({ spime: this._id}).exec (err, sightings) ->
+    if err?
+      next(new Error('Error getting spimes'))
+    else
+      sightings.map (sighting) ->
+        sighting.remove (err, status) ->
+          if err?
+            next(new Error('Error deleting sighting'))
+            console.log "unable to remove sighting while deleting spime: "
+            console.log err
+  next()
+
+
+
 SpimeSighting = new mongoose.Schema(
   location_name: { type: String }
   checkin_person: { type: String }
@@ -162,6 +178,8 @@ SpimeSighting.pre 'save', (next) ->
   else
     this.timestamp = new Date()
     next()
+
+
 
 mongoose.model "Spime", Spime
 mongoose.model "SpimeSighting", SpimeSighting
