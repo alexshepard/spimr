@@ -21,7 +21,7 @@ routes = (app) ->
         
     app.post '/', (req, res) ->
       Spime = mongoose.model('Spime')
-      Spime.find({ _id: req.body.spime }).populate('owner').populate('last_sighting').exec (err, spime) ->
+      Spime.findOne({ _id: req.body.spime }).populate('owner').exec (err, spime) ->
         res.send(500, { error: err}) if err?
         if spime?
           SpimeSighting = mongoose.model('SpimeSighting')
@@ -29,7 +29,8 @@ routes = (app) ->
           sighting = new SpimeSighting(attributes)
           sighting.save (err, saved) ->
             res.send(500, {error: err}) if err?
-            Spime.update({ _id: req.body.spime } , {$set: { 'last_sighting' : sighting }}, (updateErr, updateSaved) ->
+            spime.set('last_sighting', sighting._id)
+            spime.save (updateErr, save) ->
               res.send(500, {error: updateErr}) if updateErr?
               req.flash 'info', 'Sighting recorded, thank you!'
               if spime.privacy == 'public' || 
@@ -38,7 +39,6 @@ routes = (app) ->
               else
                 res.redirect '/'
               return
-            )
 
       
 module.exports = routes
