@@ -32,7 +32,8 @@
   "devDependencies": {
     "mocha": "~1.12.0",
     "libxmljs": "~0.8.1",
-    "node-dev": "~2.0.1"
+    "node-dev": "~2.0.1",
+    "should": "~1.2.2"
   },
   "repository": {
     "type": "git",
