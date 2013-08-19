@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/alexshepard/spimr.png)](https://travis-ci.org/alexshepard/spimr)
+
 spimr
 =====
 
