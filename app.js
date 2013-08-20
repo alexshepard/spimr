@@ -56,7 +56,6 @@ if (process.env.REDISTOGO_URL) {
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
-app.set('storage-uri', process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/spimr');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -87,6 +86,14 @@ if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
 
+// mongo url
+if ('test' === app.get('env')) {
+  app.set('storage-uri', 'mongodb://localhost/spimr_test');
+} else {
+  app.set('storage-uri', process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/spimr');
+}
+
+
 // mongoose
 var err;
 mongoose.connect(app.get('storage-uri'), { db: {save: true }}, (err), function () {
@@ -110,3 +117,5 @@ require('./apps/checkin/routes.coffee')(app);         // spime sighting handler
 http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+module.exports = app;
