@@ -190,7 +190,7 @@ div.row
         td
           =spime.haptics
 
-if spime.last_sighting
+if sightings
   div.row
     div.span2
     div.span8
@@ -233,7 +233,7 @@ if spime.last_sighting
                     =sighting.longitude
                   td
                     if sighting.latitude && sighting.longitude
-                      a(href="http://maps.google.com/maps?q=loc:#{spime.last_sighting.latitude},#{spime.last_sighting.longitude}") Google Maps Link
+                      a(href="http://maps.google.com/maps?q=loc:#{sighting.latitude},#{sighting.longitude}") Google Maps Link
       div.span2
     
 if locals.user_id == spime.owner._id
@@ -266,8 +266,8 @@ if locals.user_id == spime.owner._id
 |      mapOptions);
 |  var latlngbounds = new google.maps.LatLngBounds();
 for sighting in sightings
-  |lat = #{spime.last_sighting.latitude}
-  |lng = #{spime.last_sighting.longitude}
+  |lat = #{sighting.latitude}
+  |lng = #{sighting.longitude}
   |latlngbounds.extend(new google.maps.LatLng(lat,lng));
   |marker = new google.maps.Marker({
   |  position: new google.maps.LatLng(lat, lng),
