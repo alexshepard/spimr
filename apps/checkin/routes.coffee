@@ -30,8 +30,8 @@ routes = (app) ->
           sighting.save (err, saved) ->
             next(err) if err?
             spime.set('last_sighting', sighting._id)
-            spime.save (updateErr, save) ->
-              next(updateErr) if err?
+            spime.save (err, save) ->
+              next(err) if err?
               req.flash 'info', 'Sighting recorded, thank you!'
               if spime.privacy == 'public' || 
                       (req.session.user_id && req.session.user_id == spime.owner._id)
