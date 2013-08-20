@@ -79,6 +79,13 @@ app.use(function (req, res, next) {
 });
 
 app.use(app.router);
+
+app.use(function(err, req, res, next) {
+    if(!err) return next();
+    console.log("error!!!");
+    res.send(500, 'Something broke!');
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
