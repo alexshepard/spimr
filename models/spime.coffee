@@ -170,11 +170,12 @@ Spime.pre 'remove', (next) ->
     if err?
       next(new Error('Error getting media'))
     else
-      photo.remove (err, response) ->
-        if err?
-          next(new Error('Error deleting photo'))
-          console.log "unable to remove image while deleting spime: "
-          console.log err
+      if photo?
+        photo.remove (err, response) ->
+          if err?
+            next(new Error('Error deleting photo'))
+            console.log "unable to remove image while deleting spime: "
+            console.log err
   next()
 
 
