@@ -1,6 +1,6 @@
 
 require 'assert'
-require 'should'
+should = require 'should'
 
 mongoose = require 'mongoose'
 
@@ -12,17 +12,38 @@ describe "Spime", ->
   
   before (done) ->
     mongoose.createConnection('mongodb://localhost/spimr_test');
-    spime = new Spime
-    spime.save (err, saved) ->
-      done()
+    done()
   
   after (done) ->
+    mongoose.connection.db.dropDatabase()
     mongoose.connection.close()
     done()
     
   it "exists", ->
+    spime = new Spime
     spime.should.exist
   
-  it "sets uuid", ->
-    spime.uuid.should.exist
+  it "requires name", (done) ->
+    spime = new Spime
+    spime.save (err) ->
+      should.exist(err)
+      done()
+  
+  it "saves with name", (done) ->
+    spime = new Spime
+    spime.name = "name-test"
+    spime.save (err) ->
+      should.not.exist(err)
+      done()
+    
+  it "sets uuid", (done) ->
+    spime = new Spime
+    spime.name = 'uuid-test'
+    spime.save (err) ->
+      spime.should.have.property('uuid')
+      done()
 
+  it "deletes its media", ->
+    
+  it "deletes its sightings", ->
+    
