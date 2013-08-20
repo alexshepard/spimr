@@ -31,6 +31,7 @@ Spime = new mongoose.Schema(
   name:
     type: String
     trim: true
+    required: true
     validate: [(val) ->
       return true if val and val.length
       return false
