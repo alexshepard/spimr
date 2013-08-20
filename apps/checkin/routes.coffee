@@ -8,7 +8,7 @@ routes = (app) ->
     app.get '/:uuid', (req, res) ->
       Spime = mongoose.model('Spime')
       Spime.findOne uuid: req.params.uuid, (err, spime) ->
-        res.send(500, { error: err}) if err?
+        next(err) if err?
         if spime?
           res.render "#{__dirname}/views/sightings/new",
             title: "Add Sighting"
@@ -22,16 +22,16 @@ routes = (app) ->
     app.post '/', (req, res) ->
       Spime = mongoose.model('Spime')
       Spime.findOne({ _id: req.body.spime }).populate('owner').exec (err, spime) ->
-        res.send(500, { error: err}) if err?
+        next(err) if err?
         if spime?
           SpimeSighting = mongoose.model('SpimeSighting')
           attributes = req.body
           sighting = new SpimeSighting(attributes)
           sighting.save (err, saved) ->
-            res.send(500, {error: err}) if err?
+            next(err) if err?
             spime.set('last_sighting', sighting._id)
             spime.save (updateErr, save) ->
-              res.send(500, {error: updateErr}) if updateErr?
+              next(updateErr) if err?
               req.flash 'info', 'Sighting recorded, thank you!'
               if spime.privacy == 'public' || 
                       (req.session.user_id && req.session.user_id == spime.owner._id)
