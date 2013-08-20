@@ -18,7 +18,7 @@ routes = (app) ->
     app.get '/edit/:email', (req, res) ->
       User = mongoose.model('User')
       User.findOne ({ email: req.params.email }), (err, user) ->
-        (res.send(500, {error: err }); return) if err?
+        next(err) if err?
         (res.send(404); return) if !user?
         if String(user._id) != String(req.session.user_id)
           req.flash 'error', 'Permission denied.'
@@ -39,7 +39,7 @@ routes = (app) ->
         return
       User = mongoose.model('User')
       User.findOne ({ _id: req.body._user_id }), (err, user) ->
-        (res.send(500, {error: err }); return) if err?
+        next(err) if err?
         (res.send(404); return) if !user?
         if String(user._id) != String(req.session.user_id)
           req.flash 'error', 'Permission denied.'
@@ -67,8 +67,7 @@ routes = (app) ->
               res.redirect '/account/me'
               return
             else
-              (res.send(500, {error: err }); return) if err?
-              return
+              next(err)
           if !saved?
             req.flash 'error', 'Unable to update user account.'
             res.redirect '/account/me'
@@ -81,12 +80,12 @@ routes = (app) ->
       app.locals.requiresLogin(req, res)
       User = mongoose.model('User')
       User.findById req.session.user_id, (err, user) ->
-        (res.send(500, { error: err }); return;) if err?
+        next(err) if err?
         (res.send(404); return;) unless user?
         user.remove (err, status) ->
-          (res.send(500, { error: err }); return;) if err?
+          next(err) if err?
           req.session.regenerate (err) ->
-            (res.send(500, { error: err }); return;) if err?
+            next(err) if err?
             req.flash 'info', 'Account deleted.'
             res.redirect '/'
           
@@ -95,7 +94,7 @@ routes = (app) ->
       User = mongoose.model('User')
       app.locals.requiresLogin(req, res)
       User.findById req.session.user_id, (err, user) ->
-        res.send(500, { error: err }) if err?
+        next(err) if err?
         if user?
           res.render "#{__dirname}/views/account",
             title: "About Me"
@@ -111,7 +110,7 @@ routes = (app) ->
     app.get '/:id', (req, res) ->
       User = mongoose.model('User')
       User.findOne { _id: req.params.id }, (err, user) ->
-        res.send(500, { error: err }) if err?
+        next(err) if err?
         if user?
           if req.session && req.session.user_id && req.session.user_id == user._id
             res.redirect '/account/me'
@@ -144,8 +143,8 @@ routes = (app) ->
           crypto.randomBytes 24, (ex, buf) ->
             user.set("reset_password_token", buf.toString 'hex')
             user.set("reset_password_timestamp", new Date)
-            user.save (err, saved) ->            
-              res.send(500, { error: err}) if err?
+            user.save (err, saved) ->
+              next(err) if err?        
               if saved?
                 # construct and send email
                 resetUrl = app.locals.baseUrl(req) + '/account/reset/' + req.body.email + '/' + buf.toString 'hex'
@@ -184,10 +183,7 @@ routes = (app) ->
         return
       User = mongoose.model('User')      
       User.findOne { email: req.body._email }, (err, user) ->
-        if err?
-          req.flash 'error', 'Error : ' + err.message
-          res.redirect '/'
-          return
+        next(err) if err?
         if user?
           if user.reset_password_token != req.body._token
             req.flash 'error', 'Permission denied'
@@ -219,10 +215,7 @@ routes = (app) ->
     app.get '/reset/:email/:token', (req, res) ->
       User = mongoose.model('User')
       User.findOne { email: req.params.email }, (err, user) ->
-        if err?
-          req.flash 'error', 'Error :('
-          res.redirect '/'
-          return
+        next(err) if err?
         if user?
           if user.reset_password_token == req.params.token
             if (new Date().getTime() - user.reset_password_timestamp.getTime()) > (60 * 60 * 2 * 1000)
