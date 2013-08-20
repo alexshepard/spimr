@@ -8,6 +8,7 @@ routes = (app) ->
     if req.body.submitButton == 'signin'
       User = mongoose.model('User')
       User.findOne email: req.body.email, (err, user) ->
+        next(err) if err?
         if user and user.authenticate(req.body.password)
           req.session.user_id = user.id
           req.session.user_email = user.email
@@ -25,18 +26,18 @@ routes = (app) ->
         if err?
           if err.code == 11000
             req.flash 'error', 'Email address already exists.'
+            res.redirect('/')
+            return
           else
-            req.flash 'error', 'Account creation failed :' + err.message
-          res.redirect('/')
-          return
+            next(err)
         req.session.user_id = user.id
         req.session.user_email = user.email
         req.flash 'info', 'Account created.'
         res.redirect '/'
 
-  
   app.del '/sessions',  (req, res) ->
     req.session.regenerate (err) ->
+      next(err) if err?
       req.flash 'info', 'You have been logged out'
       res.redirect '/'
 
