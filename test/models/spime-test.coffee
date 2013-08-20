@@ -3,11 +3,10 @@ require 'assert'
 require 'should'
 
 mongoose = require 'mongoose'
-mongoose.connect('mongodb://localhost/spimr_test');
+app = require '../../app'
 
 require '../../models/spime.coffee'
 Spime = mongoose.model('Spime')
-
 
 describe "Spime", ->
   spime = null
@@ -16,12 +15,7 @@ describe "Spime", ->
     spime = new Spime
     spime.save (err, saved) ->
       done()
-  
-  after (done) ->
-    mongoose.connection.db.dropDatabase ->
-      mongoose.connection.close ->
-        done()
-  
+    
   it "exists", ->
     spime.should.exist
   
