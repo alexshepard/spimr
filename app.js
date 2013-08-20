@@ -69,8 +69,10 @@ app.use(express.session({
 }));
 
 app.use(function (req, res, next) {
-  res.locals.user_id = req.session.user_id;
-  res.locals.user_email = req.session.user_email;
+  if (req.session) {
+    res.locals.user_id = req.session.user_id;
+    res.locals.user_email = req.session.user_email;
+  }
   res.locals.path = req.path;
   res.locals.google_analytics_account = process.env.GOOGLE_ANALYTICS_ACCOUNT;
   res.locals.google_maps_key = process.env.GOOGLE_MAPS_KEY;
@@ -81,9 +83,13 @@ app.use(function (req, res, next) {
 app.use(app.router);
 
 app.use(function(err, req, res, next) {
-    if(!err) return next();
-    console.log("error!!!");
-    res.send(500, 'Something broke!');
+  if(!err) return next();
+  console.log(err);
+  res.render('error', {
+      status: err.status || 500
+    , error: err
+  });
+  return;
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
