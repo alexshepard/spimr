@@ -8,16 +8,16 @@ routes = (app) ->
     app.get '/:uuid', (req, res) ->
       Spime = mongoose.model('Spime')
       Spime.findOne uuid: req.params.uuid, (err, spime) ->
-          res.send(500, { error: err}) if err?
-          if spime?
-            res.render "#{__dirname}/views/sightings/new",
-              title: "Add Sighting"
-              stylesheet: "sighting"
-              spime: spime
-              info: req.flash 'info'
-              error: req.flash 'error'
-            return
-          res.send(404)
+        res.send(500, { error: err}) if err?
+        if spime?
+          res.render "#{__dirname}/views/sightings/new",
+            title: "Add Sighting"
+            stylesheet: "sighting"
+            spime: spime
+            info: req.flash 'info'
+            error: req.flash 'error'
+          return
+        res.send(404)
         
     app.post '/', (req, res) ->
       Spime = mongoose.model('Spime')
