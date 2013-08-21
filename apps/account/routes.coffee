@@ -7,7 +7,7 @@ routes = (app) ->
         
   app.namespace '/account', ->
 
-    app.get '/forgot', (req, res) ->
+    app.get '/forgot', (req, res, next) ->
       res.render "#{__dirname}/views/forgot",
         title: "Forgot Password"
         stylesheet: "forgot"
@@ -15,10 +15,10 @@ routes = (app) ->
         error: req.flash 'error'
       return
     
-    app.get '/edit/:email', (req, res) ->
+    app.get '/edit/:email', (req, res, next) ->
       User = mongoose.model('User')
       User.findOne ({ email: req.params.email }), (err, user) ->
-        next(err) if err?
+        return next(err) if err?
         (res.send(404); return) if !user?
         if String(user._id) != String(req.session.user_id)
           req.flash 'error', 'Permission denied.'
@@ -32,14 +32,14 @@ routes = (app) ->
           error: req.flash 'error'
         return
     
-    app.put '/edit', (req, res) ->
+    app.put '/edit', (req, res, next) ->
       if req.body.new_password? && req.body.new_password != req.body.confirm_new_password
         req.flash 'error', "New passwords don't match."
         res.redirect '/account/me'
         return
       User = mongoose.model('User')
       User.findOne ({ _id: req.body._user_id }), (err, user) ->
-        next(err) if err?
+        return next(err) if err?
         (res.send(404); return) if !user?
         if String(user._id) != String(req.session.user_id)
           req.flash 'error', 'Permission denied.'
@@ -67,7 +67,7 @@ routes = (app) ->
               res.redirect '/account/me'
               return
             else
-              next(err)
+              return next(err)
           if !saved?
             req.flash 'error', 'Unable to update user account.'
             res.redirect '/account/me'
@@ -76,25 +76,25 @@ routes = (app) ->
           res.redirect '/account/me'
           return
     
-    app.delete '/me', (req, res) ->
+    app.delete '/me', (req, res, next) ->
       app.locals.requiresLogin(req, res)
       User = mongoose.model('User')
       User.findById req.session.user_id, (err, user) ->
-        next(err) if err?
+        return next(err) if err?
         (res.send(404); return;) unless user?
         user.remove (err, status) ->
-          next(err) if err?
+          return next(err) if err?
           req.session.regenerate (err) ->
-            next(err) if err?
+            return next(err) if err?
             req.flash 'info', 'Account deleted.'
             res.redirect '/'
           
           
-    app.get '/me', (req, res) ->
+    app.get '/me', (req, res, next) ->
       User = mongoose.model('User')
       app.locals.requiresLogin(req, res)
       User.findById req.session.user_id, (err, user) ->
-        next(err) if err?
+        return next(err) if err?
         if user?
           res.render "#{__dirname}/views/account",
             title: "About Me"
@@ -107,10 +107,10 @@ routes = (app) ->
           res.send(404)
           return
 
-    app.get '/:id', (req, res) ->
+    app.get '/:id', (req, res, next) ->
       User = mongoose.model('User')
       User.findOne { _id: req.params.id }, (err, user) ->
-        next(err) if err?
+        return next(err) if err?
         if user?
           if req.session && req.session.user_id && req.session.user_id == user._id
             res.redirect '/account/me'
@@ -127,7 +127,7 @@ routes = (app) ->
           res.send(404)
           return
                 
-    app.post '/forgot', (req, res) ->
+    app.post '/forgot', (req, res, next) ->
       User = mongoose.model('User')
       User.findOne { email: req.body.email }, (err, user) ->
         if err?
@@ -144,7 +144,7 @@ routes = (app) ->
             user.set("reset_password_token", buf.toString 'hex')
             user.set("reset_password_timestamp", new Date)
             user.save (err, saved) ->
-              next(err) if err?        
+              return next(err) if err?        
               if saved?
                 # construct and send email
                 resetUrl = app.locals.baseUrl(req) + '/account/reset/' + req.body.email + '/' + buf.toString 'hex'
@@ -176,14 +176,14 @@ routes = (app) ->
           return
             
 
-    app.put '/password', (req, res) ->
+    app.put '/password', (req, res, next) ->
       if req.body.password != req.body.confirm
         req.flash 'error', 'Passwords don\'t match.'
         res.redirect '/account/reset/' + req.body._email + '/' + req.body._token
         return
       User = mongoose.model('User')      
       User.findOne { email: req.body._email }, (err, user) ->
-        next(err) if err?
+        return next(err) if err?
         if user?
           if user.reset_password_token != req.body._token
             req.flash 'error', 'Permission denied'
@@ -212,10 +212,10 @@ routes = (app) ->
           res.redirect '/'
           return
 
-    app.get '/reset/:email/:token', (req, res) ->
+    app.get '/reset/:email/:token', (req, res, next) ->
       User = mongoose.model('User')
       User.findOne { email: req.params.email }, (err, user) ->
-        next(err) if err?
+        return next(err) if err?
         if user?
           if user.reset_password_token == req.params.token
             if (new Date().getTime() - user.reset_password_timestamp.getTime()) > (60 * 60 * 2 * 1000)

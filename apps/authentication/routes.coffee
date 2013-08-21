@@ -4,11 +4,10 @@ mongoose = require 'mongoose'
 
 routes = (app) ->
     
-  app.post '/sessions', (req, res) ->
+  app.post '/sessions', (req, res, next) ->
     if req.body.submitButton == 'signin'
       User = mongoose.model('User')
       User.findOne email: req.body.email, (err, user) ->
-        next(err) if err?
         if user and user.authenticate(req.body.password)
           req.session.user_id = user.id
           req.session.user_email = user.email
@@ -29,15 +28,15 @@ routes = (app) ->
             res.redirect('/')
             return
           else
-            next(err)
+            return next(err)
         req.session.user_id = user.id
         req.session.user_email = user.email
         req.flash 'info', 'Account created.'
         res.redirect '/'
 
-  app.del '/sessions',  (req, res) ->
+  app.del '/sessions',  (req, res, next) ->
     req.session.regenerate (err) ->
-      next(err) if err?
+      return next(err) if err?
       req.flash 'info', 'You have been logged out'
       res.redirect '/'
 
