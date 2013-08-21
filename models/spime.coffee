@@ -186,7 +186,7 @@ SpimeSighting = new mongoose.Schema(
   latitude: { type: Number }
   longitude: { type: Number }
   timestamp: { type: Date }
-  spime: { type: mongoose.Schema.ObjectId, ref: 'Spime' }
+  spime: { type: mongoose.Schema.ObjectId, required: true, ref: 'Spime' }
 )
 
 SpimeSighting.pre 'save', (next) ->
