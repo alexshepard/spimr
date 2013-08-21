@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/alexshepard/spimr.png)](https://travis-ci.org/alexshepard/spimr)
+[![Build Status](https://drone.io/github.com/alexshepard/spimr/status.png)](https://drone.io/github.com/alexshepard/spimr/latest)
 
 spimr
 =====
