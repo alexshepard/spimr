@@ -12,8 +12,10 @@ schemaOptions = {
 }
 
 User = new mongoose.Schema(
-  email: { type: String, index: { unique: true}, validate: (val) -> 
-    return true if val and val.length
+  # http://davidcel.is/blog/2012/09/06/stop-validating-email-addresses-with-regex/
+  email: { type: String, required: true, index: { unique: true}, validate: (val) -> 
+    emailPattern = new RegExp(/@/i)
+    return true if val and val.length and val.match(emailPattern)
     return false
   }
   reset_password_token: { type: String, default: '' }
