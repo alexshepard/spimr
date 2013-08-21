@@ -43,6 +43,7 @@ describe "Spime", ->
     spime = new Spime
     spime.name = 'uuid-test'
     spime.save (err) ->
+      should.not.exist(err)
       spime.should.have.property('uuid')
       done()
 
@@ -53,13 +54,17 @@ describe "Spime", ->
     spime = new Spime
     spime.name = "deletes sighting-test"
     spime.save (err) ->
+      should.not.exist(err)
       sighting = new SpimeSighting
       sighting.spime = spime
       sighting.save (err) ->
+        should.not.exist(err)
         spime.remove (err) ->
+          should.not.exist(err)
           SpimeSighting
             .findOne( { _id: sighting._id } )
             .exec (err, sighting) ->
+              should.not.exist(err)
               should.not.exist(sighting)
               done() 
 
@@ -89,6 +94,7 @@ describe "SpimeSighting", ->
     spime = new Spime
     sighting.spime = spime
     sighting.save (err) ->
+      should.not.exist(err)
       sighting.should.have.property('timestamp')
       done()
     
