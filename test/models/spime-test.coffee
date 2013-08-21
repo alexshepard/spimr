@@ -9,14 +9,15 @@ Spime = mongoose.model('Spime')
 
 describe "Spime", ->
   spime = null
+  mongo = null
   
   before (done) ->
-    mongoose.createConnection('mongodb://localhost/spimr_test');
+    mongo = mongoose.createConnection('mongodb://localhost/spimr_test');
     done()
   
   after (done) ->
-    mongoose.connection.db.dropDatabase()
-    mongoose.connection.close()
+    mongo.db.dropDatabase()
+    mongo.close()
     done()
     
   it "exists", ->
@@ -43,7 +44,8 @@ describe "Spime", ->
       spime.should.have.property('uuid')
       done()
 
-  it "deletes its media", ->
+  it "deletes its media", (done) ->
+    done()
     
-  it "deletes its sightings", ->
-    
+  it "deletes its sightings", (done) ->
+    done()
