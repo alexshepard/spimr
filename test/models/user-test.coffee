@@ -4,7 +4,9 @@ should = require 'should'
 mongoose = require 'mongoose'
 
 require '../../models/user.coffee'
+require '../../models/spime.coffee'
 User = mongoose.model('User')
+Spime = mongoose.model('Spime')
 
 mongo = null
 
@@ -89,4 +91,22 @@ describe "User", ->
       should.not.exist(err)
       done()
 
-  it "deletes its spimes", ->
+  it "deletes its spimes", (done) ->
+    user = new User
+    user.email = "delete-spimes-test@domain"
+    user.password = "asdf"
+    user.save (err) ->
+      should.not.exist(err)
+      spime = new Spime
+      spime.owner = user
+      spime.name = "user-deletes-spimes-test"
+      spime.save (err) ->
+        should.not.exist(err)
+        user.remove (err) ->
+          should.not.exist(err)
+          Spime
+            .findOne( { _id: spime._id } )
+            .exec (err, spime) ->
+              should.not.exist(err)
+              should.not.exist(spime)
+              done() 
