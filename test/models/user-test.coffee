@@ -6,19 +6,20 @@ mongoose = require 'mongoose'
 require '../../models/user.coffee'
 User = mongoose.model('User')
 
+mongo = null
+
+before (done) ->
+  mongo = mongoose.createConnection('mongodb://localhost/spimr_test');
+  done()
+
+after (done) ->
+  mongo.db.dropDatabase()
+  mongo.close()
+  done()
+
 describe "User", ->
   user = null
-  mongo = null
-  
-  before (done) ->
-    mongo = mongoose.createConnection('mongodb://localhost/spimr_test');
-    done()
-  
-  after (done) ->
-    mongo.db.dropDatabase()
-    mongo.close()
-    done()
-    
+      
   it "exists", (done) ->
     user = new User
     user.should.exist
