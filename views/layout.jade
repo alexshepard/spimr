@@ -88,13 +88,13 @@ html
                 input(type='hidden', name='_method', value='delete')
                 button.btn(type='submit') Logout
               ul.nav.pull-right
-                if locals.path == '/account/me'
+                if locals.path == '/people/me'
                   li.active
-                    a(href='/account/me')
+                    a(href='/people/me')
                       =locals.user_email
                 else
                   li
-                    a(href='/account/me')
+                    a(href='/people/me')
                       =locals.user_email
             else
               form.navbar-form.pull-right(action='/sessions', method='post', name="login")

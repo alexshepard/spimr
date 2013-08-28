@@ -5,7 +5,7 @@ postmark = require('postmark')(process.env.POSTMARK_API_KEY)
 
 routes = (app) ->
         
-  app.namespace '/account', ->
+  app.namespace '/people', ->
 
     app.get '/forgot', (req, res, next) ->
       res.render "#{__dirname}/views/forgot",
@@ -35,7 +35,7 @@ routes = (app) ->
     app.put '/edit', (req, res, next) ->
       if req.body.new_password? && req.body.new_password != req.body.confirm_new_password
         req.flash 'error', "New passwords don't match."
-        res.redirect '/account/me'
+        res.redirect '/people/me'
         return
       User = mongoose.model('User')
       User.findOne ({ _id: req.body._user_id }), (err, user) ->
@@ -56,7 +56,7 @@ routes = (app) ->
             user.set("reset_password_timestamp", null)
           else
             req.flash 'error', 'Old Password Incorrect'
-            res.redirect '/account/me'
+            res.redirect '/people/me'
             return
         
         user.save (err, saved) ->
@@ -64,16 +64,16 @@ routes = (app) ->
           if err?
             if err.code? and err.code == 11001
               req.flash 'error', 'Nickname already taken.'
-              res.redirect '/account/me'
+              res.redirect '/people/me'
               return
             else
               return next(err)
           if !saved?
             req.flash 'error', 'Unable to update user account.'
-            res.redirect '/account/me'
+            res.redirect '/people/me'
             return
           req.flash 'info', 'User account updated.'
-          res.redirect '/account/me'
+          res.redirect '/people/me'
           return
     
     app.delete '/me', (req, res, next) ->
@@ -113,7 +113,7 @@ routes = (app) ->
         return next(err) if err?
         if user?
           if req.session && req.session.user_id && req.session.user_id == user._id
-            res.redirect '/account/me'
+            res.redirect '/people/me'
             return
           else
             res.render "#{__dirname}/views/account",
