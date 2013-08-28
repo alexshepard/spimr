@@ -3,7 +3,7 @@ div.row
 
   div.span4
     if spime.photo
-      img(src="#{spime.photo.largeUrl}")
+      img(src="#{spime.photo.large_url}")
     else
       |Default Photo Here
     
@@ -276,7 +276,7 @@ for sighting in sightings
   |});
   |contentString = "What? <a href=/spimes/#{spime._id}>#{spime.name}</a>";
   if spime.photo
-    |contentString += "<br /><img src=#{spime.photo.compUrl}>";
+    |contentString += "<br /><img src=#{spime.photo.comp_url}>";
   |contentString+= "<br />Where? #{sighting.location_name}";
   |contentString+= "<br />Who? #{sighting.checkin_person}";
   |contentString+= "<br />When?: #{locals.moment(sighting.timestamp).calendar()}";

@@ -23,8 +23,8 @@ div.tabbable
         each spime in spimes
           tr
             td
-              if spime.thumbUrl
-                img(src='#{spime.thumbUrl}')
+              if spime.photo
+                img(src='#{spime.photo.thumb_url}')
             td
               a(href='/spimes/#{spime.id}') #{spime.name}
             td #{spime.description}

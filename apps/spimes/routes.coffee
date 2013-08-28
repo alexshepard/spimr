@@ -1,6 +1,4 @@
 mongoose = require 'mongoose'
-cloudinary = require 'cloudinary'
-fs = require 'fs'
 
 Spime = require '../../models/spime'
 User = require '../../models/user'
@@ -16,10 +14,6 @@ routes = (app) ->
       Spime.find({ owner: req.session.user_id}).populate('owner').populate('photo').populate('last_sighting').exec (err, spimes) ->
         return next(err) if err?
         if spimes?
-          for spime in spimes
-            if spime.photo? and spime.photo.cloudinary_public_id?
-              spime.thumbUrl = cloudinary.url(spime.photo.cloudinary_public_id + '.' + spime.photo.cloudinary_format,
-                { width: 45, height: 45, crop: "fill", radius: 10 })
           res.render "#{__dirname}/views/mine",
             title: "My Spimes"
             stylesheet: "admin"
@@ -44,9 +38,6 @@ routes = (app) ->
       Spime.findOne({ _id: req.params.id }).populate('owner').populate('photo').populate('last_sighting').exec (err, spime) ->
         return next(err) if err?
         if spime?
-          if spime.photo? and spime.photo.cloudinary_public_id?
-            spime.photoUrl = cloudinary.url(spime.photo.cloudinary_public_id + '.' + spime.photo.cloudinary_format,
-              { width: 400, height: 400, crop: "fill", radius: 10 })
           if spime.privacy == 'public' || spime.owner.id == req.session.user_id
             spime.checkin_url = app.locals.checkinUrlForUuid(req, spime.uuid)
             SpimeSighting.find({ spime: req.params.id }).exec (err, sightings) ->
@@ -71,10 +62,6 @@ routes = (app) ->
       Spime.find({ privacy: 'public'}).populate('owner').populate('photo').populate('last_sighting').exec (err, spimes) ->
         return next(err) if err?
         if spimes?
-          for spime in spimes
-            if spime.photo? and spime.photo.cloudinary_public_id?
-              spime.thumbUrl = cloudinary.url(spime.photo.cloudinary_public_id + '.' + spime.photo.cloudinary_format,
-                { width: 45, height: 45, crop: "fill", radius: 10 })
           res.render "#{__dirname}/views/public",
             title: 'Public Spimes'
             stylesheet: "spimr"
@@ -143,35 +130,24 @@ routes = (app) ->
             req.flash 'error', 'Permission denied.'
             res.redirect '/spimes/mine'
             return
-          if spime.photo?
-            cloudinary.api.delete_resources(spime.photo.cloudinary_public_id, (result) ->
-              console.log result
-            )
-          stream = cloudinary.uploader.upload_stream((result) ->
-            (res.send(404, { error: 'No Upload Possible' }); return;) if !result?
-            if result?
-              MediaItem = mongoose.model('MediaItem')
-              photo = new MediaItem
-              photo.cloudinary_public_id = result.public_id
-              photo.cloudinary_format = result.format
-              photo.cloudinary_resource_type = result.resource_type
-              photo.name = req.body.imageTitle
-              photo.uploader = user._id                
-              photo.save (err, saved) ->
-                return next(err) if err?
-                spime.set("photo" : photo._id)
-                spime.save (err, saved) ->
+          MediaItem = mongoose.model('MediaItem')
+          photo = new MediaItem
+          photo.data_source_name = 'CloudinaryMediaDataSource'
+          photo.save_media(req.files.photo, (result) ->
+            photo.media_item_id = result.public_id
+            photo.media_format = result.format
+            photo.uploader = user
+            photo.save (err, save) ->
+              return next(err) if err?
+              if save?
+                spime.photo = photo
+                spime.save (err, save) ->
                   return next(err) if err?
-                  req.flash 'info', 'Photo saved.'
-                  res.redirect '/spimes/' + spime._id
+                  req.flash 'info', 'Spime saved.'
+                  res.redirect "/spimes/#{spime._id}"
                   return
-          ,
-            { width: 1000, height: 1000, crop: "limit" }
           )
-          fs.createReadStream(req.files.photo.path,
-            encoding: "binary"
-          ).on("data", stream.write).on "end", stream.end
-
+      
 
     app.put '/:id', (req, res, next) ->
       app.locals.requiresLogin(req, res)
@@ -215,13 +191,9 @@ routes = (app) ->
                 spime.photo = null
                 spime.save (err, saved) ->
                   return next(err) if err?
-
-          cloudinary.api.delete_resources(image.cloudinary_public_id, (result) ->
-            console.log result
-          )
-          req.flash 'info', 'Photo deleted.'
-          res.redirect '/spimes/mine'
-          return
+                  req.flash 'info', 'Photo deleted.'
+                  res.redirect '/spimes/mine'
+                  return
       
     app.delete '/:id', (req, res, next) ->
       app.locals.requiresLogin(req, res)
