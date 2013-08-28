@@ -21,24 +21,27 @@ routes = (app) ->
         
     app.post '/', (req, res, next) ->
       Spime = mongoose.model('Spime')
-      Spime.findOne({ _id: req.body.spime }).populate('owner').exec (err, spime) ->
-        return next(err) if err?
-        if spime?
-          SpimeSighting = mongoose.model('SpimeSighting')
-          attributes = req.body
-          sighting = new SpimeSighting(attributes)
-          sighting.save (err, saved) ->
-            return next(err) if err?
-            spime.set('last_sighting', sighting._id)
-            spime.save (err, save) ->
+      Spime
+        .findOne({ _id: req.body.spime })
+        .populate('owner')
+        .exec (err, spime) ->
+          return next(err) if err?
+          if spime?
+            SpimeSighting = mongoose.model('SpimeSighting')
+            attributes = req.body
+            sighting = new SpimeSighting(attributes)
+            sighting.save (err, saved) ->
               return next(err) if err?
-              req.flash 'info', 'Sighting recorded, thank you!'
-              if spime.privacy == 'public' || 
-                      (req.session.user_id && req.session.user_id == spime.owner._id)
-                res.redirect "/spimes/#{spime._id}"
-              else
-                res.redirect '/'
-              return
+              spime.set('last_sighting', sighting._id)
+              spime.save (err, save) ->
+                return next(err) if err?
+                req.flash 'info', 'Sighting recorded, thank you!'
+                if spime.privacy == 'public' || 
+                        (req.session.user_id && req.session.user_id == spime.owner._id)
+                  res.redirect "/spimes/#{spime._id}"
+                else
+                  res.redirect '/'
+                return
 
       
 module.exports = routes

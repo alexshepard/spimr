@@ -11,15 +11,20 @@ routes = (app) ->
     app.get '/mine', (req, res, next) ->
       app.locals.requiresLogin(req, res)
       Spime = mongoose.model('Spime')
-      Spime.find({ owner: req.session.user_id}).populate('owner').populate('photo').populate('last_sighting').exec (err, spimes) ->
-        return next(err) if err?
-        if spimes?
-          res.render "#{__dirname}/views/mine",
-            title: "My Spimes"
-            stylesheet: "admin"
-            spimes: spimes
-            info: req.flash 'info'
-            error: req.flash 'error'
+      Spime
+        .find({ owner: req.session.user_id})
+        .populate('owner')
+        .populate('photo')
+        .populate('last_sighting')
+        .exec (err, spimes) ->
+          return next(err) if err?
+          if spimes?
+            res.render "#{__dirname}/views/mine",
+              title: "My Spimes"
+              stylesheet: "admin"
+              spimes: spimes
+              info: req.flash 'info'
+              error: req.flash 'error'
 
     app.get '/new', (req, res, next) ->
       app.locals.requiresLogin(req, res)
@@ -35,41 +40,51 @@ routes = (app) ->
     app.get '/:id', (req, res, next) ->
       Spime = mongoose.model('Spime')
       SpimeSighting = mongoose.model('SpimeSighting')
-      Spime.findOne({ _id: req.params.id }).populate('owner').populate('photo').populate('last_sighting').exec (err, spime) ->
-        return next(err) if err?
-        if spime?
-          if spime.privacy == 'public' || spime.owner.id == req.session.user_id
-            spime.checkin_url = app.locals.checkinUrlForUuid(req, spime.uuid)
-            SpimeSighting.find({ spime: req.params.id }).exec (err, sightings) ->
-              return next(err) if err?
-              res.render "#{__dirname}/views/spime",
-                title: spime.name
-                stylesheet: "spime"
-                spime: spime
-                sightings: sightings
-                info: req.flash 'info'
-                error: req.flash 'error'
+      Spime
+        .findOne({ _id: req.params.id })
+        .populate('owner')
+        .populate('photo')
+        .populate('last_sighting')
+        .exec (err, spime) ->
+          return next(err) if err?
+          if spime?
+            if spime.privacy == 'public' || spime.owner.id == req.session.user_id
+              spime.checkin_url = app.locals.checkinUrlForUuid(req, spime.uuid)
+              SpimeSighting.find({ spime: req.params.id }).exec (err, sightings) ->
+                return next(err) if err?
+                res.render "#{__dirname}/views/spime",
+                  title: spime.name
+                  stylesheet: "spime"
+                  spime: spime
+                  sightings: sightings
+                  info: req.flash 'info'
+                  error: req.flash 'error'
+                return
+            else
+              req.flash 'error', 'Permission denied.'
+              res.redirect '/'
               return
           else
-            req.flash 'error', 'Permission denied.'
-            res.redirect '/'
-            return
-        else
-          res.send(404)
+            res.send(404)
     
     app.get '/', (req, res, next) ->
       Spime = mongoose.model('Spime')
-      Spime.find({ privacy: 'public'}).populate('owner').populate('photo').populate('last_sighting').exec (err, spimes) ->
-        return next(err) if err?
-        if spimes?
-          res.render "#{__dirname}/views/public",
-            title: 'Public Spimes'
-            stylesheet: "spimr"
-            spimes: spimes
-            info: req.flash 'info'
-            error: req.flash 'error'
-          return
-        res.send(404)
+      Spime
+        .find({ privacy: 'public'})
+        .populate('owner')
+        .populate('photo')
+        .populate('last_sighting')
+        .exec (err, spimes) ->
+          return next(err) if err?
+          if spimes?
+            res.render "#{__dirname}/views/public",
+              title: 'Public Spimes'
+              stylesheet: "spimr"
+              spimes: spimes
+              info: req.flash 'info'
+              error: req.flash 'error'
+            return
+          res.send(404)
     
     app.get '/edit/:id', (req, res, next) ->
       app.locals.requiresLogin(req, res)
@@ -123,77 +138,86 @@ routes = (app) ->
         return next(err) if err?
         (res.send(404, { error: 'No Such User' }); return;) if !user?
         Spime = mongoose.model('Spime')
-        Spime.findOne({ _id: req.body._spime }).populate('photo').exec (err, spime) ->
-          return next(err) if err?
-          (res.send(404, { error: 'No Such Spime' }); return;) if !spime?
-          if spime.owner is not user._id
-            req.flash 'error', 'Permission denied.'
-            res.redirect '/spimes/mine'
-            return
-          MediaItem = mongoose.model('MediaItem')
-          photo = new MediaItem
-          photo.data_source_name = 'CloudinaryMediaDataSource'
-          photo.save_media(req.files.photo, (result) ->
-            photo.media_item_id = result.public_id
-            photo.media_format = result.format
-            photo.uploader = user
-            photo.save (err, save) ->
-              return next(err) if err?
-              if save?
-                spime.photo = photo
-                spime.save (err, save) ->
-                  return next(err) if err?
-                  req.flash 'info', 'Spime saved.'
-                  res.redirect "/spimes/#{spime._id}"
-                  return
-          )
+        Spime
+          .findOne({ _id: req.body._spime })
+          .populate('photo')
+          .exec (err, spime) ->
+            return next(err) if err?
+            (res.send(404, { error: 'No Such Spime' }); return;) if !spime?
+            if spime.owner is not user._id
+              req.flash 'error', 'Permission denied.'
+              res.redirect '/spimes/mine'
+              return
+            MediaItem = mongoose.model('MediaItem')
+            photo = new MediaItem
+            photo.data_source_name = 'CloudinaryMediaDataSource'
+            photo.save_media(req.files.photo, (result) ->
+              photo.media_item_id = result.public_id
+              photo.media_format = result.format
+              photo.uploader = user
+              photo.save (err, save) ->
+                return next(err) if err?
+                if save?
+                  spime.photo = photo
+                  spime.save (err, save) ->
+                    return next(err) if err?
+                    req.flash 'info', 'Spime saved.'
+                    res.redirect "/spimes/#{spime._id}"
+                    return
+            )
       
 
     app.put '/:id', (req, res, next) ->
       app.locals.requiresLogin(req, res)
       Spime = mongoose.model('Spime')
-      Spime.findOne({ _id: req.params.id }).populate('owner').exec (err, spime) ->
-        return next(err) if err?
-        if spime?
-          if String(req.session.user_id) != String(spime.owner._id)
-            req.flash 'error', 'Permission denied.'
-            res.redirect '/'
-            return
-          for attr,value of req.body
-            spime.set(attr, value)
-          spime.save (err, save) ->
-            return next(err) if err?
-            if save?
-              req.flash 'info', 'Spime edited.'
-              res.redirect "/spimes/#{req.params.id}"
+      Spime
+        .findOne({ _id: req.params.id })
+        .populate('owner')
+        .exec (err, spime) ->
+          return next(err) if err?
+          if spime?
+            if String(req.session.user_id) != String(spime.owner._id)
+              req.flash 'error', 'Permission denied.'
+              res.redirect '/'
               return
-            else
-              res.send(404)
-        else
-          res.send(404)
+            for attr,value of req.body
+              spime.set(attr, value)
+            spime.save (err, save) ->
+              return next(err) if err?
+              if save?
+                req.flash 'info', 'Spime edited.'
+                res.redirect "/spimes/#{req.params.id}"
+                return
+              else
+                res.send(404)
+          else
+            res.send(404)
   
     app.delete '/image/:id', (req, res, next) ->
       app.locals.requiresLogin(req, res)
       MediaItem = mongoose.model('MediaItem')
-      MediaItem.findOne({ _id: req.params.id }).populate('uploader').exec (err, image) ->
-        return next(err) if err?
-        if image?
-          if req.session.user_id != String(image.uploader._id)
-            req.flash 'error', 'Permission denied.'
-            res.redirect '/'
-            return
-          # delete all references to this photo among spimes
-          Spime = mongoose.model('Spime')
-          Spime.find ({ photo: image._id }), (err, spimes) ->
-            return next(err) if err?
-            if spimes?
-              for spime in spimes
-                spime.photo = null
-                spime.save (err, saved) ->
-                  return next(err) if err?
-                  req.flash 'info', 'Photo deleted.'
-                  res.redirect '/spimes/mine'
-                  return
+      MediaItem
+        .findOne({ _id: req.params.id })
+        .populate('uploader')
+        .exec (err, image) ->
+          return next(err) if err?
+          if image?
+            if req.session.user_id != String(image.uploader._id)
+              req.flash 'error', 'Permission denied.'
+              res.redirect '/'
+              return
+            # delete all references to this photo among spimes
+            Spime = mongoose.model('Spime')
+            Spime.find ({ photo: image._id }), (err, spimes) ->
+              return next(err) if err?
+              if spimes?
+                for spime in spimes
+                  spime.photo = null
+                  spime.save (err, saved) ->
+                    return next(err) if err?
+                    req.flash 'info', 'Photo deleted.'
+                    res.redirect '/spimes/mine'
+                    return
       
     app.delete '/:id', (req, res, next) ->
       app.locals.requiresLogin(req, res)
