@@ -3,7 +3,7 @@ Spime = require '../../models/spime'
 
 routes = (app) ->
 
-  app.namespace '/checkin', ->
+  app.namespace '/c', ->
     
     app.get '/:uuid', (req, res, next) ->
       Spime = mongoose.model('Spime')
