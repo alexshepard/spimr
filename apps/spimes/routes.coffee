@@ -65,7 +65,9 @@ routes = (app) ->
               res.redirect '/'
               return
           else
-            res.send(404)
+            req.flash 'error', 'Spime not found.'
+            res.redirect '/'
+            return
     
     app.get '/', (req, res, next) ->
       Spime = mongoose.model('Spime')
