@@ -7,6 +7,32 @@ routes = (app) ->
         
   app.namespace '/people', ->
 
+    app.get '/new', (req, res, next) ->
+      res.render "#{__dirname}/views/create",
+        title: "Create New Account"
+        stylesheet: "create"
+        info: req.flash 'info'
+        error: req.flash 'error'
+      return
+
+    app.post '/new', (req, res, next) ->
+      User = mongoose.model('User')
+      attributes = req.body
+      user = new User(attributes)
+      user.save (err, saved) ->
+        if err?
+          if err.code == 11000
+            req.flash 'error', 'Email address already exists.'
+            res.redirect('/')
+            return
+          else
+            return next(err)
+        req.session.user_id = user.id
+        req.session.user_email = user.email
+        req.flash 'info', 'Account created.'
+        res.redirect '/'
+
+
     app.get '/forgot', (req, res, next) ->
       res.render "#{__dirname}/views/forgot",
         title: "Forgot Password"

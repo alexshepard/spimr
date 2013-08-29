@@ -1,0 +1,25 @@
+extends ../../../views/layout
+
+block content
+  
+  h3= title
+  
+  div.row
+    div.span8
+      form.form-horizontal(action='/people/new', method='post')
+        div.control-group
+          label.control-label(for='nickname') Nickname
+          div.controls
+            input(type='text', id='nickname', name='nickname')
+        div.control-group
+          label.control-label(for='email') Email Address
+          div.controls
+            input(type='text', id='email', name='email')
+        div.control-group
+          label.control-label(for='password') Password
+          div.controls
+            input(type='password', id='password', name='password')
+            
+        div.control-group
+          div.controls
+            button.btn(type='submit') Create
