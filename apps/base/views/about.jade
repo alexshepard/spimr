@@ -1,23 +1,50 @@
 extends ../../../views/layout
 
-block content
-  h1= title
-  
-  :markdown
+block content  
+
+  div.row-fluid
+    
+    div.span4
+      h4 About the Site
+      p
+        :markdown
    
-    Spimr is a web app that’s designed to help the dumb things of the 
-    world get a little closer to their full potential. The goal is 
-    to transform everyday objects into spimes.
+          Spimr is a web app that’s designed to help the dumb things of the 
+          world get a little closer to their full potential. The goal is 
+          to transform everyday objects into spimes.
     
-    Spimr is a work in progress.
+          Spimr is a work in progress.
   
-    If you don’t know what a spime is, you can read about them in 
-    the book [Shaping Things](http://mitpress.mit.edu/books/shaping-things) 
-    by [Bruce Sterling](http://www.wired.com/beyond_the_beyond/), the 
-    writer and design critic who invented the word 'spime.'
+          If you don’t know what a spime is, you can read about them in 
+          the book [Shaping Things](http://mitpress.mit.edu/books/shaping-things) 
+          by [Bruce Sterling](http://www.wired.com/beyond_the_beyond/), the 
+          writer and design critic who invented the word 'spime.'
+  
+          Spimr is also an experiment in contemporary web technologies. 
+          Meatfreezer apps is developing the web app in public on 
+          [github](http://github.com/alexshepard/spimr) using Node.js, 
+          MongoDB, and Bootstrap. You can always find the current version 
+          of Spimr hosted on Heroku, available at 
+          [www.spimr.com](http://www.spimr.com)
+                
+    div.span4
+  
+      h4 About Us
+      p
+        :markdown
+          [Meatfreezer Apps](http://www.meatfreezer.com/) is the online home
+          of [Alex Shepard](http://alex.meatfreezer.com/). We produce
+          video games, 3d prints, web applications, and other material and
+          non-material things at the intersection of art and technology.
+          
+          Alex recently graduated with an MFA from the 
+          [San Francisco Art Institute](http://www.sfai.edu), where he 
+          studied the application of traditional printmaking theory on 
+          contemporary mass-production society. His artwork ranges from
+          2d and 3d prints to virtual objects and video games. 
     
-    Spimr is also an experiment in contemporary web technologies. 
-    Meatfreezer Apps is developing the web app in public on 
-    [github](http://github.com/alexshepard/spimr) using Node.js, 
-    MongoDB, and Bootstrap. You can always find the current version 
-    of Spimr hosted on Heroku, available at [www.spimr.com](http://www.spimr.com)
+          Alex can be found on [twitter](http://twitter.com/alexshepard).
+
+    div.span4
+      
+      img.avatar(src='http://www.gravatar.com/avatar/ff0a4856bb401d6bb8ce3fc4381fe238?s=400&r=pg')
