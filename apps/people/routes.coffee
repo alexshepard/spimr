@@ -23,7 +23,14 @@ routes = (app) ->
         if err?
           if err.code == 11000
             req.flash 'error', 'Email address already exists.'
-            res.redirect('/')
+            res.redirect('/people/new')
+            return
+          else if err.name == 'ValidationError'
+            error_string = "";
+            for validation_error of err.errors
+              error_string = error_string + "Invalid #{validation_error} :( "
+            req.flash 'error', error_string
+            res.redirect('/people/new')
             return
           else
             return next(err)
