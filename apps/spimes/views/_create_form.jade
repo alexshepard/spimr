@@ -13,7 +13,7 @@ form.form-horizontal(action='/spimes', method='post')
     label.control-label(for='inputPrivacy') Privacy
     div.controls
       select(name='privacy')
-        privacies = [ 'private', 'public' ]
+        privacies = [ 'public', 'private' ]
         for privacy in privacies
           option(selected=spime.privacy == privacy) #{privacy}
   
