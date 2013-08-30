@@ -1,5 +1,39 @@
 extends ../../../views/layout
 
 block content
-  h2= 'Create a New Spime'
-  include _create_form
+  div.row-fluid
+    div.span4
+      h4.pull-right Create a New Spime
+    
+    div.span1
+      
+    div.span4
+      h4 What's a Spime?
+  
+  br
+    
+  div.row-fluid
+    div.span4
+      include _create_Form
+    
+    div.span1
+    
+    div.span4
+      :markdown
+        A spime is an online profile for a real world object. One way to 
+        think of it is like a facebook page for your stuff. Once an object
+        has a spimr profile, you can later add metadata about it. 
+        
+        You could describe how it was made, where it was bought or 
+        found, what it can do, how to use it safely, and how to dispose 
+        of it in an ecological way.
+        
+        If you attach a QR code or arphid to it (we can help you do this) 
+        your object will become trackable through space and time. Spimr
+        will help you map where your object has been seen, who saw it, and
+        when.
+        
+        Anyone who finds your object will be able to learn all of the 
+        information that you provided above. A recycling plant, for 
+        example, could learn how your object is supposed to be recycled 
+        and what raw materials it was made of.
