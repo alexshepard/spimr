@@ -36,8 +36,8 @@ routes = (app) ->
               spime.save (err, save) ->
                 return next(err) if err?
                 req.flash 'info', 'Sighting recorded, thank you!'
-                if spime.privacy == 'public' || 
-                        (req.session.user_id && req.session.user_id == spime.owner._id)
+                if spime.privacy == 'public' ||
+                 (req.session.user_id && req.session.user_id == spime.owner._id)
                   res.redirect "/spimes/#{spime._id}"
                 else
                   res.redirect '/'
