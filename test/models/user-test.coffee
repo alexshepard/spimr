@@ -11,7 +11,7 @@ Spime = mongoose.model('Spime')
 mongo = null
 
 before (done) ->
-  mongo = mongoose.createConnection('mongodb://localhost/spimr_test');
+  mongo = mongoose.createConnection('mongodb://localhost/spimr_test')
   done()
 
 after (done) ->
@@ -109,4 +109,4 @@ describe "User", ->
             .exec (err, spime) ->
               should.not.exist(err)
               should.not.exist(spime)
-              done() 
+              done()
