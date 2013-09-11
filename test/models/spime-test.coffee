@@ -12,7 +12,7 @@ MediaItem = mongoose.model('MediaItem')
 mongo = null
 
 before (done) ->
-  mongo = mongoose.createConnection('mongodb://localhost/spimr_test');
+  mongo = mongoose.createConnection('mongodb://localhost/spimr_test')
   done()
 
 after (done) ->
@@ -112,7 +112,7 @@ describe "Spime", ->
             .exec (err, sighting) ->
               should.not.exist(err)
               should.not.exist(sighting)
-              done() 
+              done()
 
 describe "SpimeSighting", ->
   sighting = null
