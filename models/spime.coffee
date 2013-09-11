@@ -7,7 +7,8 @@ MediaItem = require './media.coffee'
 
 Spime = new mongoose.Schema(
 
-  # most of these properties are shamelessly stolen from @bruces's Shaping Things
+  # most of these properties are shamelessly stolen from
+  # @bruces's Shaping Things
 
   # who owns it?
   owner:
@@ -15,7 +16,7 @@ Spime = new mongoose.Schema(
     ref: 'User'
 
   # what's its unique uuid for tracking via arphid and qrcode?
-  uuid: 
+  uuid:
     type: String
     index: { unique: true }
     
@@ -37,7 +38,7 @@ Spime = new mongoose.Schema(
       return false
     , 'Invalid Name']
 
-  # what's its story?  
+  # what's its story?
   description:
     type: String
 
@@ -130,7 +131,7 @@ Spime = new mongoose.Schema(
     type: String
     default: ""
   
-  # what does it feel like?  
+  # what does it feel like?
   haptics:
     type: String
     default: ""
