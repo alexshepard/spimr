@@ -1,6 +1,6 @@
 
 uuid = require('node-uuid')
-mongoose = require 'mongoose'  
+mongoose = require 'mongoose'
 crypto = require 'crypto'
 gravatar = require 'gravatar'
 
@@ -13,46 +13,53 @@ schemaOptions = {
 
 User = new mongoose.Schema(
   # http://davidcel.is/blog/2012/09/06/stop-validating-email-addresses-with-regex/
-  email: { type: String, required: true, index: { unique: true}, validate: (val) -> 
-    emailPattern = new RegExp(/@/i)
-    return true if val and val.length and val.match(emailPattern)
-    return false
+  email: {
+    type: String
+    required: true
+    index: { unique: true}
+    validate: (val) ->
+      emailPattern = new RegExp(/@/i)
+      return true if val and val.length and val.match(emailPattern)
+      return false
   }
   reset_password_token: { type: String, default: '' }
   reset_password_timestamp: { type: Date, default: null }
   hashed_password: { type: String }
   salt: { type: String }
-  nickname: { type: String, index: { unique: true, sparse: true }, validate: (val) ->
-    return false if val == 'me'
-    return true if val == null
-    return true if val and val.length
-    return false
+  nickname: {
+    type: String
+    index: { unique: true, sparse: true }
+    validate: (val) ->
+      return false if val == 'me'
+      return true if val == null
+      return true if val and val.length
+      return false
   }
 , schemaOptions)
 
 User.virtual('id').get ->
-  return this._id.toHexString();
+  return this._id.toHexString()
 
 User.virtual('password').get ->
-  return this._password;
+  return this._password
 
 User.virtual('password').set (password) ->
   # we can end up with a null password here if a user
   # is saving their account without setting the password
   # ie updating their nickname or whatever?
   if (password)
-    this._password = password;
+    this._password = password
     this.salt = this.makeSalt()
     this.hashed_password = this.encryptPassword(password)
 
 User.virtual('largeIconUrl').get ->
-  gravatar.url(this.email, {s: '200', r: 'pg'}, https=false);
+  gravatar.url(this.email, {s: '200', r: 'pg'}, https=false)
 
 User.virtual('smallIconUrl').get ->
-  gravatar.url(this.email, {s: '50', r: 'pg'}, https=false);
+  gravatar.url(this.email, {s: '50', r: 'pg'}, https=false)
 
 User.virtual('tinyIconUrl').get ->
-  gravatar.url(this.email, {s: '30', r: 'pg'}, https=false);
+  gravatar.url(this.email, {s: '30', r: 'pg'}, https=false)
 
 User.method 'authenticate', (plainText) ->
   # TODO: should this be triple =? why?
@@ -68,7 +75,8 @@ User.method 'encryptPassword', (password) ->
 User.pre 'save', (next) ->
   # if the user is setting a password, it must have a valid length
   # if not setting a password, they must already have a hashed_password
-  if (this.password and this.password.length) or (this.hashed_password and this.hashed_password.length)
+  if (this.password and this.password.length) or
+   (this.hashed_password and this.hashed_password.length)
     next()
   else
     next(new Error('Invalid password'))
