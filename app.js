@@ -82,12 +82,12 @@ app.use(function (req, res, next) {
 
 app.use(app.router);
 
-app.use(function(err, req, res, next) {
-  if(!err) return next();
+app.use(function (err, req, res, next) {
+  if (!err) { return next(); }
   console.log(err);
   res.render('error', {
-      status: err.status || 500
-    , error: err
+    status: err.status || 500,
+    error: err
   });
   return;
 });
