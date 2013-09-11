@@ -56,7 +56,7 @@ MediaItem.method 'save_media', (media_item_tmp, callback) ->
   this.data_source.save(media_item_tmp, callback)
 
 MediaItem.method 'delete_media', (callback) ->
-  if this.media_item_id  
+  if this.media_item_id
     this.data_source.delete(this.media_item_id, callback)
 
 MediaItem.pre 'remove', (next) ->
@@ -126,7 +126,7 @@ class LocalMediaDataSource
     # collision is likely here
     # should I generate unique name to this file?
     # ie basename = fs.uniqueName()
-    # or use node-temp npm module 
+    # or use node-temp npm module
          
     # this seems to be a unique name
     basename = path.basename(media_item_tmp.path)
