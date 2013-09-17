@@ -110,3 +110,14 @@ describe "User", ->
               should.not.exist(err)
               should.not.exist(spime)
               done()
+
+  it "shouldn't be admin", (done) ->
+    user = new User
+    user.email = "admin-test@domain"
+    user.password = "asdf"
+    user.save (err) ->
+      should.not.exist(err)
+      user.should.have.property(
+        "is_admin", false
+      )
+      done()

@@ -35,6 +35,7 @@ User = new mongoose.Schema(
       return true if val and val.length
       return false
   }
+  is_admin: { type: Boolean, default: false }
 , schemaOptions)
 
 User.virtual('id').get ->
