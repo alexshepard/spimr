@@ -8,3 +8,9 @@ describe "GET /", ->
     request(app)
       .get('/')
       .expect(200, done)
+
+describe "GET /about", ->
+  it "responds with 200", (done) ->
+    request(app)
+      .get('/about')
+      .expect(200, done)
