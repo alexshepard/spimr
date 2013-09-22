@@ -26,7 +26,7 @@ routes = (app) ->
             res.redirect('/people/new')
             return
           else if err.name == 'ValidationError'
-            error_string = "";
+            error_string = ""
             for validation_error of err.errors
               error_string = error_string + "Invalid #{validation_error} :( "
             req.flash 'error', error_string
@@ -66,7 +66,8 @@ routes = (app) ->
         return
     
     app.put '/edit', (req, res, next) ->
-      if req.body.new_password? && req.body.new_password != req.body.confirm_new_password
+      if (req.body.new_password? &&
+       req.body.new_password != req.body.confirm_new_password)
         req.flash 'error', "New passwords don't match."
         res.redirect '/people/me'
         return
@@ -145,7 +146,8 @@ routes = (app) ->
       User.findOne { _id: req.params.id }, (err, user) ->
         return next(err) if err?
         if user?
-          if req.session && req.session.user_id && req.session.user_id == user._id
+          if (req.session && req.session.user_id &&
+           req.session.user_id == user._id)
             res.redirect '/people/me'
             return
           else
@@ -164,33 +166,40 @@ routes = (app) ->
       User = mongoose.model('User')
       User.findOne { email: req.body.email }, (err, user) ->
         if err?
-          req.flash 'error', 'Unable to send password reset email: ' + err.message
+          req.flash 'error', 'Unable to send password reset email: ' +
+            err.message
           res.redirect '/'
           return
         if user?
           if user.reset_password_timestamp?
-            if (new Date().getTime() - user.reset_password_timestamp.getTime()) < (60 * 1000)
-              req.flash 'error', 'Please wait a minute to request a new password.'
+            if (new Date().getTime() -
+             user.reset_password_timestamp.getTime()) < (60 * 1000)
+              req.flash 'error',
+                'Please wait a minute to request a new password.'
               res.redirect '/'
               return
           crypto.randomBytes 24, (ex, buf) ->
             user.set("reset_password_token", buf.toString 'hex')
             user.set("reset_password_timestamp", new Date)
             user.save (err, saved) ->
-              return next(err) if err?        
+              return next(err) if err?
               if saved?
                 # construct and send email
-                resetUrl = app.locals.baseUrl(req) + '/account/reset/' + req.body.email + '/' + buf.toString 'hex'
-                bodyText = 'Someone has requested to your password on spimr.com. If this was you, please click this link: ' + resetUrl + "\n\n If it wasn\'t you, please ignore this email."
+                resetUrl = app.locals.baseUrl(req) + '/account/reset/' +
+                  req.body.email + '/' + buf.toString 'hex'
+                bodyText = 'Someone has requested to your password on ' +
+                  'spimr.com. If this was you, please click this link: ' +
+                  resetUrl + "\n\n If it wasn\'t you, please ignore this email."
                 email = {
-                    From: "Spimr Support <spimr@spimr.com>"
-                    To: req.body.email
-                    Subject: "Reset Password"
-                    TextBody: bodyText
-                } 
+                  From: "Spimr Support <spimr@spimr.com>"
+                  To: req.body.email
+                  Subject: "Reset Password"
+                  TextBody: bodyText
+                }
                 postmark.send email, (err, success) ->
                   if err?
-                    req.flash 'error', 'Unable to send password reset email: ' + err.message
+                    req.flash 'error', 'Unable to send password reset ' +
+                      'email: ' + err.message
                     res.redirect '/'
                     return
                   else
@@ -214,7 +223,7 @@ routes = (app) ->
         req.flash 'error', 'Passwords don\'t match.'
         res.redirect '/account/reset/' + req.body._email + '/' + req.body._token
         return
-      User = mongoose.model('User')      
+      User = mongoose.model('User')
       User.findOne { email: req.body._email }, (err, user) ->
         return next(err) if err?
         if user?
@@ -222,14 +231,15 @@ routes = (app) ->
             req.flash 'error', 'Permission denied'
             res.redirect '/'
             return
-          if (new Date().getTime() - user.reset_password_timestamp.getTime()) > (60 * 60 * 2 * 1000)
+          if (new Date().getTime() -
+           user.reset_password_timestamp.getTime()) > (60 * 60 * 2 * 1000)
             req.flash 'error', 'Password reset has expired.'
             res.redirect '/'
             return
 
-          user.set(password, req.body.password);
-          user.set(reset_password_token: null);
-          user.set(reset_password_timestamp: null);
+          user.set(password, req.body.password)
+          user.set(reset_password_token: null)
+          user.set(reset_password_timestamp: null)
           
           user.save (err, save) ->
             if err?
@@ -239,7 +249,7 @@ routes = (app) ->
             if save?
               req.flash 'info', 'Password updated.'
               res.redirect '/'
-              return      
+              return
         else
           req.flash 'error', 'Error: user not found'
           res.redirect '/'
@@ -251,7 +261,8 @@ routes = (app) ->
         return next(err) if err?
         if user?
           if user.reset_password_token == req.params.token
-            if (new Date().getTime() - user.reset_password_timestamp.getTime()) > (60 * 60 * 2 * 1000)
+            if (new Date().getTime() -
+             user.reset_password_timestamp.getTime()) > (60 * 60 * 2 * 1000)
               req.flash 'error', 'Password reset has expired.'
               res.redirect '/'
               return
