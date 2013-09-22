@@ -48,18 +48,21 @@ routes = (app) ->
         .exec (err, spime) ->
           return next(err) if err?
           if spime?
-            if spime.privacy == 'public' || spime.owner.id == req.session.user_id
+            if spime.privacy == 'public' ||
+             spime.owner.id == req.session.user_id
               spime.checkin_url = app.locals.checkinUrlForUuid(req, spime.uuid)
-              SpimeSighting.find({ spime: req.params.id }).exec (err, sightings) ->
-                return next(err) if err?
-                res.render "#{__dirname}/views/spime",
-                  title: spime.name
-                  stylesheet: "spime"
-                  spime: spime
-                  sightings: sightings
-                  info: req.flash 'info'
-                  error: req.flash 'error'
-                return
+              SpimeSighting
+                .find({ spime: req.params.id })
+                .exec (err, sightings) ->
+                  return next(err) if err?
+                  res.render "#{__dirname}/views/spime",
+                    title: spime.name
+                    stylesheet: "spime"
+                    spime: spime
+                    sightings: sightings
+                    info: req.flash 'info'
+                    error: req.flash 'error'
+                  return
             else
               req.flash 'error', 'Permission denied.'
               res.redirect '/'
@@ -91,21 +94,25 @@ routes = (app) ->
     app.get '/edit/:id', (req, res, next) ->
       app.locals.requiresLogin(req, res)
       Spime = mongoose.model('Spime')
-      Spime.findOne({ _id: req.params.id }).populate('owner').populate('photo').exec (err, spime) ->
-        return next(err) if err?
-        if spime?
-          if String(req.session.user_id) != String(spime.owner._id)
-            req.flash 'error', 'Permission denied.'
-            res.redirect '/'
+      Spime
+        .findOne({ _id: req.params.id })
+        .populate('owner')
+        .populate('photo')
+        .exec (err, spime) ->
+          return next(err) if err?
+          if spime?
+            if String(req.session.user_id) != String(spime.owner._id)
+              req.flash 'error', 'Permission denied.'
+              res.redirect '/'
+              return
+            res.render "#{__dirname}/views/edit",
+              title: "Edit #{spime.name}"
+              stylesheet: "admin"
+              spime: spime
+              info: req.flash 'info'
+              error: req.flash 'error'
             return
-          res.render "#{__dirname}/views/edit",
-            title: "Edit #{spime.name}"
-            stylesheet: "admin"
-            spime: spime
-            info: req.flash 'info'
-            error: req.flash 'error'
-          return
-        res.send(404)
+          res.send(404)
   
     app.post '/', (req, res, next) ->
       app.locals.requiresLogin(req, res)
@@ -124,7 +131,8 @@ routes = (app) ->
               return
             else
               if spime.privacy == 'public'
-                twitString = "#{spime.name} was just created on Spimr: #{app.locals.baseUrl(req)}/spimes/#{spime._id}"
+                twitString = "#{spime.name} was just created on Spimr: ' +
+                  '#{app.locals.baseUrl(req)}/spimes/#{spime._id}"
                 app.twit
                   .updateStatus twitString, (data) ->
                     console.log data
