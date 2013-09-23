@@ -1,30 +1,4 @@
-doctype 5
-html
-  head
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title= 'Spimr - ' + Error
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/stylesheets/bootstrap.css')
-    
-    |<style type="text/css">
-    |body {
-    |    padding-top: 60px;
-    |    padding-bottom: 40px;
-    |  }
-    |</style>
+extends layout
 
-    link(rel='stylesheet', href='/stylesheets/bootstrap-responsive.css')
-    script(src='/javascripts/bootstrap.js')
-      
-    link(rel='apple-touch-icon-precomposed', size='144x144', href='/ico/apple-touch-icon-144-precomposed.png')
-    link(rel='apple-touch-icon-precomposed', size='114x114', href='/ico/apple-touch-icon-114-precomposed.png')
-    link(rel='apple-touch-icon-precomposed', size='72x72', href='/ico/apple-touch-icon-72-precomposed.png')
-    link(rel='apple-touch-icon-precomposed', href='/ico/apple-touch-icon-57-precomposed.png')
-    link(rel='shortcut icon', href='/ico/favicon.png')
-    
-  body
-
-    block content
-      h1 UH-OH! :(
-      h2 ERROR #{status}
-      p #{error.message}
+block content
+  h1 UH-OH! :(
