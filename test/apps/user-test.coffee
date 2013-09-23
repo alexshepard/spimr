@@ -5,6 +5,8 @@ should = require 'should'
 
 app = require '../../app'
 
+cookie = ''
+
 describe "Bad login", ->
   it "fails", (done) ->
     request(app)
@@ -32,4 +34,20 @@ describe "Good login", ->
       .end (err, res) ->
         res.statusCode.should.equal(302)
         res.header['location'].should.include('/')
+        cookie = res.headers['set-cookie']
         done()
+
+# currently depends on create account and good login
+# switch to before probably
+describe "Delete account", ->
+  it "succeeds", (done) ->
+    request(app)
+      .del('/people/me')
+      .set('cookie', cookie)
+      .end (err, res) ->
+        res.statusCode.should.equal(302)
+        res.header['location'].should.include('/')
+        request(app)
+          .post('/sessions')
+          .send({ email: "create-account@example.com", password: 'asdf' })
+          .expect(500, done)
