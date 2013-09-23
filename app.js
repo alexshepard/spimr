@@ -57,7 +57,9 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.favicon());
-app.use(express.logger('dev'));
+if ('test' != app.get('env')) {
+  app.use(express.logger('dev'));
+}
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
@@ -85,6 +87,7 @@ app.use(app.router);
 app.use(function (err, req, res, next) {
   if (!err) { return next(); }
   console.log(err);
+  res.status(500)
   res.render('error', {
     status: err.status || 500,
     error: err
