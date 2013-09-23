@@ -14,9 +14,9 @@ routes = (app) ->
         req.flash 'info', 'Welcome to Spimr, ' + req.body.email
         res.redirect('/')
         return
-      req.flash 'error',
-        'Incorrect credentials. <a href="/account/forgot">Forgot Password?</a>'
-      res.redirect('/')
+      else
+        return next(new Error('Incorrect credentials. ' +
+          '<a href="/account/forgot">Forgot Password?</a>'))
 
   app.del '/sessions',  (req, res, next) ->
     req.session.regenerate (err) ->
