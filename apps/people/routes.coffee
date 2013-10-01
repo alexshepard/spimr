@@ -36,6 +36,7 @@ routes = (app) ->
             return next(err)
         req.session.user_id = user.id
         req.session.user_email = user.email
+        req.session.is_admin = user.is_admin
         req.flash 'info', 'Account created.'
         res.redirect '/'
 

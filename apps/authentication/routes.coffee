@@ -10,6 +10,7 @@ routes = (app) ->
       if user and user.authenticate(req.body.password)
         req.session.user_id = user.id
         req.session.user_email = user.email
+        req.session.is_admin = user.is_admin
         # TODO: handle remember me
         req.flash 'info', 'Welcome to Spimr, ' + req.body.email
         res.redirect('/')
