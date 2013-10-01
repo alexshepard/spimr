@@ -74,6 +74,7 @@ app.use(function (req, res, next) {
   if (req.session) {
     res.locals.user_id = req.session.user_id;
     res.locals.user_email = req.session.user_email;
+    res.locals.is_admin = req.session.is_admin;
   }
   res.locals.path = req.path;
   res.locals.google_analytics_account = process.env.GOOGLE_ANALYTICS_ACCOUNT;
