@@ -17,6 +17,12 @@ form.form-horizontal(action='/spimes', method='post')
         for privacy in privacies
           option(selected=spime.privacy == privacy) #{privacy}
   
+  if (locals.is_admin)
+    div.control-group
+      label.control-label(for='count') Count
+      div.controls
+        input(type='text', id='count', name='count', placeholder="Create how many?")
+  
   div.control-group
     div.controls
       button.btn(type='submit') Create

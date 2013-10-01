@@ -120,6 +120,26 @@ routes = (app) ->
       User.findById req.session.user_id, (err, user) ->
         return next(err) if err?
         if user?
+          if user.is_admin?
+            if (req.body.count < 1)
+              req.flash 'error', 'Count must be 1 or more.'
+              res.redirect '/spimes/new'
+              return
+            count = req.body.count
+            for i in [1 .. count]
+              Spime = mongoose.model('Spime')
+              attributes = req.body
+              spime = new Spime(attributes)
+              spime.name = spime.name + " " + i
+              spime.owner = user._id
+              spime.save (err, saved) ->
+                if err?
+                  req.flash 'error', 'Error creating spime: ' + err.errors.name.type
+                  res.redirect "/spimes/mine"
+                  return
+            req.flash 'info', "#{count} spimes created."
+            res.redirect "/spimes/mine"
+            return
           Spime = mongoose.model('Spime')
           attributes = req.body
           spime = new Spime(attributes)
